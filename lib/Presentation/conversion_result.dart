@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
@@ -11,10 +10,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as path;
-
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConversionResult extends StatefulWidget {
   final String imageFormat;
@@ -28,8 +24,8 @@ class ConversionResult extends StatefulWidget {
     required this.convertedSize,
     required this.dateTime,
     required this.convertedFile,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<ConversionResult> createState() => _ConversionResultState();
@@ -60,42 +56,81 @@ class _ConversionResultState extends State<ConversionResult> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          title: Text(
-            // AppLocalizations.of(context)!.converted,
-            'Converted',
-            style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-              child: InkWell(
-                onTap: () {
-                  Get.offAll(() => const HomeScreen());
-                },
-                child: Image.asset(
-                  "assets/Home.png",
-                  height: 25,
-                  width: 25,
+        appBar: PreferredSize(
+          preferredSize: const Size(double.infinity, 65),
+          child: AppBar(
+            backgroundColor: UiColors.whiteColor,
+            elevation: 0.0,
+            automaticallyImplyLeading: false,
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Transform.flip(
+                    flipX: true,
+                    child: Image.asset(
+                      'assets/Right.png',
+                      height: 25,
+                      width: 25,
+                    ),
+                  ),
                 ),
-              ),
-            )
-          ],
+                const SizedBox(
+                  width: 10,
+                ),
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Text(
+                    'Converted',
+                    style: GoogleFonts.poppins(
+                      color: UiColors.blueColor,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
+        // appBar: AppBar(
+        //   centerTitle: true,
+        //   automaticallyImplyLeading: false,
+        //   title: Text(
+        //     // AppLocalizations.of(context)!.converted,
+        //     'Converted',
+        //     style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+        //   ),
+        //   actions: [
+        //     Padding(
+        //       padding: const EdgeInsets.only(right: 10.0, left: 10.0),
+        //       child: InkWell(
+        //         onTap: () {
+        //           Get.offAll(() => const HomeScreen());
+        //         },
+        //         child: Image.asset(
+        //           "assets/Home.png",
+        //           height: 25,
+        //           width: 25,
+        //         ),
+        //       ),
+        //     )
+        //   ],
+        // ),
+
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(bottom: 30.0, left: 10, right: 10),
           child:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             Expanded(
               flex: 1,
               child: optionList("assets/Preveiw.png", () {
                 widget.imageFormat == '.svg'
                     ? Get.snackbar(
-                  // backgroundColor: Colors.white,
-                    "Could open this file",
-                    "No App found to Open")
+                        // backgroundColor: Colors.white,
+                        "Could open this file",
+                        "No App found to Open")
                     : _openFile(widget.convertedFile);
               }),
             ),
@@ -183,18 +218,18 @@ class _ConversionResultState extends State<ConversionResult> {
               child: Row(
                 children: [
                   widget.imageFormat == '.webp' ||
-                      widget.imageFormat == '.svg' ||
-                      widget.imageFormat == '.pdf'
+                          widget.imageFormat == '.svg' ||
+                          widget.imageFormat == '.pdf'
                       ? Image.asset(
-                    "assets/logo.png",
-                    height: 100,
-                    // width: 90,
-                  )
+                          "assets/logo.png",
+                          height: 100,
+                          // width: 90,
+                        )
                       : SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Image.file(File(widget.convertedFile.path)),
-                  ),
+                          width: 100,
+                          height: 100,
+                          child: Image.file(File(widget.convertedFile.path)),
+                        ),
                   const SizedBox(
                     width: 8,
                   ),
@@ -202,30 +237,26 @@ class _ConversionResultState extends State<ConversionResult> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       featureNames(
-                        // "${AppLocalizations.of(context)!.image_format}:",
-                        'Image format '
-                      ),
+                          // "${AppLocalizations.of(context)!.image_format}:",
+                          'Image format '),
                       const SizedBox(
                         height: 5,
                       ),
                       featureNames(
-                        // "${AppLocalizations.of(context)!.original_size}:",
-                        'Orignal Size'
-                      ),
+                          // "${AppLocalizations.of(context)!.original_size}:",
+                          'Orignal Size'),
                       const SizedBox(
                         height: 5,
                       ),
                       featureNames(
-                        // "${AppLocalizations.of(context)!.converted_size}:",
-                        "Converted Size"
-                      ),
+                          // "${AppLocalizations.of(context)!.converted_size}:",
+                          "Converted Size"),
                       const SizedBox(
                         height: 5,
                       ),
                       featureNames(
-                        // "${AppLocalizations.of(context)!.date_time}:",
-                        "Date/Time"
-                      ),
+                          // "${AppLocalizations.of(context)!.date_time}:",
+                          "Date/Time"),
                     ],
                   ),
                   const Spacer(),
@@ -270,14 +301,11 @@ class _ConversionResultState extends State<ConversionResult> {
                 ],
               ),
             ),
-
           ],
         ),
       ),
     );
   }
-
-
 
   optionList(String imageName, VoidCallback onPress) {
     return InkWell(
@@ -318,9 +346,8 @@ class _ConversionResultState extends State<ConversionResult> {
         duration: const Duration(seconds: 4),
         "${"ERROR"}!!!",
         "${"ERROR"}  ${
-            // AppLocalizations.of(context)!.opening_file
-        'opening_file'
-        }",
+        // AppLocalizations.of(context)!.opening_file
+        'opening_file'}",
       );
     }
   }
@@ -363,7 +390,7 @@ class _ConversionResultState extends State<ConversionResult> {
         }
 
         final destinationPath =
-        path.join(pdfFolder.path, file.uri.pathSegments.last);
+            path.join(pdfFolder.path, file.uri.pathSegments.last);
         print("destinationPath $destinationPath");
 
         await File(filePath).copy(destinationPath);
@@ -386,13 +413,12 @@ class _ConversionResultState extends State<ConversionResult> {
 
         if (result['isSuccess']) {
           Get.snackbar(
-            colorText: Colors.black,
-            backgroundColor: Colors.white,
-            duration: const Duration(seconds: 4),
-            "Attention",
-            // AppLocalizations.of(context)!.image_saved_to_gallery,
-            "Image SAVED TO GALLERY"
-          );
+              colorText: Colors.black,
+              backgroundColor: Colors.white,
+              duration: const Duration(seconds: 4),
+              "Attention",
+              // AppLocalizations.of(context)!.image_saved_to_gallery,
+              "Image SAVED TO GALLERY");
           print('Image saved to gallery!');
           Get.offAll(const HomeScreen());
         } else {

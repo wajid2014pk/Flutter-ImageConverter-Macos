@@ -41,11 +41,9 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}jpgtojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.jpg';
@@ -61,12 +59,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(imageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: imageFile,
           ),
@@ -88,11 +86,9 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}jpgtojpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.jpeg';
@@ -108,12 +104,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(imageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpeg",
             originalSize:
-            "${((originalSize.value) / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${((originalSize.value) / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${((convertedSize.value) / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${((convertedSize.value) / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: imageFile,
           ),
@@ -135,11 +131,8 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
-
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        Directory? dir = await getApplicationCacheDirectory();
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}jpgtobmp_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
@@ -164,12 +157,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(compressedImage.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".bmp",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: compressedImage,
           ),
@@ -195,11 +188,8 @@ class ConvertImagesController extends GetxController {
       showLoader.value = true;
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
-
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        Directory? dir = await getApplicationCacheDirectory();
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}jpgtogif_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
@@ -224,12 +214,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(compressedImage.path);
 
         Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".gif",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: compressedImage,
           ),
@@ -251,11 +241,9 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}jpgtopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
@@ -280,12 +268,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(compressedImage.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".png",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: compressedImage,
           ),
@@ -335,12 +323,10 @@ class ConvertImagesController extends GetxController {
       ),
     );
 
-    Directory? dir = Platform.isIOS
-        ? await getApplicationCacheDirectory()
-        : await getExternalStorageDirectory();
+    Directory? dir = await getApplicationCacheDirectory();
 
     var path =
-        '${dir?.path}/ImageConverter/jpgtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
+        '${dir.path}/ImageConverter/jpgtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
     final file = File(path)..createSync(recursive: true);
     print("path before $path");
 
@@ -350,15 +336,15 @@ class ConvertImagesController extends GetxController {
     convertedSize.value = await getFileSize(file.path);
 
     await Get.to(
-          () => ConversionResult(
+      () => ConversionResult(
         imageFormat: ".pdf",
         originalSize: "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
         convertedSize:
-        "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
         dateTime: getFormattedDateTime(dateTime),
         convertedFile:
-        // file,
-        File(path),
+            // file,
+            File(path),
       ),
     );
 
@@ -375,8 +361,8 @@ class ConvertImagesController extends GetxController {
     try {
       api.FormData formdata = api.FormData.fromMap({
         "file": await api.MultipartFile.fromFile(filePath!, filename: filePath
-          //show only filename from path
-        ),
+            //show only filename from path
+            ),
         "from": from,
         "to": to,
       });
@@ -396,11 +382,9 @@ class ConvertImagesController extends GetxController {
 
       DateTime dateTime = DateTime.now();
       Map valueMap = json.decode(response.data);
-      Directory? dir = Platform.isIOS
-          ? await getApplicationCacheDirectory()
-          : await getExternalStorageDirectory();
+      Directory? dir = await getApplicationCacheDirectory();
       var path =
-          "${dir?.path}/ImageConverter/ $from To $to _$dateTime#${basename(valueMap['d_url'])}";
+          "${dir.path}/ImageConverter/ $from To $to _$dateTime#${basename(valueMap['d_url'])}";
       isDownloading.value = true;
       var downloadRes = await dio.download(
         "${valueMap['d_url']}",
@@ -423,12 +407,12 @@ class ConvertImagesController extends GetxController {
       // print("aaaa ")
 
       await Get.to(
-            () => ConversionResult(
+        () => ConversionResult(
           imageFormat: ".$to",
           originalSize:
-          "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+              "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
           convertedSize:
-          "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+              "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
           dateTime: getFormattedDateTime(dateTime),
           convertedFile: File(path),
         ),
@@ -454,13 +438,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/tiftojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/tiftojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -477,12 +459,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(jpgImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: jpgImageFile,
           ),
@@ -503,13 +485,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/tiftopdf_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/tiftopdf_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -548,12 +528,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(file.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".pdf",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: file,
           ),
@@ -571,13 +551,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/tiftopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/tiftopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -594,12 +572,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(pngImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".png",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: pngImageFile,
           ),
@@ -620,13 +598,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/tifftogif_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/tifftogif_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -645,12 +621,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(gifImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".gif",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: gifImageFile,
           ),
@@ -673,13 +649,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/tifftojpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/tifftojpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -697,12 +671,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(jpegImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpeg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: jpegImageFile,
           ),
@@ -723,13 +697,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/tifftobmp_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/tifftobmp_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -751,12 +723,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(bmpImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".bmp",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: bmpImageFile,
           ),
@@ -780,13 +752,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/bmptojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/bmptojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -803,12 +773,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(jpgImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: jpgImageFile,
           ),
@@ -829,13 +799,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/bmptopdf_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/bmptopdf_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -876,12 +844,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(file.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".pdf",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: file,
           ),
@@ -899,13 +867,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/bmptopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/bmptopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -922,12 +888,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(pngImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".png",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: pngImageFile,
           ),
@@ -948,13 +914,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/bmptogif_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/bmptogif_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -973,12 +937,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(gifImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".gif",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: gifImageFile,
           ),
@@ -1001,13 +965,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/bmptojpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/bmptojpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -1024,12 +986,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(jpegImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpeg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: jpegImageFile,
           ),
@@ -1050,11 +1012,9 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}bmptobmp_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.gif';
@@ -1071,12 +1031,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(filePath);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".bmp",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: imageFile,
           ),
@@ -1098,13 +1058,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/giftopdf_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/giftopdf_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -1145,12 +1103,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(file.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".pdf",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: file,
           ),
@@ -1168,11 +1126,9 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}giftogif_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.gif';
@@ -1189,12 +1145,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(filePath);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".gif",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: imageFile,
           ),
@@ -1215,13 +1171,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/giftopng_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/giftopng_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path1 $path");
 
         // File selectedFile = File(filePath);
@@ -1244,12 +1198,12 @@ class ConvertImagesController extends GetxController {
         var convertedSize = await pngImageFile.length();
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".png",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: pngImageFile,
           ),
@@ -1270,13 +1224,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/giftojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/giftojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -1297,12 +1249,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(jpgImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: jpgImageFile,
           ),
@@ -1323,13 +1275,11 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/giftobmp_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+            '${dir.path}/ImageConverter/giftobmp_${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -1351,12 +1301,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(bmpImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".bmp",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: bmpImageFile,
           ),
@@ -1381,13 +1331,11 @@ class ConvertImagesController extends GetxController {
         DateTime dateTime = DateTime.now();
         //Directory? dir = Platform.isIOS
 
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
         print("%%%%directory $dir");
 
         var path =
-            '${dir?.path}/ImageConverter/giftojpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+            '${dir.path}/ImageConverter/giftojpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
         print("%%%%path  $path");
 
         File selectedFile = File(filePath);
@@ -1408,12 +1356,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(jpgImageFile.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpeg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: jpgImageFile,
           ),
@@ -1438,11 +1386,8 @@ class ConvertImagesController extends GetxController {
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
 
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
-
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        Directory? dir = await getApplicationCacheDirectory();
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}PngtoJpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
@@ -1480,12 +1425,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(compressedImage.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpeg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: compressedImage,
           ),
@@ -1506,11 +1451,9 @@ class ConvertImagesController extends GetxController {
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
 
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}Pngtogif_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
@@ -1536,12 +1479,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(compressedImage.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".gif",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: compressedImage,
           ),
@@ -1567,11 +1510,9 @@ class ConvertImagesController extends GetxController {
         DateTime dateTime = DateTime.now();
         //Directory? dir = Platform.isIOS
 
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}Pngtobmp_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
@@ -1598,12 +1539,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(compressedImage.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".bmp",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: compressedImage,
           ),
@@ -1628,11 +1569,9 @@ class ConvertImagesController extends GetxController {
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
 
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}pngtojpg_$dateTime#File ${getFormattedDateTime(dateTime)}';
@@ -1655,12 +1594,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(compressedImage.path);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".jpg",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: compressedImage,
           ),
@@ -1679,11 +1618,9 @@ class ConvertImagesController extends GetxController {
 
       if (filePath != null) {
         DateTime dateTime = DateTime.now();
-        Directory? dir = Platform.isIOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
-        var targetDirectoryPath = '${dir?.path}/ImageConverter/';
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
 
         var path =
             '${targetDirectoryPath}pngtopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.png';
@@ -1700,12 +1637,12 @@ class ConvertImagesController extends GetxController {
         convertedSize.value = await getFileSize(filePath);
 
         await Get.to(
-              () => ConversionResult(
+          () => ConversionResult(
             imageFormat: ".png",
             originalSize:
-            "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
             dateTime: getFormattedDateTime(dateTime),
             convertedFile: imageFile,
           ),
@@ -1747,12 +1684,10 @@ class ConvertImagesController extends GetxController {
       ),
     );
 
-    Directory? dir = Platform.isIOS
-        ? await getApplicationCacheDirectory()
-        : await getExternalStorageDirectory();
+    Directory? dir = await getApplicationCacheDirectory();
 
     var path =
-        '${dir?.path}/ImageConverter/pngtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
+        '${dir.path}/ImageConverter/pngtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
     final file = File(path)..createSync(recursive: true);
     print("path before $path");
 
@@ -1762,11 +1697,11 @@ class ConvertImagesController extends GetxController {
     convertedSize.value = await getFileSize(file.path);
 
     await Get.to(
-          () => ConversionResult(
+      () => ConversionResult(
         imageFormat: ".pdf",
         originalSize: "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
         convertedSize:
-        "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
+            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
         dateTime: getFormattedDateTime(dateTime),
         convertedFile: File(path),
       ),
@@ -1775,136 +1710,218 @@ class ConvertImagesController extends GetxController {
   }
 
   conversionOptionList(BuildContext context) {
-    return showDialog(
-      barrierDismissible: true,
-      context: context,
-      builder: (_) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20),
-              child: AlertDialog(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12),
-                  ),
-                ),
-                insetPadding: const EdgeInsets.only(top: 0),
-                elevation: 4.0,
-                title: Text(
-                  "Choose File Format",
-                  // AppLocalizations.of(context)!.choose_the_file_output_format,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    color: UiColors.blackColor.withOpacity(0.6),
-                  ),
-                ),
-                contentPadding: const EdgeInsets.all(0),
-                content: SizedBox(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width / 1.1,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          conversionOptions(
-                            ".JPG",
-                            'assets/JPG.png',
-                            1,
-                          ),
-                          conversionOptions(
-                            ".PDF",
-                            'assets/PDF.png',
-                            2,
-                          ),
-                          conversionOptions(
-                            ".PNG",
-                            'assets/PNG.png',
-                            3,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          conversionOptions(
-                            ".WEBP",
-                            'assets/WEBP.png',
-                            4,
-                          ),
-                          conversionOptions(
-                            ".GIF",
-                            'assets/GIF.png',
-                            5,
-                          ),
-                          conversionOptions(
-                            ".JPEG",
-                            'assets/JPEG.png',
-                            6,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          conversionOptions(
-                            ".BMP",
-                            'assets/BMP.png',
-                            7,
-                          ),
-                          conversionOptions(
-                            ".SVG",
-                            'assets/SVG.png',
-                            8,
-                          ),
-                          const SizedBox(
-                            width: 100,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+    return Container(
+      decoration: BoxDecoration(
+          color: UiColors.whiteColor, borderRadius: BorderRadius.circular(8)),
+      height: 260,
+      width: MediaQuery.of(context).size.width / 2.6,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Choose File Format",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: Colors.black.withOpacity(0.7),
               ),
-            );
-          },
-        );
-      },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              conversionOptions(
+                ".JPG",
+                'assets/JPG.png',
+                1,
+              ),
+              conversionOptions(
+                ".PDF",
+                'assets/PDF.png',
+                2,
+              ),
+              conversionOptions(
+                ".PNG",
+                'assets/PNG.png',
+                3,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              conversionOptions(
+                ".WEBP",
+                'assets/WEBP.png',
+                4,
+              ),
+              conversionOptions(
+                ".GIF",
+                'assets/GIF.png',
+                5,
+              ),
+              conversionOptions(
+                ".JPEG",
+                'assets/JPEG.png',
+                6,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              conversionOptions(
+                ".BMP",
+                'assets/BMP.png',
+                7,
+              ),
+              conversionOptions(
+                ".SVG",
+                'assets/SVG.png',
+                8,
+              ),
+              const SizedBox(
+                width: 133,
+              )
+            ],
+          ),
+        ],
+      ),
     );
+    //  showDialog(
+    //   barrierDismissible: true,
+    //   context: context,
+    //   builder: (_) {
+    //     return StatefulBuilder(
+    //       builder: (context, setState) {
+    //         return Padding(
+    //           padding: const EdgeInsets.only(left: 20.0, right: 20),
+    //           child: AlertDialog(
+    //             shape: const RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.all(
+    //                 Radius.circular(12),
+    //               ),
+    //             ),
+    //             insetPadding: const EdgeInsets.only(top: 0),
+    //             elevation: 4.0,
+    //             title: Text(
+    //               "Choose File Format",
+    //               // AppLocalizations.of(context)!.choose_the_file_output_format,
+    //               style: GoogleFonts.poppins(
+    //                 fontSize: 14,
+    //                 color: UiColors.blackColor.withOpacity(0.6),
+    //               ),
+    //             ),
+    //             contentPadding: const EdgeInsets.all(0),
+    //             content: SizedBox(
+    //               height: 200,
+    //               width: MediaQuery.of(context).size.width / 1.1,
+    //               child: Column(
+    //                 mainAxisAlignment: MainAxisAlignment.start,
+    //                 children: [
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       conversionOptions(
+    //                         ".JPG",
+    //                         'assets/JPG.png',
+    //                         1,
+    //                       ),
+    //                       conversionOptions(
+    //                         ".PDF",
+    //                         'assets/PDF.png',
+    //                         2,
+    //                       ),
+    //                       conversionOptions(
+    //                         ".PNG",
+    //                         'assets/PNG.png',
+    //                         3,
+    //                       ),
+    //                     ],
+    //                   ),
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       conversionOptions(
+    //                         ".WEBP",
+    //                         'assets/WEBP.png',
+    //                         4,
+    //                       ),
+    //                       conversionOptions(
+    //                         ".GIF",
+    //                         'assets/GIF.png',
+    //                         5,
+    //                       ),
+    //                       conversionOptions(
+    //                         ".JPEG",
+    //                         'assets/JPEG.png',
+    //                         6,
+    //                       ),
+    //                     ],
+    //                   ),
+    //                   Row(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       conversionOptions(
+    //                         ".BMP",
+    //                         'assets/BMP.png',
+    //                         7,
+    //                       ),
+    //                       conversionOptions(
+    //                         ".SVG",
+    //                         'assets/SVG.png',
+    //                         8,
+    //                       ),
+    //                       const SizedBox(
+    //                         width: 100,
+    //                       )
+    //                     ],
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //           ),
+    //         );
+    //       },
+    //     );
+    //   },
+    // );
   }
 
   conversionOptions(String extensionName, String extensionImage, int index) {
     return GestureDetector(
       onTap: () {
         selectedIndex.value = index;
-        Get.back();
       },
       child: Obx(
-            () => Padding(
+        () => Padding(
           padding:
-          const EdgeInsets.only(left: 6.0, right: 6, top: 8, bottom: 8),
+              const EdgeInsets.only(left: 10.0, right: 10, top: 12, bottom: 12),
           child: Container(
-            width: 90,
+            width: 115,
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2),
+              color: UiColors.lightGreyBackground.withOpacity(0.3),
               border: Border.all(
                 color: selectedIndex.value == index
-                    ? Colors.blue
+                    ? UiColors.lightblueColor
                     : Colors.transparent,
-                width: 2.0,
+                width: 1.0,
               ),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
                   extensionImage,
-                  height: 22,
-                  width: 22,
+                  height: 30,
+                  width: 30,
+                ),
+                const SizedBox(
+                  width: 8,
                 ),
                 Text(
                   extensionName,

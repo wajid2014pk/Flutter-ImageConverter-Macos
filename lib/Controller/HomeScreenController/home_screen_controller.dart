@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
+import 'package:image_converter_macos/Presentation/convert_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:path/path.dart' as path;
@@ -120,7 +121,7 @@ class HomeScreenController extends GetxController {
     if (result != null) {
       PlatformFile file = result.files.first;
 
-      // Get.to(() => ConvertFile(imagePath: file.path));
+      Get.to(() => ConvertFile(imagePath: file.path));
     } else {
       print('User canceled file selection');
     }

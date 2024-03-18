@@ -22,6 +22,7 @@ class _SelectFileScreenState extends State<SelectFileScreen> {
       backgroundColor: UiColors.backgroundColor,
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               decoration: BoxDecoration(

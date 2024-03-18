@@ -41,254 +41,254 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return
-      // Obx(
-      // () =>
-          Scaffold(
-        backgroundColor: UiColors.whiteColor,
-        // bottomNavigationBar: showOnTapOptions.value
-        //     ? Padding(
-        //         padding:
-        //             const EdgeInsets.only(bottom: 15.0, left: 30, right: 30),
-        //         child: Row(
-        //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //           children: [
-        //             Expanded(
-        //               flex: 1,
-        //               child: optionList("assets/Delet.png", () async {
-        //                 _deleteFile(allfiles[selectedFileIndex.value]);
-        //               }),
-        //             ),
-        //             const SizedBox(
-        //               width: 10,
-        //             ),
-        //             Expanded(
-        //               flex: 1,
-        //               child: optionList("assets/Preveiw.png", () {
-        //                 FileSystemEntity selectedFile =
-        //                     allfiles[selectedFileIndex.value];
-        //                 if (selectedFile.path.endsWith('.svg')) {
-        //                   Get.snackbar(
-        //                     backgroundColor: Colors.white,
-        //                     "Could open this file",
-        //                     "No App found to Open",
-        //                   );
-        //                 } else {
-        //                   _openFile(allfiles[selectedFileIndex.value]);
-        //                 }
-        //               }),
-        //             ),
-        //             const SizedBox(
-        //               width: 10,
-        //             ),
-        //             Expanded(
-        //               flex: 1,
-        //               child: optionList("assets/share.png", () {
-        //                 _shareFile(allfiles[selectedFileIndex.value]);
-        //               }),
-        //             ),
-        //             const SizedBox(
-        //               width: 10,
-        //             ),
-        //             Expanded(
-        //               flex: 1,
-        //               child: optionList("assets/EXport.png", () async {
-        //                 await _exportFile(allfiles[selectedFileIndex.value]);
-        //               }),
-        //             ),
-        //           ],
-        //         ),
-        //       )
-        //     : const SizedBox(),
-        body: Obx(
-          () => Column(
-            children: [
-              isSearchBarVisible.value
-                  ? Container(
-                      height: 45,
-                      width: MediaQuery.of(context).size.width / 1.06,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: Colors.grey.withOpacity(0.1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 0.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.only(right: 20, left: 20),
-                                child: TextField(
-                                  textAlign: TextAlign.start,
-                                  controller: searchController,
-                                  focusNode: focusNode,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inverseSurface),
-                                  decoration: const InputDecoration(
-                                    hintText: "Search Image",
-                                    hintStyle: TextStyle(color: Colors.grey),
-                                    border: InputBorder.none,
-                                  ),
-                                  onChanged: (value) {
-                                    _runFilter(value);
-                                  },
+        // Obx(
+        // () =>
+        Scaffold(
+      backgroundColor: UiColors.whiteColor,
+      // bottomNavigationBar: showOnTapOptions.value
+      //     ? Padding(
+      //         padding:
+      //             const EdgeInsets.only(bottom: 15.0, left: 30, right: 30),
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //           children: [
+      //             Expanded(
+      //               flex: 1,
+      //               child: optionList("assets/Delet.png", () async {
+      //                 _deleteFile(allfiles[selectedFileIndex.value]);
+      //               }),
+      //             ),
+      //             const SizedBox(
+      //               width: 10,
+      //             ),
+      //             Expanded(
+      //               flex: 1,
+      //               child: optionList("assets/Preveiw.png", () {
+      //                 FileSystemEntity selectedFile =
+      //                     allfiles[selectedFileIndex.value];
+      //                 if (selectedFile.path.endsWith('.svg')) {
+      //                   Get.snackbar(
+      //                     backgroundColor: Colors.white,
+      //                     "Could open this file",
+      //                     "No App found to Open",
+      //                   );
+      //                 } else {
+      //                   _openFile(allfiles[selectedFileIndex.value]);
+      //                 }
+      //               }),
+      //             ),
+      //             const SizedBox(
+      //               width: 10,
+      //             ),
+      //             Expanded(
+      //               flex: 1,
+      //               child: optionList("assets/share.png", () {
+      //                 _shareFile(allfiles[selectedFileIndex.value]);
+      //               }),
+      //             ),
+      //             const SizedBox(
+      //               width: 10,
+      //             ),
+      //             Expanded(
+      //               flex: 1,
+      //               child: optionList("assets/EXport.png", () async {
+      //                 await _exportFile(allfiles[selectedFileIndex.value]);
+      //               }),
+      //             ),
+      //           ],
+      //         ),
+      //       )
+      //     : const SizedBox(),
+      body: Obx(
+        () => Column(
+          children: [
+            isSearchBarVisible.value
+                ? Container(
+                    height: 45,
+                    width: MediaQuery.of(context).size.width / 1.06,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Colors.grey.withOpacity(0.1),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 0.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(right: 20, left: 20),
+                              child: TextField(
+                                textAlign: TextAlign.start,
+                                controller: searchController,
+                                focusNode: focusNode,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inverseSurface),
+                                decoration: const InputDecoration(
+                                  hintText: "Search Image",
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
                                 ),
+                                onChanged: (value) {
+                                  _runFilter(value);
+                                },
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    )
-                  : const SizedBox(),
-              Container(
-                margin:
-                    const EdgeInsets.only(top: 6, left: 4, right: 4, bottom: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 1;
-                        _selectCategory("All");
-                      },
-                      child: getCategory(
-                          "All",
-                          selectCategory.value == 1
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 1
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 2;
-                        _selectCategory("png");
-                      },
-                      child: getCategory(
-                          "PNG",
-                          selectCategory.value == 2
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 2
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 3;
-                        _selectCategory("jpg");
-                      },
-                      child: getCategory(
-                          "JPG",
-                          selectCategory.value == 3
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 3
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 4;
-                        _selectCategory("pdf");
-                      },
-                      child: getCategory(
-                          "PDF",
-                          selectCategory.value == 4
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 4
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 6;
-                        _selectCategory("bmp");
-                      },
-                      child: getCategory(
-                          "BMP",
-                          selectCategory.value == 6
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 6
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 7;
-                        _selectCategory("gif");
-                      },
-                      child: getCategory(
-                          "Gif",
-                          selectCategory.value == 7
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 7
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 8;
-                        _selectCategory("webp");
-                      },
-                      child: getCategory(
-                          "WEBP",
-                          selectCategory.value == 8
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 8
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 9;
-                        _selectCategory("svg");
-                      },
-                      child: getCategory(
-                          "SVG",
-                          selectCategory.value == 9
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 9
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        selectCategory.value = 10;
-                        _selectCategory("jpeg");
-                      },
-                      child: getCategory(
-                          "JPEG",
-                          selectCategory.value == 10
-                              ? UiColors.blueColor
-                              : UiColors.blackColor.withOpacity(0.1),
-                          selectCategory.value == 10
-                              ? UiColors.whiteColor
-                              : Theme.of(context).hintColor),
-                    ),
-                  ],
-                ),
+                  )
+                : const SizedBox(),
+            Container(
+              margin:
+                  const EdgeInsets.only(top: 6, left: 4, right: 4, bottom: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              height: 30,
+              width: MediaQuery.of(context).size.width,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 1;
+                      _selectCategory("All");
+                    },
+                    child: getCategory(
+                        "All",
+                        selectCategory.value == 1
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 1
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 2;
+                      _selectCategory("png");
+                    },
+                    child: getCategory(
+                        "PNG",
+                        selectCategory.value == 2
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 2
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 3;
+                      _selectCategory("jpg");
+                    },
+                    child: getCategory(
+                        "JPG",
+                        selectCategory.value == 3
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 3
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 4;
+                      _selectCategory("pdf");
+                    },
+                    child: getCategory(
+                        "PDF",
+                        selectCategory.value == 4
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 4
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 6;
+                      _selectCategory("bmp");
+                    },
+                    child: getCategory(
+                        "BMP",
+                        selectCategory.value == 6
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 6
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 7;
+                      _selectCategory("gif");
+                    },
+                    child: getCategory(
+                        "Gif",
+                        selectCategory.value == 7
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 7
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 8;
+                      _selectCategory("webp");
+                    },
+                    child: getCategory(
+                        "WEBP",
+                        selectCategory.value == 8
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 8
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 9;
+                      _selectCategory("svg");
+                    },
+                    child: getCategory(
+                        "SVG",
+                        selectCategory.value == 9
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 9
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      selectCategory.value = 10;
+                      _selectCategory("jpeg");
+                    },
+                    child: getCategory(
+                        "JPEG",
+                        selectCategory.value == 10
+                            ? UiColors.blueColor
+                            : UiColors.blackColor.withOpacity(0.1),
+                        selectCategory.value == 10
+                            ? UiColors.whiteColor
+                            : Theme.of(context).hintColor),
+                  ),
+                ],
               ),
-              Expanded(
-                child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: _buildListView(context)),
-              ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: _buildListView(context)),
+            ),
+          ],
         ),
+      ),
       // ),
     );
   }
@@ -409,7 +409,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   static getCategory(String text, Color containerColor, Color textColor) {
     return Padding(
-      padding: const EdgeInsets.only(left: 4.0,right: 4.0),
+      padding: const EdgeInsets.only(left: 4.0, right: 4.0),
       child: Container(
         width: 80,
         padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -457,9 +457,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Future<void> _loadFiles() async {
-    directory = (Platform.isIOS
-        ? await getApplicationCacheDirectory()
-        : await getExternalStorageDirectory())!;
+    directory = await getApplicationCacheDirectory();
 
     String folderName = 'ImageConverter';
     String folderPath = join(directory!.path, folderName);
