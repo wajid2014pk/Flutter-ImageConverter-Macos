@@ -35,7 +35,7 @@ dependencies:
   dotted_border: ^2.1.0
   desktop_drop: ^0.4.4
   bitsdojo_window: ^0.1.6
-
+  flutter_image_compress: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -40,8 +40,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
+    return
+      // Obx(
+      // () =>
+          Scaffold(
         backgroundColor: UiColors.whiteColor,
         // bottomNavigationBar: showOnTapOptions.value
         //     ? Padding(
@@ -287,7 +289,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ],
           ),
         ),
-      ),
+      // ),
     );
   }
 
@@ -406,23 +408,26 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   static getCategory(String text, Color containerColor, Color textColor) {
-    return Container(
-      width: 80,
-      padding: const EdgeInsets.symmetric(horizontal: 6),
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-          color: containerColor, borderRadius: BorderRadius.circular(8)),
-      child: Align(
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: textColor,
-            ),
-          )),
+    return Padding(
+      padding: const EdgeInsets.only(left: 4.0,right: 4.0),
+      child: Container(
+        width: 80,
+        padding: const EdgeInsets.symmetric(horizontal: 6),
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+            color: containerColor, borderRadius: BorderRadius.circular(5)),
+        child: Align(
+            alignment: Alignment.center,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: textColor,
+              ),
+            )),
+      ),
     );
   }
 
