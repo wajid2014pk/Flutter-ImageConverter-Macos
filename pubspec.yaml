@@ -29,13 +29,14 @@ dependencies:
   path: ^1.8.3
   image: ^4.1.7
   file_picker: ^6.1.1
-  image_gallery_saver: ^2.0.3
   dio: ^5.4.1
   percent_indicator: ^4.2.3
   dotted_border: ^2.1.0
   desktop_drop: ^0.4.4
   bitsdojo_window: ^0.1.6
   flutter_image_compress: ^2.1.0
+  purchases_flutter: ^6.24.0
+  shimmer: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image/image.dart' as im;
 import 'package:image_converter_macos/Constant/api_string.dart';
 import 'package:image_converter_macos/Constant/color.dart';
-import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Presentation/conversion_result.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
 import 'package:path/path.dart';
@@ -34,6 +33,74 @@ class ConvertImagesController extends GetxController {
 
   RxBool showLoader = false.obs;
 
+  convertingIntoDiffFormats(
+      BuildContext context, String? filePath, String from, String to) async {
+    String uploadurl = ApiString.apiUrl;
+    try {
+      loadingState.value = true;
+      api.FormData formdata = api.FormData.fromMap({
+        "file": await api.MultipartFile.fromFile(filePath!, filename: filePath
+            //show only filename from path
+            ),
+        "from": from,
+        "to": to,
+      });
+
+      api.Response response = await dio.post(
+        uploadurl,
+        data: formdata,
+        options: ApiString.options,
+        onSendProgress: (int sent, int total) {
+          percentage.value =
+              double.parse(((sent / total) * 100).toStringAsFixed(2));
+
+          progress.value = percentage.value;
+          print('Progress show $percentage');
+        },
+      );
+
+      DateTime dateTime = DateTime.now();
+      Map valueMap = json.decode(response.data);
+      Directory? dir = await getApplicationCacheDirectory();
+      var path =
+          "${dir.path}/ImageConverter/ $from To $to _$dateTime#${basename(valueMap['d_url'])}";
+      isDownloading.value = true;
+      var downloadRes = await dio.download(
+        "${valueMap['d_url']}",
+        path,
+        onReceiveProgress: (int recieve, int total) {
+          percentage.value = (recieve / total * 100);
+          progress.value = percentage.value;
+
+          print('Progress show $progress');
+        },
+      );
+      print("Response Download ${downloadRes.data}");
+
+      loadingState.value = false;
+      isDownloading.value = false;
+
+      await Get.to(
+        () => ConversionResult(
+          imageFormat: ".$from",
+          originalFilePath: filePath,
+          convertedFile: File(path),
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print(response.toString());
+      } else {
+        Get.offAll(() => const HomeScreen());
+        print("Error during connection to server.");
+      }
+    } catch (e) {
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(backgroundColor: Colors.white, "ERROR", "Please Try Again");
+      print("Error of file $e");
+    }
+  }
+
   //Jpg Conversion
   convertJpgToJpg(BuildContext context, String? filePath) async {
     try {
@@ -55,17 +122,10 @@ class ConvertImagesController extends GetxController {
 
         await imageFile.copy(path);
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(imageFile.path);
-
         await Get.to(
           () => ConversionResult(
             imageFormat: ".jpg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            originalFilePath: filePath,
             convertedFile: imageFile,
           ),
         );
@@ -100,17 +160,10 @@ class ConvertImagesController extends GetxController {
 
         await imageFile.copy(path);
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(imageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".jpeg",
-            originalSize:
-                "${((originalSize.value) / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${((convertedSize.value) / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".jpg",
+            originalFilePath: filePath,
             convertedFile: imageFile,
           ),
         );
@@ -153,17 +206,10 @@ class ConvertImagesController extends GetxController {
         File compressedImage = File('$path.bmp')
           ..writeAsBytesSync(im.encodeBmp(smallerImage));
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(compressedImage.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".bmp",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".jpg",
+            originalFilePath: filePath,
             convertedFile: compressedImage,
           ),
         );
@@ -210,17 +256,10 @@ class ConvertImagesController extends GetxController {
         File compressedImage = File('$path.gif')
           ..writeAsBytesSync(im.encodeGif(smallerImage));
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(compressedImage.path);
-
         Get.to(
           () => ConversionResult(
-            imageFormat: ".gif",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".jpg",
+            originalFilePath: filePath,
             convertedFile: compressedImage,
           ),
         );
@@ -264,17 +303,10 @@ class ConvertImagesController extends GetxController {
         File compressedImage = File('$path.png')
           ..writeAsBytesSync(im.encodePng(smallerImage, level: 8));
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(compressedImage.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".png",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".jpg",
+            originalFilePath: filePath,
             convertedFile: compressedImage,
           ),
         );
@@ -332,16 +364,10 @@ class ConvertImagesController extends GetxController {
 
     await file.writeAsBytes(await pdf.save());
 
-    originalSize.value = await getFileSize(filePath);
-    convertedSize.value = await getFileSize(file.path);
-
     await Get.to(
       () => ConversionResult(
-        imageFormat: ".pdf",
-        originalSize: "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-        convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-        dateTime: getFormattedDateTime(dateTime),
+        imageFormat: ".jpg",
+        originalFilePath: filePath,
         convertedFile:
             // file,
             File(path),
@@ -355,80 +381,297 @@ class ConvertImagesController extends GetxController {
     print("File converting");
   }
 
-  convertingIntoDiffFormats(
-      BuildContext context, String? filePath, String from, String to) async {
-    String uploadurl = ApiString.apiUrl;
+  //Png Conversion
+  convertPngToJPEG(BuildContext context, String? filePath) async {
     try {
-      api.FormData formdata = api.FormData.fromMap({
-        "file": await api.MultipartFile.fromFile(filePath!, filename: filePath
-            //show only filename from path
+      showLoader.value = true;
+
+      if (filePath != null) {
+        DateTime dateTime = DateTime.now();
+
+        Directory? dir = await getApplicationCacheDirectory();
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
+
+        var path =
+            '${targetDirectoryPath}PngtoJpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+        print("%%%%path  $path");
+
+        File imageFile = File(filePath);
+
+        // Use flutter_image_compress to decode PNG image
+        List<int> compressedBytes = await FlutterImageCompress.compressWithList(
+          await imageFile.readAsBytes(),
+          format: CompressFormat.png,
+        );
+
+        // Convert compressed bytes to Image object
+        im.Image? image = im.decodeImage(Uint8List.fromList(compressedBytes));
+
+        print("%%%%image $image");
+
+        im.Image smallerImage = im.copyResize(image!, width: 800);
+        print("%%%%smallerImage $smallerImage");
+
+        Directory(targetDirectoryPath).createSync(recursive: true);
+
+        // Use flutter_image_compress to encode Image as GIF
+        File compressedImage = File('$path.jpeg')
+          ..writeAsBytesSync(
+            await FlutterImageCompress.compressWithList(
+              im.encodeJpg(smallerImage),
+              format: CompressFormat.jpeg,
             ),
-        "from": from,
-        "to": to,
-      });
+          );
 
-      api.Response response = await dio.post(
-        uploadurl,
-        data: formdata,
-        options: ApiString.options,
-        onSendProgress: (int sent, int total) {
-          percentage.value =
-              double.parse(((sent / total) * 100).toStringAsFixed(2));
-          loadingState.value = true;
-          progress.value = percentage.value;
-          print('Progress show $percentage');
-        },
-      );
+        print("%%%%compressed Image ${compressedImage.path}");
 
-      DateTime dateTime = DateTime.now();
-      Map valueMap = json.decode(response.data);
-      Directory? dir = await getApplicationCacheDirectory();
-      var path =
-          "${dir.path}/ImageConverter/ $from To $to _$dateTime#${basename(valueMap['d_url'])}";
-      isDownloading.value = true;
-      var downloadRes = await dio.download(
-        "${valueMap['d_url']}",
-        path,
-        onReceiveProgress: (int recieve, int total) {
-          percentage.value = (recieve / total * 100);
-          progress.value = percentage.value;
+        await Get.to(
+          () => ConversionResult(
+            imageFormat: ".png",
+            originalFilePath: filePath,
+            convertedFile: compressedImage,
+          ),
+        );
+        showLoader.value = false;
+      }
+    } catch (e) {
+      Get.to(() => const HomeScreen());
 
-          print('Progress show $progress');
-        },
-      );
-      print("Response Download ${downloadRes.data}");
+      print("%%%%Error of file $e");
+    }
+  }
 
-      loadingState.value = false;
-      isDownloading.value = false;
+  convertPngToGif(context, String? filePath) async {
+    try {
+      showLoader.value = true;
 
-      int originalSize = await getFileSize(filePath);
-      int convertedSize = await getFileSize(path);
+      if (filePath != null) {
+        DateTime dateTime = DateTime.now();
 
-      // print("aaaa ")
+        Directory? dir = await getApplicationCacheDirectory();
 
-      await Get.to(
-        () => ConversionResult(
-          imageFormat: ".$to",
-          originalSize:
-              "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-          convertedSize:
-              "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-          dateTime: getFormattedDateTime(dateTime),
-          convertedFile: File(path),
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
+
+        var path =
+            '${targetDirectoryPath}Pngtogif_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+        print("%%%%path  $path");
+
+        File imageFile = File(filePath);
+
+        im.Image? image = im.decodeImage(await imageFile.readAsBytes());
+
+        print("%%%%image $image");
+
+        im.Image smallerImage = im.copyResize(image!, width: 800);
+        print("%%%%smallerImage $smallerImage");
+
+        Directory(targetDirectoryPath)
+            .createSync(recursive: true); // Ensure target directory exists
+
+        File compressedImage = File('$path.gif')
+          ..writeAsBytesSync(im.encodeGif(smallerImage));
+
+        print("%%%%compressed Image ${compressedImage.path}");
+
+        await Get.to(
+          () => ConversionResult(
+            imageFormat: ".png",
+            originalFilePath: filePath,
+            convertedFile: compressedImage,
+          ),
+        );
+        showLoader.value = false;
+      }
+    } catch (e) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
         ),
       );
 
-      if (response.statusCode == 200) {
-        print(response.toString());
-      } else {
-        Get.offAll(() => const HomeScreen());
-        print("Error during connection to server.");
+      print("%%%%Error of file $e");
+    }
+  }
+
+  convertPngToBMP(context, String? filePath) async {
+    try {
+      showLoader.value = true;
+
+      if (filePath != null) {
+        DateTime dateTime = DateTime.now();
+        //Directory? dir = Platform.isIOS
+
+        Directory? dir = await getApplicationCacheDirectory();
+
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
+
+        var path =
+            '${targetDirectoryPath}Pngtobmp_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+        print("%%%%path BMP: $path");
+
+        File imageFile = File(filePath);
+
+        im.Image? image = im.decodeImage(await imageFile.readAsBytes());
+
+        print("%%%%image BMP: $image");
+
+        im.Image smallerImage = im.copyResize(image!, width: 800);
+        print("%%%%smallerImage BMP: $smallerImage");
+
+        Directory(targetDirectoryPath)
+            .createSync(recursive: true); // Ensure target directory exists
+
+        File compressedImage = File('$path.bmp')
+          ..writeAsBytesSync(im.encodeBmp(smallerImage));
+
+        print("%%%%compressed Image BMP: ${compressedImage.path}");
+
+        await Get.to(
+          () => ConversionResult(
+            imageFormat: ".png",
+            originalFilePath: filePath,
+            convertedFile: compressedImage,
+          ),
+        );
+        showLoader.value = false;
       }
     } catch (e) {
-      Get.offAll(() => const HomeScreen());
-      Get.snackbar(backgroundColor: Colors.white, "ERROR", "Please Try Again");
-      print("Error of file $e");
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
+
+      print("%%%%Error of file webp: $e");
     }
+  }
+
+  convertPngToJpg(BuildContext context, String? filePath) async {
+    try {
+      showLoader.value = true;
+
+      if (filePath != null) {
+        DateTime dateTime = DateTime.now();
+
+        Directory? dir = await getApplicationCacheDirectory();
+
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
+
+        var path =
+            '${targetDirectoryPath}pngtojpg_$dateTime#File ${getFormattedDateTime(dateTime)}';
+        print("%%%%path  $path");
+
+        File imageFile = File(filePath);
+
+        List<int> bytes = await FlutterImageCompress.compressWithList(
+          imageFile.readAsBytesSync(),
+          minHeight: 800,
+          minWidth: 800,
+          quality: 88,
+        );
+
+        Directory(targetDirectoryPath).createSync(recursive: true);
+
+        File compressedImage = File('$path.jpg')..writeAsBytesSync(bytes);
+
+        await Get.to(
+          () => ConversionResult(
+            imageFormat: ".png",
+            originalFilePath: filePath,
+            convertedFile: compressedImage,
+          ),
+        );
+        showLoader.value = false;
+      }
+    } catch (e) {
+      Get.to(() => const HomeScreen());
+      print("%%%%Error of file $e");
+    }
+  }
+
+  convertPngToPng(BuildContext context, String? filePath) async {
+    try {
+      showLoader.value = true;
+
+      if (filePath != null) {
+        DateTime dateTime = DateTime.now();
+        Directory? dir = await getApplicationCacheDirectory();
+
+        var targetDirectoryPath = '${dir.path}/ImageConverter/';
+
+        var path =
+            '${targetDirectoryPath}pngtopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.png';
+        print("%%%%path  $path");
+
+        File imageFile = File(filePath);
+
+        Directory(targetDirectoryPath).createSync(recursive: true);
+
+        await imageFile.copy(path);
+
+        print("%%%%converted Image ${imageFile.path}");
+
+        await Get.to(
+          () => ConversionResult(
+            imageFormat: ".png",
+            originalFilePath: filePath,
+            convertedFile: imageFile,
+          ),
+        );
+        showLoader.value = false;
+      }
+    } catch (e) {
+      Get.to(() => const HomeScreen());
+      print("%%%%Error of file $e");
+    }
+  }
+
+  convertPngToPdf(BuildContext context, String? filePath) async {
+    showLoader.value = true;
+
+    if (filePath == null) {
+      // Handle the case when imagePath is null
+      return;
+    }
+
+    final File imageFile = File(filePath);
+
+    final pdf = pw.Document();
+
+    final image = pw.MemoryImage(imageFile.readAsBytesSync());
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Center(
+            child: pw.Stack(
+              children: [
+                pw.Center(child: pw.Image(image)),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+
+    Directory? dir = await getApplicationCacheDirectory();
+
+    var path =
+        '${dir.path}/ImageConverter/pngtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
+    final file = File(path)..createSync(recursive: true);
+    print("path before $path");
+
+    await file.writeAsBytes(await pdf.save());
+
+    await Get.to(
+      () => ConversionResult(
+        imageFormat: ".png",
+        originalFilePath: filePath,
+        convertedFile: File(path),
+      ),
+    );
+    showLoader.value = false;
   }
 
   //Tif Conversions
@@ -455,17 +698,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(jpgImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".jpg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".tif",
+            originalFilePath: filePath,
             convertedFile: jpgImageFile,
           ),
         );
@@ -524,17 +760,10 @@ class ConvertImagesController extends GetxController {
 
         await file.writeAsBytes(await pdf.save());
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(file.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".pdf",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".tif",
+            originalFilePath: filePath,
             convertedFile: file,
           ),
         );
@@ -568,17 +797,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(pngImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".png",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".tif",
+            originalFilePath: filePath,
             convertedFile: pngImageFile,
           ),
         );
@@ -617,17 +839,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(gifImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".gif",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".tif",
+            originalFilePath: filePath,
             convertedFile: gifImageFile,
           ),
         );
@@ -667,17 +882,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(jpegImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".jpeg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".tif",
+            originalFilePath: filePath,
             convertedFile: jpegImageFile,
           ),
         );
@@ -719,17 +927,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(bmpImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".bmp",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".tif",
+            originalFilePath: filePath,
             convertedFile: bmpImageFile,
           ),
         );
@@ -769,17 +970,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(jpgImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".jpg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".bmp",
+            originalFilePath: filePath,
             convertedFile: jpgImageFile,
           ),
         );
@@ -840,17 +1034,10 @@ class ConvertImagesController extends GetxController {
 
         await file.writeAsBytes(await pdf.save());
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(file.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".pdf",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".bmp",
+            originalFilePath: filePath,
             convertedFile: file,
           ),
         );
@@ -884,17 +1071,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(pngImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".png",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".bmp",
+            originalFilePath: filePath,
             convertedFile: pngImageFile,
           ),
         );
@@ -933,17 +1113,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(gifImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".gif",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".bmp",
+            originalFilePath: filePath,
             convertedFile: gifImageFile,
           ),
         );
@@ -982,17 +1155,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(jpegImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".jpeg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".bmp",
+            originalFilePath: filePath,
             convertedFile: jpegImageFile,
           ),
         );
@@ -1027,17 +1193,11 @@ class ConvertImagesController extends GetxController {
         await imageFile.copy(path);
 
         print("%%%%converted Image ${imageFile.path}");
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(filePath);
 
         await Get.to(
           () => ConversionResult(
             imageFormat: ".bmp",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            originalFilePath: filePath,
             convertedFile: imageFile,
           ),
         );
@@ -1099,17 +1259,10 @@ class ConvertImagesController extends GetxController {
 
         await file.writeAsBytes(await pdf.save());
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(file.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".pdf",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".gif",
+            originalFilePath: filePath,
             convertedFile: file,
           ),
         );
@@ -1141,17 +1294,11 @@ class ConvertImagesController extends GetxController {
         await imageFile.copy(path);
 
         print("%%%%converted Image ${imageFile.path}");
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(filePath);
 
         await Get.to(
           () => ConversionResult(
             imageFormat: ".gif",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            originalFilePath: filePath,
             convertedFile: imageFile,
           ),
         );
@@ -1194,17 +1341,10 @@ class ConvertImagesController extends GetxController {
         // File pngImageFile = File(path);
         // await pngImageFile.writeAsBytes(pngBytes);
 
-        var originalSize = await File(filePath).length();
-        var convertedSize = await pngImageFile.length();
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".png",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".gif",
+            originalFilePath: filePath,
             convertedFile: pngImageFile,
           ),
         );
@@ -1245,17 +1385,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(jpgImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".jpg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".gif",
+            originalFilePath: filePath,
             convertedFile: jpgImageFile,
           ),
         );
@@ -1297,17 +1430,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(bmpImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".bmp",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".gif",
+            originalFilePath: filePath,
             convertedFile: bmpImageFile,
           ),
         );
@@ -1352,17 +1478,10 @@ class ConvertImagesController extends GetxController {
             ),
           );
 
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(jpgImageFile.path);
-
         await Get.to(
           () => ConversionResult(
-            imageFormat: ".jpeg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
+            imageFormat: ".gif",
+            originalFilePath: filePath,
             convertedFile: jpgImageFile,
           ),
         );
@@ -1377,337 +1496,6 @@ class ConvertImagesController extends GetxController {
   }
 
   //
-
-  //Png Conversion
-  convertPngToJPEG(BuildContext context, String? filePath) async {
-    try {
-      showLoader.value = true;
-
-      if (filePath != null) {
-        DateTime dateTime = DateTime.now();
-
-        Directory? dir = await getApplicationCacheDirectory();
-        var targetDirectoryPath = '${dir.path}/ImageConverter/';
-
-        var path =
-            '${targetDirectoryPath}PngtoJpeg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
-        print("%%%%path  $path");
-
-        File imageFile = File(filePath);
-
-        // Use flutter_image_compress to decode PNG image
-        List<int> compressedBytes = await FlutterImageCompress.compressWithList(
-          await imageFile.readAsBytes(),
-          format: CompressFormat.png,
-        );
-
-        // Convert compressed bytes to Image object
-        im.Image? image = im.decodeImage(Uint8List.fromList(compressedBytes));
-
-        print("%%%%image $image");
-
-        im.Image smallerImage = im.copyResize(image!, width: 800);
-        print("%%%%smallerImage $smallerImage");
-
-        Directory(targetDirectoryPath).createSync(recursive: true);
-
-        // Use flutter_image_compress to encode Image as GIF
-        File compressedImage = File('$path.jpeg')
-          ..writeAsBytesSync(
-            await FlutterImageCompress.compressWithList(
-              im.encodeJpg(smallerImage),
-              format: CompressFormat.jpeg,
-            ),
-          );
-
-        print("%%%%compressed Image ${compressedImage.path}");
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(compressedImage.path);
-
-        await Get.to(
-          () => ConversionResult(
-            imageFormat: ".jpeg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
-            convertedFile: compressedImage,
-          ),
-        );
-        showLoader.value = false;
-      }
-    } catch (e) {
-      Get.to(() => const HomeScreen());
-
-      print("%%%%Error of file $e");
-    }
-  }
-
-  convertPngToGif(context, String? filePath) async {
-    try {
-      showLoader.value = true;
-
-      if (filePath != null) {
-        DateTime dateTime = DateTime.now();
-
-        Directory? dir = await getApplicationCacheDirectory();
-
-        var targetDirectoryPath = '${dir.path}/ImageConverter/';
-
-        var path =
-            '${targetDirectoryPath}Pngtogif_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
-        print("%%%%path  $path");
-
-        File imageFile = File(filePath);
-
-        im.Image? image = im.decodeImage(await imageFile.readAsBytes());
-
-        print("%%%%image $image");
-
-        im.Image smallerImage = im.copyResize(image!, width: 800);
-        print("%%%%smallerImage $smallerImage");
-
-        Directory(targetDirectoryPath)
-            .createSync(recursive: true); // Ensure target directory exists
-
-        File compressedImage = File('$path.gif')
-          ..writeAsBytesSync(im.encodeGif(smallerImage));
-
-        print("%%%%compressed Image ${compressedImage.path}");
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(compressedImage.path);
-
-        await Get.to(
-          () => ConversionResult(
-            imageFormat: ".gif",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
-            convertedFile: compressedImage,
-          ),
-        );
-        showLoader.value = false;
-      }
-    } catch (e) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
-
-      print("%%%%Error of file $e");
-    }
-  }
-
-  convertPngToBMP(context, String? filePath) async {
-    try {
-      showLoader.value = true;
-
-      if (filePath != null) {
-        DateTime dateTime = DateTime.now();
-        //Directory? dir = Platform.isIOS
-
-        Directory? dir = await getApplicationCacheDirectory();
-
-        var targetDirectoryPath = '${dir.path}/ImageConverter/';
-
-        var path =
-            '${targetDirectoryPath}Pngtobmp_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
-        print("%%%%path BMP: $path");
-
-        File imageFile = File(filePath);
-
-        im.Image? image = im.decodeImage(await imageFile.readAsBytes());
-
-        print("%%%%image BMP: $image");
-
-        im.Image smallerImage = im.copyResize(image!, width: 800);
-        print("%%%%smallerImage BMP: $smallerImage");
-
-        Directory(targetDirectoryPath)
-            .createSync(recursive: true); // Ensure target directory exists
-
-        File compressedImage = File('$path.bmp')
-          ..writeAsBytesSync(im.encodeBmp(smallerImage));
-
-        print("%%%%compressed Image BMP: ${compressedImage.path}");
-
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(compressedImage.path);
-
-        await Get.to(
-          () => ConversionResult(
-            imageFormat: ".bmp",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
-            convertedFile: compressedImage,
-          ),
-        );
-        showLoader.value = false;
-      }
-    } catch (e) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
-
-      print("%%%%Error of file webp: $e");
-    }
-  }
-
-  convertPngToJpg(BuildContext context, String? filePath) async {
-    try {
-      showLoader.value = true;
-
-      if (filePath != null) {
-        DateTime dateTime = DateTime.now();
-
-        Directory? dir = await getApplicationCacheDirectory();
-
-        var targetDirectoryPath = '${dir.path}/ImageConverter/';
-
-        var path =
-            '${targetDirectoryPath}pngtojpg_$dateTime#File ${getFormattedDateTime(dateTime)}';
-        print("%%%%path  $path");
-
-        File imageFile = File(filePath);
-
-        List<int> bytes = await FlutterImageCompress.compressWithList(
-          imageFile.readAsBytesSync(),
-          minHeight: 800,
-          minWidth: 800,
-          quality: 88,
-        );
-
-        Directory(targetDirectoryPath).createSync(recursive: true);
-
-        File compressedImage = File('$path.jpg')..writeAsBytesSync(bytes);
-
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(compressedImage.path);
-
-        await Get.to(
-          () => ConversionResult(
-            imageFormat: ".jpg",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
-            convertedFile: compressedImage,
-          ),
-        );
-        showLoader.value = false;
-      }
-    } catch (e) {
-      Get.to(() => const HomeScreen());
-      print("%%%%Error of file $e");
-    }
-  }
-
-  convertPngToPng(BuildContext context, String? filePath) async {
-    try {
-      showLoader.value = true;
-
-      if (filePath != null) {
-        DateTime dateTime = DateTime.now();
-        Directory? dir = await getApplicationCacheDirectory();
-
-        var targetDirectoryPath = '${dir.path}/ImageConverter/';
-
-        var path =
-            '${targetDirectoryPath}pngtopng_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.png';
-        print("%%%%path  $path");
-
-        File imageFile = File(filePath);
-
-        Directory(targetDirectoryPath).createSync(recursive: true);
-
-        await imageFile.copy(path);
-
-        print("%%%%converted Image ${imageFile.path}");
-        originalSize.value = await getFileSize(filePath);
-        convertedSize.value = await getFileSize(filePath);
-
-        await Get.to(
-          () => ConversionResult(
-            imageFormat: ".png",
-            originalSize:
-                "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            convertedSize:
-                "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-            dateTime: getFormattedDateTime(dateTime),
-            convertedFile: imageFile,
-          ),
-        );
-        showLoader.value = false;
-      }
-    } catch (e) {
-      Get.to(() => const HomeScreen());
-      print("%%%%Error of file $e");
-    }
-  }
-
-  convertPngToPdf(BuildContext context, String? filePath) async {
-    showLoader.value = true;
-
-    if (filePath == null) {
-      // Handle the case when imagePath is null
-      return;
-    }
-
-    final File imageFile = File(filePath);
-
-    final pdf = pw.Document();
-
-    final image = pw.MemoryImage(imageFile.readAsBytesSync());
-
-    pdf.addPage(
-      pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        build: (pw.Context context) {
-          return pw.Center(
-            child: pw.Stack(
-              children: [
-                pw.Center(child: pw.Image(image)),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-
-    Directory? dir = await getApplicationCacheDirectory();
-
-    var path =
-        '${dir.path}/ImageConverter/pngtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
-    final file = File(path)..createSync(recursive: true);
-    print("path before $path");
-
-    await file.writeAsBytes(await pdf.save());
-
-    originalSize.value = await getFileSize(filePath);
-    convertedSize.value = await getFileSize(file.path);
-
-    await Get.to(
-      () => ConversionResult(
-        imageFormat: ".pdf",
-        originalSize: "${(originalSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-        convertedSize:
-            "${(convertedSize / (1024 * 1024)).toStringAsFixed(2)} MB",
-        dateTime: getFormattedDateTime(dateTime),
-        convertedFile: File(path),
-      ),
-    );
-    showLoader.value = false;
-  }
 
   conversionOptionList(BuildContext context) {
     return Container(

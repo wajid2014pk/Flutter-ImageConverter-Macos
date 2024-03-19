@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:path/path.dart' as path;
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -506,51 +504,47 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
-  Future<void> _exportFile(FileSystemEntity file) async {
-    try {
-      final filePath = file.uri.toFilePath();
-      print("filePath $filePath");
-
-      // Check if the file is a PDF
-      if (path.extension(filePath).toLowerCase() == '.pdf') {
-        // Save PDF file to documents directory
-        final documentsDir = Platform.isAndroid
-            ? await getExternalStorageDirectory()
-            : await getApplicationDocumentsDirectory();
-        final destinationPath =
-            path.join(documentsDir!.path, file.uri.pathSegments.last);
-
-        await File(filePath).copy(destinationPath);
-
-        Get.snackbar(
-          colorText: Colors.black,
-          backgroundColor: Colors.white,
-          duration: const Duration(seconds: 4),
-          "Attention",
-          "PDF saved to Documents",
-        );
-        print('PDF saved to documents: $destinationPath');
-      } else {
-        // Save other file formats to gallery
-        final result = await ImageGallerySaver.saveFile(filePath);
-
-        if (result['isSuccess']) {
-          Get.snackbar(
-            colorText: Colors.black,
-            backgroundColor: Colors.white,
-            duration: const Duration(seconds: 4),
-            "Attention",
-            "Image Saved to gallery",
-          );
-          print('Image saved to gallery!');
-        } else {
-          print('Failed to save image: ${result['errorMessage']}');
-        }
-      }
-    } catch (e) {
-      print('Error exporting file: $e');
-    }
-  }
+  // Future<void> _exportFile(FileSystemEntity file) async {
+  //   try {
+  //     final filePath = file.uri.toFilePath();
+  //     print("filePath $filePath");
+  //     // Check if the file is a PDF
+  //     if (path.extension(filePath).toLowerCase() == '.pdf') {
+  //       // Save PDF file to documents directory
+  //       final documentsDir = Platform.isAndroid
+  //           ? await getExternalStorageDirectory()
+  //           : await getApplicationDocumentsDirectory();
+  //       final destinationPath =
+  //           path.join(documentsDir!.path, file.uri.pathSegments.last);
+  //       await File(filePath).copy(destinationPath);
+  //       Get.snackbar(
+  //         colorText: Colors.black,
+  //         backgroundColor: Colors.white,
+  //         duration: const Duration(seconds: 4),
+  //         "Attention",
+  //         "PDF saved to Documents",
+  //       );
+  //       print('PDF saved to documents: $destinationPath');
+  //     } else {
+  //       // Save other file formats to gallery
+  //       final result = await ImageGallerySaver.saveFile(filePath);
+  //       if (result['isSuccess']) {
+  //         Get.snackbar(
+  //           colorText: Colors.black,
+  //           backgroundColor: Colors.white,
+  //           duration: const Duration(seconds: 4),
+  //           "Attention",
+  //           "Image Saved to gallery",
+  //         );
+  //         print('Image saved to gallery!');
+  //       } else {
+  //         print('Failed to save image: ${result['errorMessage']}');
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print('Error exporting file: $e');
+  //   }
+  // }
 
   _getFileIcon(String fileName) {
     if (fileName.toLowerCase().endsWith('.pdf')) {

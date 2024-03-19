@@ -8,7 +8,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:path/path.dart' as path;
 
-
 class HomeScreenController extends GetxController {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -127,6 +126,82 @@ class HomeScreenController extends GetxController {
     }
   }
 
+  Future<void> handleDragDropImage(var details) async {
+    // Ensure only one file is dropped
+    if (details.files.length == 1) {
+      // Get the path of the dropped file
+      String imagePath = details.files.first.path;
+
+      // Check if the file extension is either PNG or JPG
+      if (imagePath.toLowerCase().endsWith('.png') ||
+          imagePath.toLowerCase().endsWith('.jpg') ||
+          imagePath.toLowerCase().endsWith('.jpeg') ||
+          imagePath.toLowerCase().endsWith('.bmp') ||
+          imagePath.toLowerCase().endsWith('.heic') ||
+          imagePath.toLowerCase().endsWith('.gif') ||
+          imagePath.toLowerCase().endsWith('.webp')) {
+        // Proceed to handle the image
+        Get.to(() => ConvertFile(imagePath: imagePath));
+      } else {
+        // Display a toast message for invalid image format
+        Get.snackbar(
+          'Attention',
+          "Invalid image format",
+        );
+        // Fluttertoast.showToast(
+        //     msg: "Invalid image format",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.red,
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
+      }
+    } else {
+      // Display a toast message for dropping multiple files
+
+      Get.snackbar(
+        'Attention',
+        "Only one image can be dropped at a time.",
+      );
+      // Fluttertoast.showToast(
+      //     msg: "Only one image can be dropped at a time.",
+      //     toastLength: Toast.LENGTH_SHORT,
+      //     gravity: ToastGravity.BOTTOM,
+      //     timeInSecForIosWeb: 1,
+      //     backgroundColor: Colors.red,
+      //     textColor: Colors.white,
+      //     fontSize: 16.0);
+    }
+  }
+
+  // Future<void> handleDragDropImage(details) async {
+  //   var data = details.file;
+
+  //   if (data is List<String>) {
+  //     String imagePath = data.first;
+
+  //     // Check if the file extension is either PNG or JPG
+  //     if (imagePath.toLowerCase().endsWith('.png') ||
+  //         imagePath.toLowerCase().endsWith('.jpg')) {
+  //       // Proceed to handle the image
+  //       Get.to(() => ConvertFile(imagePath: imagePath));
+  //     } else {
+  //       // Display a toast message for invalid image format
+  //       Fluttertoast.showToast(
+  //           msg: "Invalid image format. Only PNG and JPG images are allowed.",
+  //           toastLength: Toast.LENGTH_SHORT,
+  //           gravity: ToastGravity.BOTTOM,
+  //           timeInSecForIosWeb: 1,
+  //           backgroundColor: Colors.red,
+  //           textColor: Colors.white,
+  //           fontSize: 16.0);
+  //     }
+  //   } else {
+  //     print('Invalid drag data');
+  //   }
+  // }
+
   Future<void> handleUrlImage() async {
     showDialog(
       context: Get.context!,
@@ -175,7 +250,7 @@ class HomeScreenController extends GetxController {
                           textController.clear();
                         },
                         child: Text(
-                         "Cancel",
+                          "Cancel",
                           style: TextStyle(
                               color: Colors.black.withOpacity(0.3),
                               fontSize: 14),

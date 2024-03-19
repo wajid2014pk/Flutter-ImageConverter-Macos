@@ -1,28 +1,23 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 
 class ConversionResult extends StatefulWidget {
   final String imageFormat;
-  final String originalSize;
-  final String convertedSize;
-  final String dateTime;
+  final String originalFilePath;
   final File convertedFile;
   const ConversionResult({
     required this.imageFormat,
-    required this.originalSize,
-    required this.convertedSize,
-    required this.dateTime,
+    required this.originalFilePath,
     required this.convertedFile,
     super.key,
   });
@@ -32,20 +27,12 @@ class ConversionResult extends StatefulWidget {
 }
 
 class _ConversionResultState extends State<ConversionResult> {
-  RxDouble finalRating = 0.0.obs;
-  RxBool showRatingBox = true.obs;
-  int? rateUs;
-  RxBool ratingStatus = false.obs;
-
   final conversionController = Get.put(ConvertImagesController());
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 1), () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      rateUs = prefs.getInt("rateUs");
-      rateUs == null ? ratingStatus.value = true : const SizedBox();
-    });
+    print("originalFilePath ${widget.originalFilePath}");
+    print("convertedFile ${widget.convertedFile.path}");
   }
 
   @override
@@ -56,6 +43,7 @@ class _ConversionResultState extends State<ConversionResult> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: UiColors.backgroundColor,
         appBar: PreferredSize(
           preferredSize: const Size(double.infinity, 65),
           child: AppBar(
@@ -66,7 +54,7 @@ class _ConversionResultState extends State<ConversionResult> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => Get.offAll(() => const HomeScreen()),
                   child: Transform.flip(
                     flipX: true,
                     child: Image.asset(
@@ -94,210 +82,288 @@ class _ConversionResultState extends State<ConversionResult> {
             ),
           ),
         ),
-        // appBar: AppBar(
-        //   centerTitle: true,
-        //   automaticallyImplyLeading: false,
-        //   title: Text(
-        //     // AppLocalizations.of(context)!.converted,
-        //     'Converted',
-        //     style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
-        //   ),
-        //   actions: [
-        //     Padding(
-        //       padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-        //       child: InkWell(
-        //         onTap: () {
-        //           Get.offAll(() => const HomeScreen());
-        //         },
-        //         child: Image.asset(
-        //           "assets/Home.png",
-        //           height: 25,
-        //           width: 25,
-        //         ),
-        //       ),
-        //     )
-        //   ],
-        // ),
-
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(bottom: 30.0, left: 10, right: 10),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Expanded(
-              flex: 1,
-              child: optionList("assets/Preveiw.png", () {
-                widget.imageFormat == '.svg'
-                    ? Get.snackbar(
-                        // backgroundColor: Colors.white,
-                        "Could open this file",
-                        "No App found to Open")
-                    : _openFile(widget.convertedFile);
-              }),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              flex: 1,
-              child: optionList("assets/share.png", () {
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            InkWell(
+              onTap: () {
                 _shareFile(widget.convertedFile);
-              }),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              flex: 1,
-              child: optionList("assets/EXport.png", () async {
-                _exportFile(widget.convertedFile);
-              }),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              flex: 2,
-              child: InkWell(
-                onTap: () {
-                  conversionController.selectedIndex.value = 0;
-                  Get.back();
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: UiColors.whiteColor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          blurRadius: 8,
-                          offset: const Offset(0, 0),
-                        ),
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0, vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 5,
-                          child: Text(
-                            // AppLocalizations.of(context)!.reconvert,
-                            "Reconvert",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Image.asset(
-                          "assets/Convert.png",
-                          height: 20,
-                          width: 20,
-                        ),
-                      ],
-                    ),
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: UiColors.whiteColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.4),
+                        blurRadius: 8,
+                        offset: const Offset(0, 0),
+                      ),
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 15),
+                  child: Image.asset(
+                    "assets/share.png",
+                    height: 30,
+                    width: 30,
                   ),
                 ),
               ),
             ),
+
+            const SizedBox(
+              width: 30,
+            ),
+            optionList("assets/EXport.png", "Export", () async {
+              _exportFile(widget.convertedFile);
+            }),
+            const SizedBox(
+              width: 30,
+            ),
+            optionList("assets/Convert.png", "Reconvert",
+                // AppLocalizations.of(context)!.reconvert,
+                () async {
+              conversionController.selectedIndex.value = 0;
+              Get.back();
+            }),
+            // InkWell(
+            //   onTap: () {
+            //     conversionController.selectedIndex.value = 0;
+            //     Get.back();
+            //   },
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(12),
+            //         color: UiColors.whiteColor,
+            //         boxShadow: [
+            //           BoxShadow(
+            //             color: Colors.grey.withOpacity(0.4),
+            //             blurRadius: 8,
+            //             offset: const Offset(0, 0),
+            //           ),
+            //         ]),
+            //     child: Padding(
+            //       padding: const EdgeInsets.symmetric(
+            //           horizontal: 15.0, vertical: 15),
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           SizedBox(
+            //             width: MediaQuery.of(context).size.width / 5,
+            //             child: Text(
+            //               // AppLocalizations.of(context)!.reconvert,
+            //               "Reconvert",
+            //               maxLines: 1,
+            //               overflow: TextOverflow.ellipsis,
+            //               style: GoogleFonts.poppins(
+            //                 fontSize: 14,
+            //               ),
+            //             ),
+            //           ),
+            //           const SizedBox(
+            //             width: 5,
+            //           ),
+            //           Image.asset(
+            //             "assets/Convert.png",
+            //             height: 20,
+            //             width: 20,
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ]),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Divider(
-              thickness: 1,
-              color: Colors.grey[200],
-            ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  widget.imageFormat == '.webp' ||
-                          widget.imageFormat == '.svg' ||
-                          widget.imageFormat == '.pdf'
-                      ? Image.asset(
-                          "assets/logo.png",
-                          height: 100,
-                          // width: 90,
-                        )
-                      : SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Image.file(File(widget.convertedFile.path)),
+                  Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: UiColors.whiteColor),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20.0, right: 20),
+                              child: Image.asset(
+                                widget.imageFormat == '.jpg'
+                                    ? "assets/JPG.png"
+                                    : widget.imageFormat == '.pdf'
+                                        ? "assets/PDF.png"
+                                        : widget.imageFormat == '.png'
+                                            ? "assets/PNG.png"
+                                            : widget.imageFormat == '.webp'
+                                                ? "assets/WEBP.png"
+                                                : widget.imageFormat == '.gif'
+                                                    ? "assets/GIF.png"
+                                                    : widget.imageFormat ==
+                                                            '.jpeg'
+                                                        ? "assets/JPEG.png"
+                                                        : widget.imageFormat ==
+                                                                '.bmp'
+                                                            ? "assets/BMP.png"
+                                                            : widget.imageFormat ==
+                                                                    '.svg'
+                                                                ? "assets/SVG.png"
+                                                                : "assets/JPG.png",
+                                height: 55,
+                              ),
+                            ),
+                            Text(
+                              widget.originalFilePath.length > 20
+                                  ? '${widget.originalFilePath.substring(0, 10)}...${widget.originalFilePath.substring(widget.originalFilePath.length - 10)}'
+                                  : widget.originalFilePath,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            )
+                          ],
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 40, bottom: 40),
+                        child: Image.asset(
+                          "assets/Convert.png",
+                          height: 40,
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width / 3,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: UiColors.whiteColor),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20.0, right: 20),
+                              child: Image.asset(
+                                conversionController.selectedIndex.value == 1
+                                    ? "assets/JPG.png"
+                                    : conversionController
+                                                .selectedIndex.value ==
+                                            2
+                                        ? "assets/PDF.png"
+                                        : conversionController
+                                                    .selectedIndex.value ==
+                                                3
+                                            ? "assets/PNG.png"
+                                            : conversionController
+                                                        .selectedIndex.value ==
+                                                    4
+                                                ? "assets/WEBP.png"
+                                                : conversionController
+                                                            .selectedIndex
+                                                            .value ==
+                                                        5
+                                                    ? "assets/GIF.png"
+                                                    : conversionController
+                                                                .selectedIndex
+                                                                .value ==
+                                                            6
+                                                        ? "assets/JPEG.png"
+                                                        : conversionController
+                                                                    .selectedIndex
+                                                                    .value ==
+                                                                7
+                                                            ? "assets/BMP.png"
+                                                            : conversionController
+                                                                        .selectedIndex
+                                                                        .value ==
+                                                                    8
+                                                                ? "assets/SVG.png"
+                                                                : "assets/JPG.png",
+                                height: 55,
+                              ),
+                            ),
+                            Text(
+                              widget.convertedFile.path.length > 20
+                                  ? '${widget.convertedFile.path.substring(0, 10)}...${widget.convertedFile.path.substring(widget.convertedFile.path.length - 10)}'
+                                  : widget.convertedFile.path,
+                              style: GoogleFonts.poppins(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(
-                    width: 8,
+                    width: 70,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      featureNames(
-                          // "${AppLocalizations.of(context)!.image_format}:",
-                          'Image format '),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      featureNames(
-                          // "${AppLocalizations.of(context)!.original_size}:",
-                          'Orignal Size'),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      featureNames(
-                          // "${AppLocalizations.of(context)!.converted_size}:",
-                          "Converted Size"),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      featureNames(
-                          // "${AppLocalizations.of(context)!.date_time}:",
-                          "Date/Time"),
-                    ],
-                  ),
-                  const Spacer(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        widget.imageFormat,
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: UiColors.blackColor.withOpacity(0.5)),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        widget.originalSize,
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: UiColors.blackColor.withOpacity(0.5)),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        widget.convertedSize,
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: UiColors.blackColor.withOpacity(0.5)),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        widget.dateTime,
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: UiColors.blackColor.withOpacity(0.5)),
-                      ),
-                    ],
-                  )
+                  conversionController.selectedIndex.value == 2 ||
+                          conversionController.selectedIndex.value == 4 ||
+                          conversionController.selectedIndex.value == 8
+                      ? Stack(
+                          children: [
+                            SizedBox(
+                              width: 250,
+                              height: 250,
+                              child: Image.asset(
+                                "assets/logo.png",
+                                // height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              top: 5,
+                              right: 10,
+                              child: InkWell(
+                                onTap: () {
+                                  _openFile(widget.convertedFile);
+                                },
+                                child: Image.asset(
+                                  "assets/Zom.png",
+                                  height: 50,
+                                  width: 60,
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(border: Border.all()),
+                              width: 350,
+                              height: 250,
+                              child: Image.file(
+                                File(
+                                  widget.convertedFile.path,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: InkWell(
+                                onTap: () {
+                                  _openFile(widget.convertedFile);
+                                },
+                                child: Image.asset(
+                                  "assets/Zom.png",
+                                  height: 50,
+                                  width: 60,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                 ],
               ),
             ),
@@ -307,12 +373,13 @@ class _ConversionResultState extends State<ConversionResult> {
     );
   }
 
-  optionList(String imageName, VoidCallback onPress) {
+  optionList(String imageName, String name, VoidCallback onPress) {
     return InkWell(
       onTap: onPress,
       child: Container(
+        width: 200,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             color: UiColors.whiteColor,
             boxShadow: [
               BoxShadow(
@@ -322,11 +389,26 @@ class _ConversionResultState extends State<ConversionResult> {
               ),
             ]),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-          child: Image.asset(
-            imageName,
-            height: 30,
-            width: 30,
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                name,
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Image.asset(
+                imageName,
+                height: 25,
+                width: 25,
+              ),
+            ],
           ),
         ),
       ),
@@ -373,58 +455,23 @@ class _ConversionResultState extends State<ConversionResult> {
       final filePath = file.uri.toFilePath();
       print("filePath $filePath");
 
-      // Check if the file is a PDF
-      if (path.extension(filePath).toLowerCase() == '.pdf' ||
-          path.extension(filePath).toLowerCase() == '.bmp' ||
-          path.extension(filePath).toLowerCase() == '.webp' ||
-          path.extension(filePath).toLowerCase() == '.svg') {
-        final documentsDir = Platform.isAndroid
-            ? await getExternalStorageDirectory()
-            : await getApplicationDocumentsDirectory();
-        print("documentsDir $documentsDir");
+      final documentsDir = await getApplicationDocumentsDirectory();
+      print("documentsDir $documentsDir");
 
-        // Create the folder if it doesn't exist
-        final pdfFolder = Directory(documentsDir!.path);
-        if (!pdfFolder.existsSync()) {
-          pdfFolder.createSync(recursive: true);
-        }
-
-        final destinationPath =
-            path.join(pdfFolder.path, file.uri.pathSegments.last);
-        print("destinationPath $destinationPath");
-
-        await File(filePath).copy(destinationPath);
-
-        // Get.snackbar(
-        //   colorText: Colors.black,
-        //   backgroundColor: Colors.white,
-        //   duration: const Duration(seconds: 4),
-        //   // "Attention",
-        //   // "Attention"
-        //   // AppLocalizations.of(context)!.pdf_saved_to_documents,
-        //   "Image Saved to Documents"
-        //
-        // );
-        Get.offAll(() => const HomeScreen());
-        print('PDF saved to documents: $destinationPath');
-      } else {
-        // Save other file formats to gallery
-        final result = await ImageGallerySaver.saveFile(filePath);
-
-        if (result['isSuccess']) {
-          Get.snackbar(
-              colorText: Colors.black,
-              backgroundColor: Colors.white,
-              duration: const Duration(seconds: 4),
-              "Attention",
-              // AppLocalizations.of(context)!.image_saved_to_gallery,
-              "Image SAVED TO GALLERY");
-          print('Image saved to gallery!');
-          Get.offAll(const HomeScreen());
-        } else {
-          print('Failed to save image: ${result['errorMessage']}');
-        }
+      // Create the folder if it doesn't exist
+      final pdfFolder = Directory(documentsDir.path);
+      if (!pdfFolder.existsSync()) {
+        pdfFolder.createSync(recursive: true);
       }
+
+      final destinationPath =
+          path.join(pdfFolder.path, file.uri.pathSegments.last);
+      print("destinationPath $destinationPath");
+
+      await File(filePath).copy(destinationPath);
+
+      Get.offAll(() => const HomeScreen());
+      print('PDF saved to documents: $destinationPath');
     } catch (e) {
       print('Error exporting file: $e');
     }

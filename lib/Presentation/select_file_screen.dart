@@ -29,46 +29,50 @@ class _SelectFileScreenState extends State<SelectFileScreen> {
                 color: UiColors.whiteColor,
                 borderRadius: BorderRadius.circular(18.0),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: DottedBorder(
-                  color: UiColors.blackColor.withOpacity(0.2),
-                  borderType: BorderType.RRect,
-                  dashPattern: const [10, 6],
-                  strokeWidth: 2.3,
-                  radius: const Radius.circular(16.0),
-                  child: DropTarget(
-                    onDragDone: (DropDoneDetails details) async {
-                      // await homeScreenController.dragImages(details);
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.58,
-                      height: 270,
-                      padding: const EdgeInsets.symmetric(vertical: 30.0),
-                      decoration: BoxDecoration(
-                          color: UiColors.whiteColor,
-                          borderRadius: BorderRadius.circular(15.0)),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/Import.png",
-                            height: 80.0,
-                            width: 80.0,
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          Text(
-                            "Drag or Paste File",
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                  fontSize: 20.0, fontWeight: FontWeight.w500),
+              child: InkWell(
+                onTap: () => homeScreenController.handleDriveImage(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: DottedBorder(
+                    color: UiColors.blackColor.withOpacity(0.2),
+                    borderType: BorderType.RRect,
+                    dashPattern: const [10, 6],
+                    strokeWidth: 2.3,
+                    radius: const Radius.circular(16.0),
+                    child: DropTarget(
+                      onDragDone: (DropDoneDetails details) async {
+                        await homeScreenController.handleDragDropImage(details);
+                      },
+                      child: Container(
+                        width: MediaQuery.sizeOf(context).width * 0.58,
+                        height: 270,
+                        padding: const EdgeInsets.symmetric(vertical: 30.0),
+                        decoration: BoxDecoration(
+                            color: UiColors.whiteColor,
+                            borderRadius: BorderRadius.circular(15.0)),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/Import.png",
+                              height: 80.0,
+                              width: 80.0,
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 20.0,
+                            ),
+                            Text(
+                              "Drag or Paste File",
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -87,7 +91,6 @@ class _SelectFileScreenState extends State<SelectFileScreen> {
                   "File from URL",
                   () {
                     homeScreenController.handleUrlImage();
-                    // homeScreenController.isVisible.value =!homeScreenController.isVisible.value;
                   },
                 ),
                 const SizedBox(

@@ -1,9 +1,8 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
@@ -35,7 +34,7 @@ class _ConvertFileState extends State<ConvertFile> {
 
     String shortenedFileName = fileName.length <= 15
         ? fileName
-        : '${fileName.substring(0, 13)}...${fileName.substring(fileName.length - 10)}';
+        : '${fileName.substring(0, 10)}...${fileName.substring(fileName.length - 10)}';
 
     return Scaffold(
       backgroundColor: UiColors.backgroundColor,
@@ -62,14 +61,19 @@ class _ConvertFileState extends State<ConvertFile> {
               const SizedBox(
                 width: 10,
               ),
-              GestureDetector(
-                onTap: () => Get.back(),
-                child: Text(
-                  'Select Files',
-                  style: GoogleFonts.poppins(
-                    color: UiColors.blueColor,
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w500,
+              Obx(
+                () => GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Text(
+                    conversionController.loadingState.value == false ||
+                            conversionController.isDownloading.value == false
+                        ? 'Select Files'
+                        : 'Converted',
+                    style: GoogleFonts.poppins(
+                      color: UiColors.blueColor,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
