@@ -1,12 +1,16 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/HomeScreenController/home_screen_controller.dart';
 import 'package:image_converter_macos/Presentation/history.dart';
+import 'package:image_converter_macos/Presentation/rating_dialog.dart';
 import 'package:image_converter_macos/Presentation/select_file_screen.dart';
+import 'package:image_converter_macos/Screens/feedback_screen.dart';
 import 'package:image_converter_macos/Screens/premium_popup.dart';
+import 'package:image_converter_macos/Screens/privacy_policy.dart';
+import 'package:image_converter_macos/Screens/rate_us_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,167 +63,158 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       body: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: Obx(
-              () => Container(
-                decoration: BoxDecoration(color: UiColors.whiteColor),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: isArabicOrPersianOrHebrew ? 0 : 20,
-                        right: isArabicOrPersianOrHebrew ? 20 : 0,
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          homeScreenController.sideBarItem(
-                            "assets/Home.png",
-                            "Home",
-                            1,
-                            context,
-                          ),
-                          homeScreenController.divider(),
-                          homeScreenController.sideBarItem(
-                            "assets/History.png",
-                            "History",
-                            2,
-                            context,
-                          ),
-                          homeScreenController.divider(),
-                          homeScreenController.sideBarItem(
-                            "assets/Setting.png",
-                            "Setting",
-                            3,
-                            context,
-                          ),
-                          homeScreenController.divider(),
-                          homeScreenController.sideBarItem(
-                            "assets/Star.png",
-                            "Rate Us",
-                            4,
-                            context,
-                          ),
-                          homeScreenController.divider(),
-                          homeScreenController.sideBarItem(
-                            "assets/Feedback.png",
-                            "Feedback",
-                            5,
-                            context,
-                          ),
-                          homeScreenController.divider(),
-                          homeScreenController.sideBarItem(
-                            "assets/Privacy Policy.png",
-                            "Privacy Policy",
-                            6,
-                            context,
-                          ),
-                        ],
-                      ),
+          Obx(
+            () => Container(
+              width: 290,
+              decoration: BoxDecoration(color: UiColors.whiteColor),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: isArabicOrPersianOrHebrew ? 0 : 20,
+                      right: isArabicOrPersianOrHebrew ? 20 : 0,
                     ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        PremiumPopUp().premiumScreenPopUp(context);
-                      },
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        homeScreenController.sideBarItem(
+                          "assets/Home.png",
+                          "Home",
+                          1,
+                          context,
+                        ),
+                        homeScreenController.divider(),
+                        homeScreenController.sideBarItem(
+                          "assets/History.png",
+                          "History",
+                          2,
+                          context,
+                        ),
+                        // homeScreenController.divider(),
+                        // homeScreenController.sideBarItem(
+                        //   "assets/Setting.png",
+                        //   "Setting",
+                        //   3,
+                        //   context,
+                        // ),
+                        homeScreenController.divider(),
+                        homeScreenController.sideBarItem(
+                          "assets/Star.png",
+                          "Rate Us",
+                          3,
+                          context,
+                        ),
+                        homeScreenController.divider(),
+                        homeScreenController.sideBarItem(
+                          "assets/Feedback.png",
+                          "Feedback",
+                          4,
+                          context,
+                        ),
+                        homeScreenController.divider(),
+                        homeScreenController.sideBarItem(
+                          "assets/Privacy Policy.png",
+                          "Privacy Policy",
+                          5,
+                          context,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      PremiumPopUp().premiumScreenPopUp(context);
+                    },
+                    child: SizedBox(
+                      height: 180,
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                                top: 10, bottom: 10, left: 10, right: 10),
-                            child: Expanded(
-                              child: Container(
-                                height: 170,
-                                width: MediaQuery.of(context).size.width / 5.2,
-                                decoration: BoxDecoration(
-                                  color: UiColors.lightblueColor,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Positioned(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 12, right: 12, top: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "IMAGE",
+                            padding: const EdgeInsets.all(10),
+                            // Use Positioned.fill instead of Padding
+                            child: Container(
+                              width: 280,
+                              decoration: BoxDecoration(
+                                color: UiColors.lightblueColor,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 12, right: 12, top: 10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "IMAGE",
+                                      style: GoogleFonts.poppins(
+                                          color: UiColors.whiteColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "CONVERTER",
+                                      style: GoogleFonts.poppins(
+                                          color: UiColors.whiteColor,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: UiColors.whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5),
+                                        child: Text(
+                                          "PRO",
                                           style: GoogleFonts.poppins(
-                                              color: UiColors.whiteColor,
+                                              color: UiColors.yellowColor,
                                               fontSize: 18,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        Text(
-                                          "CONVERTER",
-                                          style: GoogleFonts.poppins(
-                                              color: UiColors.whiteColor,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: Container(
+                                        width: 90,
+                                        height: 28,
+                                        decoration: BoxDecoration(
+                                          color: UiColors.yellowColor,
+                                          borderRadius:
+                                              BorderRadius.circular(6),
                                         ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: UiColors.whiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(4)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              1.2,
+                                          child: Center(
                                             child: Text(
-                                              "PRO",
+                                              "Upgrade",
+                                              // AppLocalizations.of(context)!
+                                              //     .upgrade,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.poppins(
-                                                  color: Colors.orange,
-                                                  fontSize: 18,
+                                                  fontSize: 14,
+                                                  color: UiColors.whiteColor,
                                                   fontWeight: FontWeight.w600),
                                             ),
                                           ),
                                         ),
-                                        const Spacer(),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 10),
-                                          child: Container(
-                                            width: 90,
-                                            height: 28,
-                                            decoration: BoxDecoration(
-                                              color: UiColors.whiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                            ),
-                                            child: SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  1.2,
-                                              child: Center(
-                                                child: Text(
-                                                  "Upgrade",
-                                                  // AppLocalizations.of(context)!
-                                                  //     .upgrade,
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 14,
-                                                      color: const Color(
-                                                          0xFFC1041A),
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -231,18 +226,17 @@ class _HomeScreenState extends State<HomeScreen>
                             bottom: 10,
                             child: Image.asset(
                               "assets/Pro-Banner-Image.png",
-                              width: 200,
+                              width: 185,
                             ),
                           ),
                         ],
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
-          // ),
           Obx(
             () => Expanded(
               flex: 4,
@@ -251,12 +245,26 @@ class _HomeScreenState extends State<HomeScreen>
                     ? const SelectFileScreen()
                     : homeScreenController.sideBarSelectedIndex.value == 2
                         ? const HistoryScreen()
-                        : const SizedBox(),
+                        : homeScreenController.sideBarSelectedIndex.value == 3
+                            ? const RateUs()
+                            : homeScreenController.sideBarSelectedIndex.value ==
+                                    4
+                                ? const FeedBack()
+                                : homeScreenController
+                                            .sideBarSelectedIndex.value ==
+                                        5
+                                    ? const PrivacyPolicy()
+                                    : const SizedBox(),
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  inAppReview(BuildContext context) {
+    DialogBoxRating().dialogRating(context);
+    print("inapp review");
   }
 }

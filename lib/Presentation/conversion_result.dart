@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
@@ -9,7 +8,6 @@ import 'package:image_converter_macos/Presentation/home_screen.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:path/path.dart' as path;
 
 class ConversionResult extends StatefulWidget {
   final String imageFormat;
@@ -28,12 +26,6 @@ class ConversionResult extends StatefulWidget {
 
 class _ConversionResultState extends State<ConversionResult> {
   final conversionController = Get.put(ConvertImagesController());
-  @override
-  void initState() {
-    super.initState();
-    print("originalFilePath ${widget.originalFilePath}");
-    print("convertedFile ${widget.convertedFile.path}");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +103,6 @@ class _ConversionResultState extends State<ConversionResult> {
                 ),
               ),
             ),
-
             const SizedBox(
               width: 30,
             ),
@@ -127,53 +118,6 @@ class _ConversionResultState extends State<ConversionResult> {
               conversionController.selectedIndex.value = 0;
               Get.back();
             }),
-            // InkWell(
-            //   onTap: () {
-            //     conversionController.selectedIndex.value = 0;
-            //     Get.back();
-            //   },
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(12),
-            //         color: UiColors.whiteColor,
-            //         boxShadow: [
-            //           BoxShadow(
-            //             color: Colors.grey.withOpacity(0.4),
-            //             blurRadius: 8,
-            //             offset: const Offset(0, 0),
-            //           ),
-            //         ]),
-            //     child: Padding(
-            //       padding: const EdgeInsets.symmetric(
-            //           horizontal: 15.0, vertical: 15),
-            //       child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           SizedBox(
-            //             width: MediaQuery.of(context).size.width / 5,
-            //             child: Text(
-            //               // AppLocalizations.of(context)!.reconvert,
-            //               "Reconvert",
-            //               maxLines: 1,
-            //               overflow: TextOverflow.ellipsis,
-            //               style: GoogleFonts.poppins(
-            //                 fontSize: 14,
-            //               ),
-            //             ),
-            //           ),
-            //           const SizedBox(
-            //             width: 5,
-            //           ),
-            //           Image.asset(
-            //             "assets/Convert.png",
-            //             height: 20,
-            //             width: 20,
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ]),
         ),
         body: Column(
@@ -327,7 +271,7 @@ class _ConversionResultState extends State<ConversionResult> {
                                   _openFile(widget.convertedFile);
                                 },
                                 child: Image.asset(
-                                  "assets/Zom.png",
+                                  "assets/zoom-in.png",
                                   height: 50,
                                   width: 60,
                                 ),
@@ -337,9 +281,9 @@ class _ConversionResultState extends State<ConversionResult> {
                         )
                       : Stack(
                           children: [
-                            Container(
-                              decoration: BoxDecoration(border: Border.all()),
-                              width: 350,
+                            SizedBox(
+                              // decoration: BoxDecoration(border: Border.all()),
+                              width: 300,
                               height: 250,
                               child: Image.file(
                                 File(
@@ -355,10 +299,15 @@ class _ConversionResultState extends State<ConversionResult> {
                                 onTap: () {
                                   _openFile(widget.convertedFile);
                                 },
-                                child: Image.asset(
-                                  "assets/Zom.png",
-                                  height: 50,
-                                  width: 60,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color:
+                                          UiColors.blackColor.withOpacity(0.2)),
+                                  child: Image.asset(
+                                    "assets/zoom-in.png",
+                                    height: 30,
+                                    width: 30,
+                                  ),
                                 ),
                               ),
                             )
@@ -372,6 +321,81 @@ class _ConversionResultState extends State<ConversionResult> {
       ),
     );
   }
+
+  Future<void> _exportFile(
+    FileSystemEntity file,
+  ) async {
+    try {
+      final filePath = file.uri.toFilePath();
+      File imageFile = File(filePath);
+
+      Directory? dir = await getApplicationDocumentsDirectory();
+
+      var targetDirectoryPath = '${dir.path}/ImageConverterExport';
+
+      // Check if the source file exists
+      if (!imageFile.existsSync()) {
+        print("#### Error: Source file doesn't exist");
+        return;
+      }
+
+      // Create the target directory if it doesn't exist
+      Directory exportDir = Directory(targetDirectoryPath);
+      if (!exportDir.existsSync()) {
+        exportDir.createSync(recursive: true);
+      }
+
+      // Construct the target file path
+      String fileName = imageFile.path.split('/').last;
+      String targetFilePath = '$targetDirectoryPath/$fileName';
+
+      // Copy the source file to the target file path
+      await imageFile.copy(targetFilePath);
+
+      print("#### Image exported to: $targetFilePath");
+    } catch (e) {
+      print('####Error exporting file: $e');
+    }
+  }
+
+  // Future<void> _exportFile(FileSystemEntity file) async {
+  //   try {
+  //     final filePath = file.uri.toFilePath();
+  //     DateTime dateTime = DateTime.now();
+  //     Directory? dir = await getDownloadsDirectory();
+  //     if (dir == null) {
+  //       print("#### Error: Downloads directory is null");
+  //       return;
+  //     }
+
+  //     print("####dir $dir");
+
+  //     var targetDirectoryPath = '${dir.path}/ImageConverterExport';
+  //     print("####targetDirectoryPath $targetDirectoryPath");
+
+  //     var formattedDateTime =
+  //         '${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
+  //     var path = '$targetDirectoryPath/$formattedDateTime';
+
+  //     print("####path $path");
+
+  //     File imageFile = File(filePath);
+  //     if (!imageFile.existsSync()) {
+  //       print("#### Error: Source file doesn't exist");
+  //       return;
+  //     }
+
+  //     Directory(targetDirectoryPath).createSync(recursive: true);
+  //     print("#### Check ");
+
+  //     await imageFile.copy(path);
+  //     print("#### Check 2");
+
+  //     // Get.offAll(() => const HomeScreen());
+  //   } catch (e) {
+  //     print('####Error exporting file: $e');
+  //   }
+  // }
 
   optionList(String imageName, String name, VoidCallback onPress) {
     return InkWell(
@@ -437,6 +461,7 @@ class _ConversionResultState extends State<ConversionResult> {
   void _shareFile(FileSystemEntity fileEntity) {
     if (fileEntity is File) {
       String fileName = fileEntity.uri.pathSegments.last;
+      // ignore: deprecated_member_use
       Share.shareFiles([fileEntity.path], text: 'Sharing file: $fileName');
     } else {
       print('Selected item is not a file.');
@@ -447,33 +472,6 @@ class _ConversionResultState extends State<ConversionResult> {
         "${"Attention"}!!!",
         "ERROR",
       );
-    }
-  }
-
-  Future<void> _exportFile(FileSystemEntity file) async {
-    try {
-      final filePath = file.uri.toFilePath();
-      print("filePath $filePath");
-
-      final documentsDir = await getApplicationDocumentsDirectory();
-      print("documentsDir $documentsDir");
-
-      // Create the folder if it doesn't exist
-      final pdfFolder = Directory(documentsDir.path);
-      if (!pdfFolder.existsSync()) {
-        pdfFolder.createSync(recursive: true);
-      }
-
-      final destinationPath =
-          path.join(pdfFolder.path, file.uri.pathSegments.last);
-      print("destinationPath $destinationPath");
-
-      await File(filePath).copy(destinationPath);
-
-      Get.offAll(() => const HomeScreen());
-      print('PDF saved to documents: $destinationPath');
-    } catch (e) {
-      print('Error exporting file: $e');
     }
   }
 

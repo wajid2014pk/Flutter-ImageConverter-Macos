@@ -2,7 +2,7 @@
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class RevenuecatKey {
-  static String key = 'appl_YfLCcMkutfRqXWFkVJfYUUUnVCR';
+  static String key = 'appl_oVHFcWVOWeYVrUfYgjXDEoNsGQG';
 
   static Future<void> initPlatformState() async {
     await Purchases.configure(PurchasesConfiguration(key));

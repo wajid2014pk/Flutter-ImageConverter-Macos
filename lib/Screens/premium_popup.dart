@@ -121,295 +121,267 @@ class PremiumPopUp {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // SizedBox(
-                              //   width: MediaQuery.sizeOf(context).width * 0.35,
-                              //   height: MediaQuery.sizeOf(context).height * 0.6,
-                              // child:
                               Expanded(
-                                flex: 5,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, right: 40),
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                flex: 6,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 50.0),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  customRow(
-                                                    context,
-                                                    "Multiple format at once",
-                                                    // "AppLocalizations.of(
-                                                    //         /context)!
-                                                    //     .high_accuracy_ocr,"
-                                                    'assets/Multiple_images.png',
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 45.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              customRow(
+                                                context,
+                                                "Multiple format at once",
+                                                // "AppLocalizations.of(
+                                                //         /context)!
+                                                //     .high_accuracy_ocr,"
+                                                'assets/Multiple_images.png',
+                                              ),
+                                              const SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              customRow(
+                                                context,
+                                                "Convert to any format",
+                                                // AppLocalizations.of(
+                                                //         context)!
+                                                //     .batch_processing,
+                                                'assets/any_format.png',
+                                              ),
+                                              const SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              customRow(
+                                                  context,
+                                                  "Unlimited Conversions",
+                                                  // AppLocalizations.of(
+                                                  //         context)!
+                                                  //     .multiple_export_options,
+                                                  'assets/Unlimited.png'),
+                                              const SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              customRow(
+                                                  context,
+                                                  "Support upto 20MBs Files",
+                                                  // AppLocalizations.of(
+                                                  //         context)!
+                                                  //     .ad_free_experience,
+                                                  'assets/20mb.png'),
+                                              const SizedBox(
+                                                height: 20.0,
+                                              ),
+                                              customRow(
+                                                  context,
+                                                  "Customer Support",
+                                                  // AppLocalizations.of(
+                                                  //         context)!
+                                                  //     .unlimited_scans,
+                                                  'assets/Customer_support.png'),
+                                            ],
+                                          ),
+                                        ),
+                                        // const Spacer(),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 0.0),
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                "Free",
+                                                // AppLocalizations.of(context)!
+                                                //     .free,
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              const SizedBox(
+                                                height: 22.0,
+                                              ),
+                                              customLockColumn('tick'),
+                                              const SizedBox(
+                                                height: 22.0,
+                                              ),
+                                              customLockColumn('lock'),
+                                              const SizedBox(
+                                                height: 22.0,
+                                              ),
+                                              customLockColumn('lock'),
+                                              const SizedBox(
+                                                height: 22.0,
+                                              ),
+                                              customLockColumn('lock'),
+                                              const SizedBox(
+                                                height: 22.0,
+                                              ),
+                                              customLockColumn('lock'),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 25.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              // border: Border.all(),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.2),
+                                                  spreadRadius: 1,
+                                                  blurRadius: 18,
+                                                  offset: const Offset(0, 3),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 25.0,
+                                                          right: 25.0,
+                                                          top: 3.0,
+                                                          bottom: 3.0),
+                                                  decoration: BoxDecoration(
+                                                    // border: Border.all(),
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.topLeft,
+                                                      end:
+                                                          Alignment.bottomRight,
+                                                      colors: <Color>[
+                                                        UiColors.lightblueColor,
+                                                        UiColors.darkblueColor
+                                                      ],
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 20.0,
-                                                  ),
-                                                  customRow(
-                                                    context,
-                                                    "Convert to any format",
+                                                  child: const Text(
+                                                    "Pro",
                                                     // AppLocalizations.of(
                                                     //         context)!
-                                                    //     .batch_processing,
-                                                    'assets/any_format.png',
+                                                    //     .pro,
+                                                    style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.white),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 20.0,
-                                                  ),
-                                                  customRow(
-                                                      context,
-                                                      "Unlimited Conversions",
-                                                      // AppLocalizations.of(
-                                                      //         context)!
-                                                      //     .multiple_export_options,
-                                                      'assets/Unlimited.png'),
-                                                  const SizedBox(
-                                                    height: 20.0,
-                                                  ),
-                                                  customRow(
-                                                      context,
-                                                      "Support upto 20MBs Files",
-                                                      // AppLocalizations.of(
-                                                      //         context)!
-                                                      //     .ad_free_experience,
-                                                      'assets/20mb.png'),
-                                                  const SizedBox(
-                                                    height: 20.0,
-                                                  ),
-                                                  customRow(
-                                                      context,
-                                                      "Customer Support",
-                                                      // AppLocalizations.of(
-                                                      //         context)!
-                                                      //     .unlimited_scans,
-                                                      'assets/Customer_support.png'),
-                                                ],
-                                              ),
-                                            ),
-                                            // const Spacer(),
-                                            Column(
-                                              children: [
-                                                const Text(
-                                                  "Free",
-                                                  // AppLocalizations.of(context)!
-                                                  //     .free,
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
                                                 ),
                                                 const SizedBox(
-                                                  height: 25.0,
+                                                  height: 18.0,
                                                 ),
                                                 customLockColumn('tick'),
                                                 const SizedBox(
-                                                  height: 25.0,
+                                                  height: 20.0,
                                                 ),
-                                                customLockColumn('lock'),
+                                                customLockColumn('tick'),
                                                 const SizedBox(
-                                                  height: 25.0,
+                                                  height: 20.0,
                                                 ),
-                                                customLockColumn('lock'),
+                                                customLockColumn('tick'),
                                                 const SizedBox(
-                                                  height: 25.0,
+                                                  height: 20.0,
                                                 ),
-                                                customLockColumn('lock'),
+                                                customLockColumn('tick'),
                                                 const SizedBox(
-                                                  height: 25.0,
+                                                  height: 20.0,
                                                 ),
-                                                customLockColumn('lock'),
+                                                customLockColumn('tick'),
                                                 // const SizedBox(
                                                 //   height: 20.0,
                                                 // ),
-                                                // customLockColumn('lock'),
+                                                // customLockColumn('tick'),
+                                                const SizedBox(
+                                                  height: 30.0,
+                                                ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 25.0),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: Colors.white,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.2),
-                                                      spreadRadius: 1,
-                                                      blurRadius: 18,
-                                                      offset:
-                                                          const Offset(0, 3),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Column(
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 25.0,
-                                                              right: 25.0,
-                                                              top: 3.0,
-                                                              bottom: 3.0),
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          begin:
-                                                              Alignment.topLeft,
-                                                          end: Alignment
-                                                              .bottomRight,
-                                                          colors: <Color>[
-                                                            UiColors
-                                                                .lightblueColor,
-                                                            UiColors
-                                                                .darkblueColor
-
-                                                            // Color(0xff5500FF),
-
-                                                            // Color(0xff9B009C),
-                                                          ],
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5),
-                                                      ),
-                                                      child: const Text(
-                                                        "Pro",
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .pro,
-                                                        style: TextStyle(
-                                                            fontSize: 16.0,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 18.0,
-                                                    ),
-                                                    customLockColumn('tick'),
-                                                    const SizedBox(
-                                                      height: 20.0,
-                                                    ),
-                                                    customLockColumn('tick'),
-                                                    const SizedBox(
-                                                      height: 20.0,
-                                                    ),
-                                                    customLockColumn('tick'),
-                                                    const SizedBox(
-                                                      height: 20.0,
-                                                    ),
-                                                    customLockColumn('tick'),
-                                                    const SizedBox(
-                                                      height: 20.0,
-                                                    ),
-                                                    customLockColumn('tick'),
-                                                    // const SizedBox(
-                                                    //   height: 20.0,
-                                                    // ),
-                                                    // customLockColumn('tick'),
-                                                    // const SizedBox(
-                                                    //   height: 30.0,
-                                                    // ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 25,
-                                        ),
-                                        Center(
-                                          child: Stack(
-                                            children: [
-                                              Image.asset(
-                                                "assets/rating_image.png",
-                                                width: 220,
-                                                height: 100,
-                                              ),
-                                              Positioned(
-                                                  top: 5,
-                                                  left:
-                                                      isArabicOrPersianOrHebrew
-                                                          ? 0
-                                                          : 5,
-                                                  right:
-                                                      isArabicOrPersianOrHebrew
-                                                          ? 6
-                                                          : 0,
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .trusted_by,
-                                                        "Trusted By",
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                fontSize: 18,
-                                                                color: UiColors
-                                                                    .whiteColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
-                                                      ),
-                                                      Text(
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .professionals,
-                                                        "Professionals",
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                fontSize: 22,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                      ),
-                                                    ],
-                                                  ))
-                                            ],
                                           ),
                                         )
                                       ],
                                     ),
-                                  ),
+                                    const SizedBox(
+                                      height: 25,
+                                    ),
+                                    Center(
+                                      child: Stack(
+                                        children: [
+                                          Image.asset(
+                                            "assets/rating_image.png",
+                                            width: 220,
+                                            height: 100,
+                                          ),
+                                          Positioned(
+                                              top: 5,
+                                              left: isArabicOrPersianOrHebrew
+                                                  ? 0
+                                                  : 5,
+                                              right: isArabicOrPersianOrHebrew
+                                                  ? 6
+                                                  : 0,
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    // AppLocalizations.of(
+                                                    //         context)!
+                                                    //     .trusted_by,
+                                                    "Trusted By",
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 18,
+                                                        color:
+                                                            UiColors.whiteColor,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  Text(
+                                                    // AppLocalizations.of(
+                                                    //         context)!
+                                                    //     .professionals,
+                                                    "Professionals",
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                ],
+                                              ))
+                                        ],
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                              // ),
-                              VerticalDivider(
-                                thickness: 2.0,
-                                color: Colors.black.withOpacity(0.2),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 30.0),
+                                child: VerticalDivider(
+                                  thickness: 2.0,
+                                  color: Colors.black.withOpacity(0.2),
+                                ),
                               ),
-                              // SizedBox(
-                              //   width: MediaQuery.sizeOf(context).width * 0.35,
-                              //   height: MediaQuery.sizeOf(context).height * 0.6,
-                              //   child:
                               Expanded(
-                                flex: 5,
+                                flex: 6,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 40.0, right: 10),
+                                      left: 40.0, right: 0),
                                   child: Center(
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -433,7 +405,7 @@ class PremiumPopUp {
                                                         false,
                                                         context)
                                                 : shimmerContainer(
-                                                    context, 170, 200),
+                                                    context, 170, 170),
                                             const SizedBox(
                                               width: 10,
                                             ),
@@ -449,7 +421,7 @@ class PremiumPopUp {
                                                         true,
                                                         context)
                                                 : shimmerContainer(
-                                                    context, 170, 200),
+                                                    context, 170, 170),
                                           ],
                                         ),
                                         const Spacer(),
@@ -571,9 +543,10 @@ class PremiumPopUp {
 
   Widget customLockColumn(String image) {
     return Container(
-      height: 20,
-      width: 20,
+      height: 25,
+      width: 25,
       decoration: BoxDecoration(
+          // border: Border.all(),
           image: DecorationImage(
         image: AssetImage(
           "assets/$image.png",
@@ -590,13 +563,18 @@ class PremiumPopUp {
               : Colors.transparent,
           borderRadius: BorderRadius.circular(10)),
       child: Row(children: [
-        Container(
-          margin: const EdgeInsets.only(left: 15.0, right: 15.0),
+        SizedBox(
+          // decoration: BoxDecoration(border: Border.all()),
+          // margin: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: 24,
           height: 24,
           child: Image.asset(image),
         ),
+        const SizedBox(
+          width: 15,
+        ),
         SizedBox(
+          // decoration: BoxDecoration(border: Border.all()),
           width: 260,
           child: Text(
             title,

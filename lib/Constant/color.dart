@@ -9,6 +9,8 @@ class UiColors {
   static Color backgroundColor = const Color(0xffF9F9F9);
   static Color textColor = const Color(0xff919395);
 
+  static Color yellowColor = const Color(0xffFDB602);
+
   static Color blackColor = Colors.black;
   static Color whiteColor = Colors.white;
   static Color? buttonColor = Colors.grey[200];

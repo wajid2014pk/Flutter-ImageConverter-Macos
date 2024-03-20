@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:lottie/lottie.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -38,65 +39,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Obx(
-        // () =>
-        Scaffold(
-      backgroundColor: UiColors.whiteColor,
-      // bottomNavigationBar: showOnTapOptions.value
-      //     ? Padding(
-      //         padding:
-      //             const EdgeInsets.only(bottom: 15.0, left: 30, right: 30),
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //           children: [
-      //             Expanded(
-      //               flex: 1,
-      //               child: optionList("assets/Delet.png", () async {
-      //                 _deleteFile(allfiles[selectedFileIndex.value]);
-      //               }),
-      //             ),
-      //             const SizedBox(
-      //               width: 10,
-      //             ),
-      //             Expanded(
-      //               flex: 1,
-      //               child: optionList("assets/Preveiw.png", () {
-      //                 FileSystemEntity selectedFile =
-      //                     allfiles[selectedFileIndex.value];
-      //                 if (selectedFile.path.endsWith('.svg')) {
-      //                   Get.snackbar(
-      //                     backgroundColor: Colors.white,
-      //                     "Could open this file",
-      //                     "No App found to Open",
-      //                   );
-      //                 } else {
-      //                   _openFile(allfiles[selectedFileIndex.value]);
-      //                 }
-      //               }),
-      //             ),
-      //             const SizedBox(
-      //               width: 10,
-      //             ),
-      //             Expanded(
-      //               flex: 1,
-      //               child: optionList("assets/share.png", () {
-      //                 _shareFile(allfiles[selectedFileIndex.value]);
-      //               }),
-      //             ),
-      //             const SizedBox(
-      //               width: 10,
-      //             ),
-      //             Expanded(
-      //               flex: 1,
-      //               child: optionList("assets/EXport.png", () async {
-      //                 await _exportFile(allfiles[selectedFileIndex.value]);
-      //               }),
-      //             ),
-      //           ],
-      //         ),
-      //       )
-      //     : const SizedBox(),
+    return Scaffold(
+      backgroundColor: UiColors.backgroundColor,
       body: Obx(
         () => Column(
           children: [
@@ -282,7 +226,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               child: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
-                  child: _buildListView(context)),
+                  child: _buildGridView(context)),
             ),
           ],
         ),
@@ -291,7 +235,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget _buildListView(BuildContext context) {
+  Widget _buildGridView(BuildContext context) {
     if (allfiles.isEmpty) {
       return Center(
         child: Column(
@@ -313,81 +257,104 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ),
       );
     }
-    return ListView.builder(
+
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3, childAspectRatio: (1.01 / .25)),
       itemCount: allfiles.length,
-      itemBuilder: (context, index) {
+      itemBuilder: (BuildContext context, int index) {
         String fileName = allfiles[index].uri.pathSegments.last;
         String displayedFileName =
             fileName.length > 20 ? fileName.substring(0, 20) : fileName;
 
         String creationDate = _getCreationDate(allfiles[index]);
 
-        return GestureDetector(
-          onTap: () async {
-            if (selectedFileIndex.value == index) {
-              showOnTapOptions.value = !showOnTapOptions.value;
-            } else {
-              showOnTapOptions.value = false;
-              selectedFileIndex.value = index;
-              showOnTapOptions.value = true;
-            }
-          },
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 10.0, right: 10, top: 3, bottom: 3),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+          child: InkWell(
+            onTap: () {
+              _openFile(allfiles[index]);
+            },
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white.withOpacity(0.5),
+                color: UiColors.backgroundColor,
+                border: Border(
+                  right: BorderSide(
+                      width: 1.0, color: UiColors.blackColor.withOpacity(0.2)),
+                  bottom: BorderSide(
+                      width: 1.0, color: UiColors.blackColor.withOpacity(0.2)),
+                ),
               ),
-              child: Column(
+              child: Row(
                 children: [
-                  Row(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Container(
+                      height: 65.0,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: _getFileIcon(fileName),
+                    ),
+                  ),
+                  const SizedBox(width: 11.0),
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(width: 8.0),
-                      _getFileIcon(fileName),
-                      const SizedBox(width: 12.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            displayedFileName,
-                            style: GoogleFonts.poppins(
-                                color: selectedFileIndex.value == index &&
-                                        showOnTapOptions.value == true
-                                    ? UiColors.darkblueColor
-                                    : UiColors.blackColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width / 7,
+                        child: Text(
+                          displayedFileName,
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(fontSize: 14.0),
                           ),
-                          const SizedBox(height: 6),
-                          Text(
-                            creationDate,
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: selectedFileIndex.value == index &&
-                                      showOnTapOptions.value == true
-                                  ? UiColors.darkblueColor
-                                  : UiColors.blackColor,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      const Spacer(),
-                      Icon(
-                        Icons.more_vert_rounded,
-                        size: 30.0,
-                        color: selectedFileIndex.value == index &&
-                                showOnTapOptions.value == true
-                            ? UiColors.darkblueColor
-                            : UiColors.blackColor,
-                      )
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        creationDate,
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.poppins(
+                          textStyle: TextStyle(
+                              color: UiColors.blackColor.withOpacity(0.4),
+                              fontSize: 12.0),
+                        ),
+                      ),
                     ],
                   ),
-                  Divider(
-                    color: UiColors.blackColor.withOpacity(0.1),
+                  const Spacer(),
+                  PopupMenuButton(
+                    color: Colors.white,
+                    surfaceTintColor: Colors.white,
+                    icon: const Icon(
+                      Icons.more_vert,
+                      size: 25.0,
+                    ),
+                    itemBuilder: (BuildContext context) {
+                      return ["Delete", "Share"].map((String choice) {
+                        return PopupMenuItem<String>(
+                          value: choice,
+                          child: Text(
+                            choice,
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 16.0),
+                            ),
+                          ),
+                        );
+                      }).toList();
+                    },
+                    onSelected: (value) async {
+                      if (value == "Delete") {
+                        _deleteFile(allfiles[index]);
+                      } else if (value == "Share") {
+                        _shareFile(allfiles[index]);
+                      }
+                    },
                   ),
                 ],
               ),
@@ -504,48 +471,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
-  // Future<void> _exportFile(FileSystemEntity file) async {
-  //   try {
-  //     final filePath = file.uri.toFilePath();
-  //     print("filePath $filePath");
-  //     // Check if the file is a PDF
-  //     if (path.extension(filePath).toLowerCase() == '.pdf') {
-  //       // Save PDF file to documents directory
-  //       final documentsDir = Platform.isAndroid
-  //           ? await getExternalStorageDirectory()
-  //           : await getApplicationDocumentsDirectory();
-  //       final destinationPath =
-  //           path.join(documentsDir!.path, file.uri.pathSegments.last);
-  //       await File(filePath).copy(destinationPath);
-  //       Get.snackbar(
-  //         colorText: Colors.black,
-  //         backgroundColor: Colors.white,
-  //         duration: const Duration(seconds: 4),
-  //         "Attention",
-  //         "PDF saved to Documents",
-  //       );
-  //       print('PDF saved to documents: $destinationPath');
-  //     } else {
-  //       // Save other file formats to gallery
-  //       final result = await ImageGallerySaver.saveFile(filePath);
-  //       if (result['isSuccess']) {
-  //         Get.snackbar(
-  //           colorText: Colors.black,
-  //           backgroundColor: Colors.white,
-  //           duration: const Duration(seconds: 4),
-  //           "Attention",
-  //           "Image Saved to gallery",
-  //         );
-  //         print('Image saved to gallery!');
-  //       } else {
-  //         print('Failed to save image: ${result['errorMessage']}');
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print('Error exporting file: $e');
-  //   }
-  // }
-
   _getFileIcon(String fileName) {
     if (fileName.toLowerCase().endsWith('.pdf')) {
       return Image.asset(
@@ -627,21 +552,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  // Future<void> _openFile(FileSystemEntity file) async {
-  //   try {
-  //     final filePath = file.uri.toFilePath();
-  //     await OpenFile.open(filePath);
-  //   } catch (e) {
-  //     print('Error opening file: $e');
-  //     Get.snackbar(
-  //       colorText: Colors.black,
-  //       backgroundColor: Colors.white,
-  //       duration: const Duration(seconds: 4),
-  //       'ERROR!!!',
-  //       // AppLocalizations.of(Get.context!)!.error,
-  //       'Error opening File',
-  //       // AppLocalizations.of(Get.context!)!.opening_file,
-  //     );
-  //   }
-  // }
+  Future<void> _openFile(FileSystemEntity file) async {
+    try {
+      final filePath = file.uri.toFilePath();
+      await OpenFile.open(filePath);
+    } catch (e) {
+      print('Error opening file: $e');
+      Get.snackbar(
+        colorText: Colors.black,
+        backgroundColor: Colors.white,
+        duration: const Duration(seconds: 4),
+        'ERROR!!!',
+        // AppLocalizations.of(Get.context!)!.error,
+        'Error opening File',
+        // AppLocalizations.of(Get.context!)!.opening_file,
+      );
+    }
+  }
 }

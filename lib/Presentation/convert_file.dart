@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
@@ -203,9 +202,9 @@ class _ConvertFileState extends State<ConvertFile> {
                                             fontWeight: FontWeight.w500),
                                       ),
                                       const Spacer(),
-                                      Image.asset(
-                                        "assets/down.png",
-                                        height: 15,
+                                      const Icon(
+                                        Icons.arrow_right_rounded,
+                                        size: 50,
                                       ),
                                       const SizedBox(
                                         width: 15,

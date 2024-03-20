@@ -63,7 +63,7 @@ class ConvertImagesController extends GetxController {
       Map valueMap = json.decode(response.data);
       Directory? dir = await getApplicationCacheDirectory();
       var path =
-          "${dir.path}/ImageConverter/ $from To $to _$dateTime#${basename(valueMap['d_url'])}";
+          "${dir.path}/ImageConverter/ ${from}to$to _$dateTime#${basename(valueMap['d_url'])}";
       isDownloading.value = true;
       var downloadRes = await dio.download(
         "${valueMap['d_url']}",

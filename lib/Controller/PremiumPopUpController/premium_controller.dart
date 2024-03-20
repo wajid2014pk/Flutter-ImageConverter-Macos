@@ -12,25 +12,27 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PayWallController extends GetxController {
   RxInt selectPackage = 1.obs;
+
   late Offerings offerings;
   final _revenueCatKey =
-      PurchasesConfiguration("appl_ssANMpeVsoxkxngzJbsGjhSALgH");
+      PurchasesConfiguration("appl_oVHFcWVOWeYVrUfYgjXDEoNsGQG");
   RxBool isPro = false.obs;
 
   @override
   void onInit() {
     initRevenuePlatform();
-    // showPremium();
     super.onInit();
   }
 
   Future<void> initRevenuePlatform() async {
     await Purchases.configure(_revenueCatKey);
+    print("Done");
   }
 
   getProductsPrice() async {
     try {
       offerings = await Purchases.getOfferings();
+      print("offerings $offerings");
       if (offerings.current != null) {
         return true;
       }
