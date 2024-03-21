@@ -3,13 +3,9 @@ PODS:
     - FlutterMacOS
   - desktop_drop (0.0.1):
     - FlutterMacOS
-  - file_selector_macos (0.0.1):
-    - FlutterMacOS
   - flutter_image_compress_macos (1.0.0):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
-  - package_info_plus (0.0.1):
-    - FlutterMacOS
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -21,23 +17,17 @@ PODS:
   - RevenueCat (4.39.0)
   - share_plus (0.0.1):
     - FlutterMacOS
-  - shared_preferences_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
   - url_launcher_macos (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
   - bitsdojo_window_macos (from `Flutter/ephemeral/.symlinks/plugins/bitsdojo_window_macos/macos`)
   - desktop_drop (from `Flutter/ephemeral/.symlinks/plugins/desktop_drop/macos`)
-  - file_selector_macos (from `Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos`)
   - flutter_image_compress_macos (from `Flutter/ephemeral/.symlinks/plugins/flutter_image_compress_macos/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - purchases_flutter (from `Flutter/ephemeral/.symlinks/plugins/purchases_flutter/macos`)
   - share_plus (from `Flutter/ephemeral/.symlinks/plugins/share_plus/macos`)
-  - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
 
 SPEC REPOS:
@@ -50,38 +40,29 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/bitsdojo_window_macos/macos
   desktop_drop:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_drop/macos
-  file_selector_macos:
-    :path: Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos
   flutter_image_compress_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/flutter_image_compress_macos/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
-  package_info_plus:
-    :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
   path_provider_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin
   purchases_flutter:
     :path: Flutter/ephemeral/.symlinks/plugins/purchases_flutter/macos
   share_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/share_plus/macos
-  shared_preferences_foundation:
-    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin
   url_launcher_macos:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
   bitsdojo_window_macos: 44e3b8fe3dd463820e0321f6256c5b1c16bb6a00
   desktop_drop: 69eeff437544aa619c8db7f4481b3a65f7696898
-  file_selector_macos: 468fb6b81fac7c0e88d71317f3eec34c3b008ff9
   flutter_image_compress_macos: c26c3c13ea0f28ae6dea4e139b3292e7729f99f1
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  package_info_plus: 02d7a575e80f194102bef286361c6c326e4c29ce
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   purchases_flutter: c583f4f60a316b9fb07b0b6d817016d79a2f411c
   PurchasesHybridCommon: f161942f40eb37372c78d7c6524254b0b32ac752
   RevenueCat: b552a07693b061ff7ea42c8c224f0613755aafe1
   share_plus: 76dd39142738f7a68dd57b05093b5e8193f220f7
-  shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
   url_launcher_macos: d2691c7dd33ed713bf3544850a623080ec693d95
 
 PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3

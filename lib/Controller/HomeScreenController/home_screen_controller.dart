@@ -7,6 +7,7 @@ import 'package:image_converter_macos/Presentation/convert_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:path/path.dart' as path;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreenController extends GetxController {
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -31,19 +32,19 @@ class HomeScreenController extends GetxController {
       title: Row(
         children: [
           Image.asset(
-            'assets/mac_logo.png',
+            'assets/logo.png',
             height: 40,
             width: 40,
           ),
           const SizedBox(
-            width: 10,
+            width: 16,
           ),
           Text(
-            'Image Converter',
+            '${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}',
             style: GoogleFonts.poppins(
               color: UiColors.blackColor,
-              fontSize: 24.0,
-              fontWeight: FontWeight.w400,
+              fontSize: 22.0,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -75,7 +76,7 @@ class HomeScreenController extends GetxController {
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 color: UiColors.blackColor,
-                fontWeight: FontWeight.w500,
+                // fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -127,12 +128,9 @@ class HomeScreenController extends GetxController {
   }
 
   Future<void> handleDragDropImage(var details) async {
-    // Ensure only one file is dropped
     if (details.files.length == 1) {
-      // Get the path of the dropped file
       String imagePath = details.files.first.path;
 
-      // Check if the file extension is either PNG or JPG
       if (imagePath.toLowerCase().endsWith('.png') ||
           imagePath.toLowerCase().endsWith('.jpg') ||
           imagePath.toLowerCase().endsWith('.jpeg') ||
@@ -140,67 +138,21 @@ class HomeScreenController extends GetxController {
           imagePath.toLowerCase().endsWith('.heic') ||
           imagePath.toLowerCase().endsWith('.gif') ||
           imagePath.toLowerCase().endsWith('.webp')) {
-        // Proceed to handle the image
         Get.to(() => ConvertFile(imagePath: imagePath));
       } else {
-        // Display a toast message for invalid image format
         Get.snackbar(
-          'Attention',
-          "Invalid image format",
+          AppLocalizations.of(Get.context!)!.attention,
+          AppLocalizations.of(Get.context!)!.invalid_image_format,
         );
-        // Fluttertoast.showToast(
-        //     msg: "Invalid image format",
-        //     toastLength: Toast.LENGTH_SHORT,
-        //     gravity: ToastGravity.BOTTOM,
-        //     timeInSecForIosWeb: 1,
-        //     backgroundColor: Colors.red,
-        //     textColor: Colors.white,
-        //     fontSize: 16.0);
       }
     } else {
-      // Display a toast message for dropping multiple files
-
       Get.snackbar(
-        'Attention',
-        "Only one image can be dropped at a time.",
+        AppLocalizations.of(Get.context!)!.attention,
+        AppLocalizations.of(Get.context!)!
+            .only_one_image_can_be_dropped_at_a_time,
       );
-      // Fluttertoast.showToast(
-      //     msg: "Only one image can be dropped at a time.",
-      //     toastLength: Toast.LENGTH_SHORT,
-      //     gravity: ToastGravity.BOTTOM,
-      //     timeInSecForIosWeb: 1,
-      //     backgroundColor: Colors.red,
-      //     textColor: Colors.white,
-      //     fontSize: 16.0);
     }
   }
-
-  // Future<void> handleDragDropImage(details) async {
-  //   var data = details.file;
-
-  //   if (data is List<String>) {
-  //     String imagePath = data.first;
-
-  //     // Check if the file extension is either PNG or JPG
-  //     if (imagePath.toLowerCase().endsWith('.png') ||
-  //         imagePath.toLowerCase().endsWith('.jpg')) {
-  //       // Proceed to handle the image
-  //       Get.to(() => ConvertFile(imagePath: imagePath));
-  //     } else {
-  //       // Display a toast message for invalid image format
-  //       Fluttertoast.showToast(
-  //           msg: "Invalid image format. Only PNG and JPG images are allowed.",
-  //           toastLength: Toast.LENGTH_SHORT,
-  //           gravity: ToastGravity.BOTTOM,
-  //           timeInSecForIosWeb: 1,
-  //           backgroundColor: Colors.red,
-  //           textColor: Colors.white,
-  //           fontSize: 16.0);
-  //     }
-  //   } else {
-  //     print('Invalid drag data');
-  //   }
-  // }
 
   Future<void> handleUrlImage() async {
     showDialog(
@@ -235,7 +187,7 @@ class HomeScreenController extends GetxController {
                         color: Color(0xff5500FF),
                       )),
                       border: InputBorder.none,
-                      hintText: "Paste Url Here",
+                      hintText: AppLocalizations.of(context)!.paste_url_here,
                       hintStyle:
                           const TextStyle(fontSize: 16, color: Colors.grey),
                     ),
@@ -250,7 +202,7 @@ class HomeScreenController extends GetxController {
                           textController.clear();
                         },
                         child: Text(
-                          "Cancel",
+                          AppLocalizations.of(context)!.cancel,
                           style: TextStyle(
                               color: Colors.black.withOpacity(0.3),
                               fontSize: 14),
@@ -287,11 +239,13 @@ class HomeScreenController extends GetxController {
                                 await dio.download(enteredUrl, filePath);
                               } catch (e) {
                                 ScaffoldMessenger.of(Get.context!)
-                                    .showSnackBar(const SnackBar(
-                                  duration: Duration(seconds: 2),
+                                    .showSnackBar(SnackBar(
+                                  duration: const Duration(seconds: 2),
                                   behavior: SnackBarBehavior.floating,
                                   content: Text(
-                                    "Please Enter Valid URL",
+                                    //AppLocalizations.of(Get.context!)!.please_enter_valid_url,
+                                    AppLocalizations.of(Get.context!)!
+                                        .please_enter_valid_url,
                                   ),
                                 ));
                               }
@@ -302,9 +256,10 @@ class HomeScreenController extends GetxController {
                               //     ));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
+                                SnackBar(
                                   content: Text(
-                                    "Please Enter Valid URL",
+                                    AppLocalizations.of(Get.context!)!
+                                        .please_enter_valid_url,
                                   ),
                                 ),
                               );
@@ -313,9 +268,10 @@ class HomeScreenController extends GetxController {
                           } else {
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Text(
-                                  "Please Enter Valid URL",
+                                  AppLocalizations.of(Get.context!)!
+                                      .please_enter_valid_url,
                                 ),
                               ),
                             );
@@ -324,10 +280,10 @@ class HomeScreenController extends GetxController {
                           print('Error in onPressed: $e');
                         }
                       },
-                      child: const Text(
-                        // AppLocalizations.of(context)!.proceed,
-                        "Proceed",
-                        style: TextStyle(color: Colors.white),
+                      child: Text(
+                        AppLocalizations.of(context)!.proceed,
+                        // "Proceed",
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ],

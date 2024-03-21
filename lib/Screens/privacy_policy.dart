@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PrivacyPolicy extends StatefulWidget {
   const PrivacyPolicy({
@@ -34,7 +35,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
     return Scaffold(
       body: Center(
         child: Text(
-          "Privacy Policy",
+          AppLocalizations.of(context)!.privacy_policy,
           style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

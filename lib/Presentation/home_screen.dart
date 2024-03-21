@@ -1,16 +1,15 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/HomeScreenController/home_screen_controller.dart';
 import 'package:image_converter_macos/Presentation/history.dart';
-import 'package:image_converter_macos/Presentation/rating_dialog.dart';
 import 'package:image_converter_macos/Presentation/select_file_screen.dart';
 import 'package:image_converter_macos/Screens/feedback_screen.dart';
 import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:image_converter_macos/Screens/privacy_policy.dart';
 import 'package:image_converter_macos/Screens/rate_us_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -82,42 +81,35 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                         homeScreenController.sideBarItem(
                           "assets/Home.png",
-                          "Home",
+                          AppLocalizations.of(Get.context!)!.home,
                           1,
                           context,
                         ),
                         homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/History.png",
-                          "History",
+                          AppLocalizations.of(Get.context!)!.history,
                           2,
                           context,
                         ),
-                        // homeScreenController.divider(),
-                        // homeScreenController.sideBarItem(
-                        //   "assets/Setting.png",
-                        //   "Setting",
-                        //   3,
-                        //   context,
-                        // ),
                         homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/Star.png",
-                          "Rate Us",
+                          AppLocalizations.of(Get.context!)!.rate_us,
                           3,
                           context,
                         ),
                         homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/Feedback.png",
-                          "Feedback",
+                          AppLocalizations.of(Get.context!)!.feedback,
                           4,
                           context,
                         ),
                         homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/Privacy Policy.png",
-                          "Privacy Policy",
+                          AppLocalizations.of(Get.context!)!.privacy_policy,
                           5,
                           context,
                         ),
@@ -151,33 +143,41 @@ class _HomeScreenState extends State<HomeScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "IMAGE",
+                                      AppLocalizations.of(Get.context!)!.imagee,
                                       style: GoogleFonts.poppins(
                                           color: UiColors.whiteColor,
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600),
                                     ),
                                     Text(
-                                      "CONVERTER",
+                                      AppLocalizations.of(Get.context!)!
+                                          .converterr,
                                       style: GoogleFonts.poppins(
                                           color: UiColors.whiteColor,
                                           fontSize: 18,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: UiColors.whiteColor,
-                                          borderRadius:
-                                              BorderRadius.circular(6)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 5, right: 5),
-                                        child: Text(
-                                          "PRO",
-                                          style: GoogleFonts.poppins(
-                                              color: UiColors.yellowColor,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: UiColors.whiteColor,
+                                            borderRadius:
+                                                BorderRadius.circular(4)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 7,
+                                              right: 7,
+                                              top: 2,
+                                              bottom: 2),
+                                          child: Text(
+                                            AppLocalizations.of(Get.context!)!
+                                                .proo,
+                                            style: GoogleFonts.poppins(
+                                                color: UiColors.yellowColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -200,9 +200,8 @@ class _HomeScreenState extends State<HomeScreen>
                                               1.2,
                                           child: Center(
                                             child: Text(
-                                              "Upgrade",
-                                              // AppLocalizations.of(context)!
-                                              //     .upgrade,
+                                              AppLocalizations.of(Get.context!)!
+                                                  .upgrade,
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.poppins(
@@ -261,10 +260,5 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
     );
-  }
-
-  inAppReview(BuildContext context) {
-    DialogBoxRating().dialogRating(context);
-    print("inapp review");
   }
 }

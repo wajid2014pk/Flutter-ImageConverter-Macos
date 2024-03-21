@@ -8,6 +8,7 @@ import 'package:image_converter_macos/Presentation/home_screen.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConversionResult extends StatefulWidget {
   final String imageFormat;
@@ -62,7 +63,7 @@ class _ConversionResultState extends State<ConversionResult> {
                 GestureDetector(
                   onTap: () => Get.back(),
                   child: Text(
-                    'Converted',
+                    AppLocalizations.of(context)!.converted,
                     style: GoogleFonts.poppins(
                       color: UiColors.blueColor,
                       fontSize: 24.0,
@@ -106,13 +107,16 @@ class _ConversionResultState extends State<ConversionResult> {
             const SizedBox(
               width: 30,
             ),
-            optionList("assets/EXport.png", "Export", () async {
+            optionList(
+                "assets/EXport.png", AppLocalizations.of(context)!.export,
+                () async {
               _exportFile(widget.convertedFile);
             }),
             const SizedBox(
               width: 30,
             ),
-            optionList("assets/Convert.png", "Reconvert",
+            optionList(
+                "assets/Convert.png", AppLocalizations.of(context)!.reconvert,
                 // AppLocalizations.of(context)!.reconvert,
                 () async {
               conversionController.selectedIndex.value = 0;
@@ -272,8 +276,8 @@ class _ConversionResultState extends State<ConversionResult> {
                                 },
                                 child: Image.asset(
                                   "assets/zoom-in.png",
-                                  height: 50,
-                                  width: 60,
+                                  height: 30,
+                                  width: 30,
                                 ),
                               ),
                             )
@@ -329,9 +333,9 @@ class _ConversionResultState extends State<ConversionResult> {
       final filePath = file.uri.toFilePath();
       File imageFile = File(filePath);
 
-      Directory? dir = await getApplicationDocumentsDirectory();
+      Directory? dir = await getDownloadsDirectory();
 
-      var targetDirectoryPath = '${dir.path}/ImageConverterExport';
+      var targetDirectoryPath = '${dir!.path}/ImageConverterExport';
 
       // Check if the source file exists
       if (!imageFile.existsSync()) {
@@ -352,50 +356,19 @@ class _ConversionResultState extends State<ConversionResult> {
       // Copy the source file to the target file path
       await imageFile.copy(targetFilePath);
 
+      Get.offAll(() => const HomeScreen());
+
+      Get.snackbar(
+        backgroundColor: Colors.white,
+        AppLocalizations.of(Get.context!)!.attention,
+        "File Saved Successfully",
+      );
+
       print("#### Image exported to: $targetFilePath");
     } catch (e) {
       print('####Error exporting file: $e');
     }
   }
-
-  // Future<void> _exportFile(FileSystemEntity file) async {
-  //   try {
-  //     final filePath = file.uri.toFilePath();
-  //     DateTime dateTime = DateTime.now();
-  //     Directory? dir = await getDownloadsDirectory();
-  //     if (dir == null) {
-  //       print("#### Error: Downloads directory is null");
-  //       return;
-  //     }
-
-  //     print("####dir $dir");
-
-  //     var targetDirectoryPath = '${dir.path}/ImageConverterExport';
-  //     print("####targetDirectoryPath $targetDirectoryPath");
-
-  //     var formattedDateTime =
-  //         '${dateTime.year}-${dateTime.month}-${dateTime.day}_${dateTime.hour}-${dateTime.minute}-${dateTime.second}';
-  //     var path = '$targetDirectoryPath/$formattedDateTime';
-
-  //     print("####path $path");
-
-  //     File imageFile = File(filePath);
-  //     if (!imageFile.existsSync()) {
-  //       print("#### Error: Source file doesn't exist");
-  //       return;
-  //     }
-
-  //     Directory(targetDirectoryPath).createSync(recursive: true);
-  //     print("#### Check ");
-
-  //     await imageFile.copy(path);
-  //     print("#### Check 2");
-
-  //     // Get.offAll(() => const HomeScreen());
-  //   } catch (e) {
-  //     print('####Error exporting file: $e');
-  //   }
-  // }
 
   optionList(String imageName, String name, VoidCallback onPress) {
     return InkWell(
@@ -417,11 +390,17 @@ class _ConversionResultState extends State<ConversionResult> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                name,
-                style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
+              SizedBox(
+                width: 140,
+                child: Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               const SizedBox(
@@ -450,10 +429,8 @@ class _ConversionResultState extends State<ConversionResult> {
         colorText: Colors.black,
         backgroundColor: Colors.grey.withOpacity(0.3),
         duration: const Duration(seconds: 4),
-        "${"ERROR"}!!!",
-        "${"ERROR"}  ${
-        // AppLocalizations.of(context)!.opening_file
-        'opening_file'}",
+        "${AppLocalizations.of(Get.context!)!.error}!!!",
+        AppLocalizations.of(Get.context!)!.no_app_found_to_open,
       );
     }
   }
@@ -466,12 +443,11 @@ class _ConversionResultState extends State<ConversionResult> {
     } else {
       print('Selected item is not a file.');
       Get.snackbar(
-        colorText: Colors.black,
-        backgroundColor: Colors.grey.withOpacity(0.3),
-        duration: const Duration(seconds: 4),
-        "${"Attention"}!!!",
-        "ERROR",
-      );
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+          "${AppLocalizations.of(Get.context!)!.attention}!!!",
+          AppLocalizations.of(Get.context!)!.error);
     }
   }
 

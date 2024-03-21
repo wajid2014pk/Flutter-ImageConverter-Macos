@@ -6,11 +6,12 @@ import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_
 import 'package:image_converter_macos/Controller/initialize-revenuecat-keys.dart';
 import 'package:image_converter_macos/Screens/splash_screen.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  RevenuecatKey.initPlatformState();
+  await RevenuecatKey.initPlatformState();
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -45,19 +46,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Future updateCustomerStatus() async {
     final customerInfo = await Purchases.getCustomerInfo();
 
-    final monthlyEntitalments = customerInfo.entitlements.active['monthlyPro'];
-    final yearlyEntitalments = customerInfo.entitlements.active['yearlyPro'];
+    final monthlyEntitalments = customerInfo.entitlements.active['monthlyPremium'];
+    final yearlyEntitalments =
+        customerInfo.entitlements.active['yearlyPremium'];
 
     if (monthlyEntitalments != null || yearlyEntitalments != null) {
-      // setState(() {
       payWallController.isPro.value = true;
-      // print("####PRO VALUE ${isPremium.isPro.value}");
-      // });
+      print("####PRO VALUE ${payWallController.isPro.value}");
     } else {
-      // setState(() {
       payWallController.isPro.value = false;
-      // print("####PRO VALUE ${isPremium.isPro.value}");
-      // });
+      print("####PRO VALUE ${payWallController.isPro.value}");
     }
   }
 
@@ -65,8 +63,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      // localizationsDelegates: AppLocalizations.localizationsDelegates,
-      // supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: SplashScreen(),
     );
   }

@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DialogBoxRating {
   RxDouble finalRating = 0.0.obs;
@@ -48,7 +50,7 @@ class DialogBoxRating {
                 ),
               ),
               Image.asset(
-                "assets/mac_logo.png",
+                "assets/logo.png",
                 height: 70,
               ),
               SizedBox(
@@ -56,42 +58,42 @@ class DialogBoxRating {
               ),
             ],
           ),
-          title: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+          title: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 Text(
-                  // AppLocalizations.of(context)!.do_you_like,
-                  "Do You Like",
+                  AppLocalizations.of(context)!.do_you_like,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'Bolt', fontSize: 18),
+                  style: GoogleFonts.poppins(
+                      fontSize: 18, fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  // "${AppLocalizations.of(context)!.pdfConverter} ?",
-                  "Image Converter",
+                  "${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter} ?",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'Bolt', fontSize: 20),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500, fontSize: 20),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  // AppLocalizations.of(context)!.we_are_working_hard,
-                  "We are working hard for a better user exprience.",
+                  AppLocalizations.of(context)!.we_are_working_hard,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                  style: GoogleFonts.poppins(
+                      fontSize: 16, fontWeight: FontWeight.w300),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  // AppLocalizations.of(context)!.we_greatly_appreciate,
-                  "We'd greatly appreciate if you can rate us",
+                  AppLocalizations.of(context)!.we_greatly_appreciate,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                  style: GoogleFonts.poppins(
+                      fontSize: 16, fontWeight: FontWeight.w300),
                 ),
               ],
             ),
@@ -119,10 +121,8 @@ class DialogBoxRating {
                                       ? Image.asset("assets/Rating.png")
                                       : Image.asset("assets/Star.png"),
                               onRatingUpdate: (rating) {
-                                // setState(() {
                                 finalRating.value = rating;
                                 print("rating star: ${finalRating.value}");
-                                // });
                               },
                             ),
                           )
@@ -138,12 +138,11 @@ class DialogBoxRating {
                     const SizedBox(
                       width: 30,
                     ),
-                    const Text(
-                      // AppLocalizations.of(context)!.the_best_we_can_get,
-                      "The best we can get",
+                    Text(
+                      AppLocalizations.of(context)!.the_best_we_can_get,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 16),
+                      style: GoogleFonts.poppins(fontSize: 16),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 25),
@@ -179,14 +178,11 @@ class DialogBoxRating {
                               const BorderRadius.all(Radius.circular(6))),
                       child: Center(
                         child: Text(
-                          // AppLocalizations.of(context)!.rateus,
-                          "Rate Us",
+                          AppLocalizations.of(context)!.rate_us,
                           style: TextStyle(
                             color: finalRating.value < 1
                                 ? UiColors.blackColor.withOpacity(0.5)
                                 : UiColors.whiteColor,
-
-                            // Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),

@@ -7,6 +7,7 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConvertFile extends StatefulWidget {
   final String? imagePath;
@@ -66,8 +67,8 @@ class _ConvertFileState extends State<ConvertFile> {
                   child: Text(
                     conversionController.loadingState.value == false ||
                             conversionController.isDownloading.value == false
-                        ? 'Select Files'
-                        : 'Converted',
+                        ? AppLocalizations.of(context)!.select_files
+                        : AppLocalizations.of(context)!.converted,
                     style: GoogleFonts.poppins(
                       color: UiColors.blueColor,
                       fontSize: 24.0,
@@ -194,9 +195,7 @@ class _ConvertFileState extends State<ConvertFile> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "${
-                                        // AppLocalizations.of(context)!.convert_in_to
-                                        "Convert Into"} ${conversionController.selectedIndex.value == 1 ? "jpg" : conversionController.selectedIndex.value == 2 ? "pdf" : conversionController.selectedIndex.value == 3 ? "png" : conversionController.selectedIndex.value == 4 ? "webp" : conversionController.selectedIndex.value == 5 ? "gif" : conversionController.selectedIndex.value == 6 ? "jpeg" : conversionController.selectedIndex.value == 7 ? "bmp" : conversionController.selectedIndex.value == 8 ? "svg" : " "}",
+                                        "${AppLocalizations.of(context)!.convert_into} ${conversionController.selectedIndex.value == 1 ? "jpg" : conversionController.selectedIndex.value == 2 ? "pdf" : conversionController.selectedIndex.value == 3 ? "png" : conversionController.selectedIndex.value == 4 ? "webp" : conversionController.selectedIndex.value == 5 ? "gif" : conversionController.selectedIndex.value == 6 ? "jpeg" : conversionController.selectedIndex.value == 7 ? "bmp" : conversionController.selectedIndex.value == 8 ? "svg" : " "}",
                                         style: GoogleFonts.poppins(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w500),
@@ -229,10 +228,9 @@ class _ConvertFileState extends State<ConvertFile> {
                               Get.snackbar(
                                 backgroundColor: UiColors.whiteColor,
                                 duration: const Duration(seconds: 4),
-                                // ",
-                                "attention",
-                                // AppLocalizations.of(context)!..please_select_an_option_in_which_you_want_to_convert,
-                                ".please_select_an_option_in_which_you_want_to_convert,",
+                                AppLocalizations.of(context)!.attention,
+                                AppLocalizations.of(context)!
+                                    .please_select_an_option,
                               );
                               conversionController
                                   .conversionOptionList(context);
@@ -586,20 +584,21 @@ class _ConvertFileState extends State<ConvertFile> {
                                 borderRadius: BorderRadius.circular(8),
                                 color: UiColors.lightblueColor,
                               ),
-                              child:
-                                  conversionController.showLoader.value == false
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                                // width: MediaQuery.of(context)
-                                                //         .size
-                                                //         .width /
-                                                //     2.8,
-                                                child: Text(
-                                              // AppLocalizations.of(context)!.convert_file,
-                                              "Convert File ",
+                              child: conversionController.showLoader.value ==
+                                      false
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                7,
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .convert_file,
+                                              // "Convert File ",
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.center,
@@ -609,22 +608,22 @@ class _ConvertFileState extends State<ConvertFile> {
                                                 color: UiColors.whiteColor,
                                               ),
                                             )),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Image.asset(
-                                              "assets/Convert.png",
-                                              color: UiColors.whiteColor,
-                                              height: 20,
-                                            ),
-                                          ],
-                                        )
-                                      : const Center(
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            color: Colors.white,
-                                          ),
+                                        const SizedBox(
+                                          width: 10,
                                         ),
+                                        Image.asset(
+                                          "assets/Convert.png",
+                                          color: UiColors.whiteColor,
+                                          height: 20,
+                                        ),
+                                      ],
+                                    )
+                                  : const Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
@@ -633,7 +632,11 @@ class _ConvertFileState extends State<ConvertFile> {
                   )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      const SizedBox(
+                        height: 80,
+                      ),
                       Center(
                         child: Obx(
                           () => Stack(
@@ -691,42 +694,48 @@ class _ConvertFileState extends State<ConvertFile> {
                         height: 30,
                       ),
                       Text(
-                        ".your_file_is_converting,",
-                        // AppLocalizations.of(context)!.your_file_is_converting,
+                        conversionController.isDownloading.value == false
+                            ? AppLocalizations.of(context)!
+                                .your_file_is_converting
+                            : AppLocalizations.of(context)!.converted,
                         style: GoogleFonts.poppins(
-                          fontSize: 18,
+                          fontSize: 22,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       // const Spacer(),
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          style: GoogleFonts.poppins(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black, // Set the default text color
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width / 2,
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              // fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: AppLocalizations.of(context)!
+                                    .files_are_uploaded_over_an_encrypted,
+                              ),
+                              TextSpan(
+                                text: AppLocalizations.of(context)!
+                                    .privacy_policy,
+                                style: GoogleFonts.poppins(
+                                    color: UiColors.lightblueColor),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    launchURLFunction(
+                                      "www.eclixtech.com/privacy-policy",
+                                    );
+                                  },
+                              ),
+                            ],
                           ),
-                          children: [
-                            const TextSpan(
-                              text:
-                                  "files_are_uploaded_over_an_encrypted_connection",
-                              // AppLocalizations.of(context)!.files_are_uploaded_over_an_encrypted_connection,
-                            ),
-                            TextSpan(
-                              // text: AppLocalizations.of(context)!.privacy_policy,
-                              text: "privacy_policy",
-
-                              style: GoogleFonts.poppins(
-                                  color: UiColors.lightblueColor),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  launchURLFunction(
-                                    "www.eclixtech.com/privacy-policy",
-                                  ); // Define this function to open your Privacy Policy link
-                                },
-                            ),
-                          ],
                         ),
                       ),
                       const SizedBox(

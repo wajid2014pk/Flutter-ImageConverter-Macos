@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class FeedBack extends StatefulWidget {
   const FeedBack({
@@ -41,7 +43,7 @@ class _FeedBackState extends State<FeedBack> {
     return Scaffold(
       body: Center(
         child: Text(
-          "Feedback",
+         AppLocalizations.of(context)!.feedback,
           style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

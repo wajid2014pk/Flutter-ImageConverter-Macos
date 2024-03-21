@@ -9,13 +9,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image/image.dart' as im;
 import 'package:image_converter_macos/Constant/api_string.dart';
 import 'package:image_converter_macos/Constant/color.dart';
+import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Presentation/conversion_result.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:dio/dio.dart' as api;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConvertImagesController extends GetxController {
   double sliderValue = 0.7;
@@ -32,6 +35,8 @@ class ConvertImagesController extends GetxController {
   RxBool isDownloading = false.obs;
 
   RxBool showLoader = false.obs;
+
+  final payWallController = Get.put(PayWallController());
 
   convertingIntoDiffFormats(
       BuildContext context, String? filePath, String from, String to) async {
@@ -63,7 +68,7 @@ class ConvertImagesController extends GetxController {
       Map valueMap = json.decode(response.data);
       Directory? dir = await getApplicationCacheDirectory();
       var path =
-          "${dir.path}/ImageConverter/ ${from}to$to _$dateTime#${basename(valueMap['d_url'])}";
+          "${dir.path}/ImageConverter/ ${from}to${to}_$dateTime#${basename(valueMap['d_url'])}";
       isDownloading.value = true;
       var downloadRes = await dio.download(
         "${valueMap['d_url']}",
@@ -96,7 +101,10 @@ class ConvertImagesController extends GetxController {
       }
     } catch (e) {
       Get.offAll(() => const HomeScreen());
-      Get.snackbar(backgroundColor: Colors.white, "ERROR", "Please Try Again");
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
       print("Error of file $e");
     }
   }
@@ -219,11 +227,7 @@ class ConvertImagesController extends GetxController {
         print("%%%%compressed Image BMP: ${compressedImage.path}");
       }
     } catch (e) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
+      Get.offAll(() => const HomeScreen());
 
       print("%%%%Error of file webp: $e");
     }
@@ -316,11 +320,7 @@ class ConvertImagesController extends GetxController {
         print("%%%%compressed Image ${compressedImage.path}");
       }
     } catch (e) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
+      Get.offAll(() => const HomeScreen());
 
       print("%%%%Error of file $e");
     }
@@ -483,11 +483,7 @@ class ConvertImagesController extends GetxController {
         showLoader.value = false;
       }
     } catch (e) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
+      Get.offAll(() => const HomeScreen());
 
       print("%%%%Error of file $e");
     }
@@ -536,11 +532,7 @@ class ConvertImagesController extends GetxController {
         showLoader.value = false;
       }
     } catch (e) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ),
-      );
+      Get.offAll(() => const HomeScreen());
 
       print("%%%%Error of file webp: $e");
     }
@@ -627,51 +619,56 @@ class ConvertImagesController extends GetxController {
   }
 
   convertPngToPdf(BuildContext context, String? filePath) async {
-    showLoader.value = true;
+    try {
+      showLoader.value = true;
 
-    if (filePath == null) {
-      // Handle the case when imagePath is null
-      return;
+      if (filePath == null) {
+        // Handle the case when imagePath is null
+        return;
+      }
+
+      final File imageFile = File(filePath);
+
+      final pdf = pw.Document();
+
+      final image = pw.MemoryImage(imageFile.readAsBytesSync());
+
+      pdf.addPage(
+        pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (pw.Context context) {
+            return pw.Center(
+              child: pw.Stack(
+                children: [
+                  pw.Center(child: pw.Image(image)),
+                ],
+              ),
+            );
+          },
+        ),
+      );
+
+      Directory? dir = await getApplicationCacheDirectory();
+
+      var path =
+          '${dir.path}/ImageConverter/pngtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
+      final file = File(path)..createSync(recursive: true);
+      print("path before $path");
+
+      await file.writeAsBytes(await pdf.save());
+
+      await Get.to(
+        () => ConversionResult(
+          imageFormat: ".png",
+          originalFilePath: filePath,
+          convertedFile: File(path),
+        ),
+      );
+      showLoader.value = false;
+    } catch (e) {
+      Get.to(() => const HomeScreen());
+      print("%%%%Error of file $e");
     }
-
-    final File imageFile = File(filePath);
-
-    final pdf = pw.Document();
-
-    final image = pw.MemoryImage(imageFile.readAsBytesSync());
-
-    pdf.addPage(
-      pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        build: (pw.Context context) {
-          return pw.Center(
-            child: pw.Stack(
-              children: [
-                pw.Center(child: pw.Image(image)),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-
-    Directory? dir = await getApplicationCacheDirectory();
-
-    var path =
-        '${dir.path}/ImageConverter/pngtopdf_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}.pdf';
-    final file = File(path)..createSync(recursive: true);
-    print("path before $path");
-
-    await file.writeAsBytes(await pdf.save());
-
-    await Get.to(
-      () => ConversionResult(
-        imageFormat: ".png",
-        originalFilePath: filePath,
-        convertedFile: File(path),
-      ),
-    );
-    showLoader.value = false;
   }
 
   //Tif Conversions
@@ -711,7 +708,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted JPG Image ${jpgImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -770,6 +772,7 @@ class ConvertImagesController extends GetxController {
       }
       showLoader.value = false;
     } catch (e) {
+      Get.to(() => const HomeScreen());
       print("%%%%Error of file $e");
     }
   }
@@ -810,7 +813,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted PNG Image ${pngImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -854,7 +862,12 @@ class ConvertImagesController extends GetxController {
         // You can save the GIF file wherever needed.
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -895,7 +908,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted JPEG Image ${jpegImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -940,7 +958,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%compressed Image BMP: ${bmpImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -983,7 +1006,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted JPG Image ${jpgImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1044,7 +1072,12 @@ class ConvertImagesController extends GetxController {
         showLoader.value = false;
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1084,7 +1117,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted PNG Image ${pngImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1128,7 +1166,12 @@ class ConvertImagesController extends GetxController {
         // You can save the GIF file wherever needed.
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1168,7 +1211,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted JPEG Image ${jpegImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1269,7 +1317,12 @@ class ConvertImagesController extends GetxController {
         showLoader.value = false;
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1354,7 +1407,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted PNG Image ${pngImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1398,7 +1456,12 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted JPG Image ${jpgImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1445,7 +1508,12 @@ class ConvertImagesController extends GetxController {
         // You can save the BMP file wherever needed.
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
 
@@ -1491,11 +1559,14 @@ class ConvertImagesController extends GetxController {
         print("%%%%converted JPG Image ${jpgImageFile.path}");
       }
     } catch (e) {
-      print("%%%%Error of file $e");
+      Get.offAll(() => const HomeScreen());
+      Get.snackbar(
+          backgroundColor: Colors.white,
+          AppLocalizations.of(Get.context!)!.error,
+          AppLocalizations.of(Get.context!)!.please_try_again);
+      print("Error of file $e");
     }
   }
-
-  //
 
   conversionOptionList(BuildContext context) {
     return Container(
@@ -1520,56 +1591,24 @@ class ConvertImagesController extends GetxController {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              conversionOptions(
-                ".JPG",
-                'assets/JPG.png',
-                1,
-              ),
-              conversionOptions(
-                ".PDF",
-                'assets/PDF.png',
-                2,
-              ),
-              conversionOptions(
-                ".PNG",
-                'assets/PNG.png',
-                3,
-              ),
+              conversionOptions(".JPG", 'assets/JPG.png', 1, context),
+              conversionOptions(".PDF", 'assets/PDF.png', 2, context),
+              conversionOptions(".PNG", 'assets/PNG.png', 3, context),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              conversionOptions(
-                ".WEBP",
-                'assets/WEBP.png',
-                4,
-              ),
-              conversionOptions(
-                ".GIF",
-                'assets/GIF.png',
-                5,
-              ),
-              conversionOptions(
-                ".JPEG",
-                'assets/JPEG.png',
-                6,
-              ),
+              conversionOptions(".WEBP", 'assets/WEBP.png', 4, context),
+              conversionOptions(".GIF", 'assets/GIF.png', 5, context),
+              conversionOptions(".JPEG", 'assets/JPEG.png', 6, context),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              conversionOptions(
-                ".BMP",
-                'assets/BMP.png',
-                7,
-              ),
-              conversionOptions(
-                ".SVG",
-                'assets/SVG.png',
-                8,
-              ),
+              conversionOptions(".BMP", 'assets/BMP.png', 7, context),
+              conversionOptions(".SVG", 'assets/SVG.png', 8, context),
               const SizedBox(
                 width: 133,
               )
@@ -1578,110 +1617,24 @@ class ConvertImagesController extends GetxController {
         ],
       ),
     );
-    //  showDialog(
-    //   barrierDismissible: true,
-    //   context: context,
-    //   builder: (_) {
-    //     return StatefulBuilder(
-    //       builder: (context, setState) {
-    //         return Padding(
-    //           padding: const EdgeInsets.only(left: 20.0, right: 20),
-    //           child: AlertDialog(
-    //             shape: const RoundedRectangleBorder(
-    //               borderRadius: BorderRadius.all(
-    //                 Radius.circular(12),
-    //               ),
-    //             ),
-    //             insetPadding: const EdgeInsets.only(top: 0),
-    //             elevation: 4.0,
-    //             title: Text(
-    //               "Choose File Format",
-    //               // AppLocalizations.of(context)!.choose_the_file_output_format,
-    //               style: GoogleFonts.poppins(
-    //                 fontSize: 14,
-    //                 color: UiColors.blackColor.withOpacity(0.6),
-    //               ),
-    //             ),
-    //             contentPadding: const EdgeInsets.all(0),
-    //             content: SizedBox(
-    //               height: 200,
-    //               width: MediaQuery.of(context).size.width / 1.1,
-    //               child: Column(
-    //                 mainAxisAlignment: MainAxisAlignment.start,
-    //                 children: [
-    //                   Row(
-    //                     mainAxisAlignment: MainAxisAlignment.center,
-    //                     children: [
-    //                       conversionOptions(
-    //                         ".JPG",
-    //                         'assets/JPG.png',
-    //                         1,
-    //                       ),
-    //                       conversionOptions(
-    //                         ".PDF",
-    //                         'assets/PDF.png',
-    //                         2,
-    //                       ),
-    //                       conversionOptions(
-    //                         ".PNG",
-    //                         'assets/PNG.png',
-    //                         3,
-    //                       ),
-    //                     ],
-    //                   ),
-    //                   Row(
-    //                     mainAxisAlignment: MainAxisAlignment.center,
-    //                     children: [
-    //                       conversionOptions(
-    //                         ".WEBP",
-    //                         'assets/WEBP.png',
-    //                         4,
-    //                       ),
-    //                       conversionOptions(
-    //                         ".GIF",
-    //                         'assets/GIF.png',
-    //                         5,
-    //                       ),
-    //                       conversionOptions(
-    //                         ".JPEG",
-    //                         'assets/JPEG.png',
-    //                         6,
-    //                       ),
-    //                     ],
-    //                   ),
-    //                   Row(
-    //                     mainAxisAlignment: MainAxisAlignment.center,
-    //                     children: [
-    //                       conversionOptions(
-    //                         ".BMP",
-    //                         'assets/BMP.png',
-    //                         7,
-    //                       ),
-    //                       conversionOptions(
-    //                         ".SVG",
-    //                         'assets/SVG.png',
-    //                         8,
-    //                       ),
-    //                       const SizedBox(
-    //                         width: 100,
-    //                       )
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         );
-    //       },
-    //     );
-    //   },
-    // );
   }
 
-  conversionOptions(String extensionName, String extensionImage, int index) {
+  conversionOptions(String extensionName, String extensionImage, int index,
+      BuildContext context) {
     return GestureDetector(
       onTap: () {
-        selectedIndex.value = index;
+        if (index == 1 ||
+            index == 3 ||
+            index == 5 ||
+            index == 6 ||
+            index == 7) {
+          selectedIndex.value = index;
+        }
+        if (index == 2 || index == 4 || index == 8) {
+          payWallController.isPro.value == true
+              ? selectedIndex.value = index
+              : PremiumPopUp().premiumScreenPopUp(context);
+        }
       },
       child: Obx(
         () => Padding(
@@ -1714,7 +1667,7 @@ class ConvertImagesController extends GetxController {
                 Text(
                   extensionName,
                   style: const TextStyle(fontSize: 16),
-                )
+                ),
               ],
             ),
           ),

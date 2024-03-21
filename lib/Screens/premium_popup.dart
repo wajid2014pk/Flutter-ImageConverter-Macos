@@ -5,6 +5,7 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PremiumPopUp {
   final payWallController = Get.put(PayWallController());
@@ -23,11 +24,12 @@ class PremiumPopUp {
           surfaceTintColor: Colors.white,
           contentPadding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(20.0),
           ),
           content: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              image: const DecorationImage(
                 image: AssetImage(
                   'assets/Premium_MAc.png',
                 ), // Replace with your image path
@@ -49,16 +51,12 @@ class PremiumPopUp {
                           children: [
                             const Spacer(),
                             Text(
-                              "${"Image"
-                              // AppLocalizations.of(context)!.text
-                              } ${
-                              // AppLocalizations.of(context)!.scanner
-                              "Converter"}",
+                              "${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}",
                               textAlign: TextAlign.center,
                               style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
-                                      fontSize: 28.0,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.w500,
                                       color: Colors.white)),
                             ),
                             const SizedBox(
@@ -83,12 +81,12 @@ class PremiumPopUp {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Pro",
-                                    // AppLocalizations.of(context)!.pro,
+                                    // "Pro",
+                                    AppLocalizations.of(context)!.pro,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins(
                                       textStyle: const TextStyle(
-                                        fontSize: 28.0,
+                                        fontSize: 20.0,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                       ),
@@ -141,10 +139,8 @@ class PremiumPopUp {
                                             children: [
                                               customRow(
                                                 context,
-                                                "Multiple format at once",
-                                                // "AppLocalizations.of(
-                                                //         /context)!
-                                                //     .high_accuracy_ocr,"
+                                                AppLocalizations.of(context)!
+                                                    .multiple_format_at_once,
                                                 'assets/Multiple_images.png',
                                               ),
                                               const SizedBox(
@@ -152,10 +148,8 @@ class PremiumPopUp {
                                               ),
                                               customRow(
                                                 context,
-                                                "Convert to any format",
-                                                // AppLocalizations.of(
-                                                //         context)!
-                                                //     .batch_processing,
+                                                AppLocalizations.of(context)!
+                                                    .convert_to_any_format,
                                                 'assets/any_format.png',
                                               ),
                                               const SizedBox(
@@ -163,72 +157,67 @@ class PremiumPopUp {
                                               ),
                                               customRow(
                                                   context,
-                                                  "Unlimited Conversions",
-                                                  // AppLocalizations.of(
-                                                  //         context)!
-                                                  //     .multiple_export_options,
+                                                  AppLocalizations.of(context)!
+                                                      .unlimited_conversions,
                                                   'assets/Unlimited.png'),
                                               const SizedBox(
                                                 height: 20.0,
                                               ),
                                               customRow(
                                                   context,
-                                                  "Support upto 20MBs Files",
-                                                  // AppLocalizations.of(
-                                                  //         context)!
-                                                  //     .ad_free_experience,
+                                                  AppLocalizations.of(context)!
+                                                      .support_upto_20mbs_files,
                                                   'assets/20mb.png'),
                                               const SizedBox(
                                                 height: 20.0,
                                               ),
                                               customRow(
                                                   context,
-                                                  "Customer Support",
-                                                  // AppLocalizations.of(
-                                                  //         context)!
-                                                  //     .unlimited_scans,
+                                                  AppLocalizations.of(context)!
+                                                      .customer_support,
                                                   'assets/Customer_support.png'),
                                             ],
                                           ),
                                         ),
                                         // const Spacer(),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 0.0),
-                                          child: Column(
-                                            children: [
-                                              const Text(
-                                                "Free",
-                                                // AppLocalizations.of(context)!
-                                                //     .free,
-                                                style: TextStyle(
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                              width: 60,
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .free,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     color: Colors.white,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
-                                              const SizedBox(
-                                                height: 22.0,
-                                              ),
-                                              customLockColumn('tick'),
-                                              const SizedBox(
-                                                height: 22.0,
-                                              ),
-                                              customLockColumn('lock'),
-                                              const SizedBox(
-                                                height: 22.0,
-                                              ),
-                                              customLockColumn('lock'),
-                                              const SizedBox(
-                                                height: 22.0,
-                                              ),
-                                              customLockColumn('lock'),
-                                              const SizedBox(
-                                                height: 22.0,
-                                              ),
-                                              customLockColumn('lock'),
-                                            ],
-                                          ),
+                                            ),
+                                            const SizedBox(
+                                              height: 22.0,
+                                            ),
+                                            customLockColumn('tick'),
+                                            const SizedBox(
+                                              height: 22.0,
+                                            ),
+                                            customLockColumn('lock'),
+                                            const SizedBox(
+                                              height: 22.0,
+                                            ),
+                                            customLockColumn('lock'),
+                                            const SizedBox(
+                                              height: 22.0,
+                                            ),
+                                            customLockColumn('lock'),
+                                            const SizedBox(
+                                              height: 22.0,
+                                            ),
+                                            customLockColumn('lock'),
+                                          ],
                                         ),
                                         const SizedBox(
                                           width: 20,
@@ -238,7 +227,6 @@ class PremiumPopUp {
                                               const EdgeInsets.only(top: 25.0),
                                           child: Container(
                                             decoration: BoxDecoration(
-                                              // border: Border.all(),
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               color: Colors.white,
@@ -257,8 +245,8 @@ class PremiumPopUp {
                                                 Container(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 25.0,
-                                                          right: 25.0,
+                                                          left: 15.0,
+                                                          right: 15.0,
                                                           top: 3.0,
                                                           bottom: 3.0),
                                                   decoration: BoxDecoration(
@@ -276,12 +264,12 @@ class PremiumPopUp {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  child: const Text(
-                                                    "Pro",
-                                                    // AppLocalizations.of(
-                                                    //         context)!
-                                                    //     .pro,
-                                                    style: TextStyle(
+                                                  child: Text(
+                                                    // "Pro",
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .pro,
+                                                    style: const TextStyle(
                                                         fontSize: 16.0,
                                                         color: Colors.white),
                                                   ),
@@ -289,27 +277,23 @@ class PremiumPopUp {
                                                 const SizedBox(
                                                   height: 18.0,
                                                 ),
-                                                customLockColumn('tick'),
+                                                customLockColumn('tick_Blue'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick'),
+                                                customLockColumn('tick_Blue'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick'),
+                                                customLockColumn('tick_Blue'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick'),
+                                                customLockColumn('tick_Blue'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick'),
-                                                // const SizedBox(
-                                                //   height: 20.0,
-                                                // ),
-                                                // customLockColumn('tick'),
+                                                customLockColumn('tick_Blue'),
                                                 const SizedBox(
                                                   height: 30.0,
                                                 ),
@@ -341,10 +325,10 @@ class PremiumPopUp {
                                               child: Column(
                                                 children: [
                                                   Text(
-                                                    // AppLocalizations.of(
-                                                    //         context)!
-                                                    //     .trusted_by,
-                                                    "Trusted By",
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .trusted_by,
+                                                    // "Trusted By",
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 18,
                                                         color:
@@ -353,12 +337,14 @@ class PremiumPopUp {
                                                             FontWeight.w400),
                                                   ),
                                                   Text(
-                                                    // AppLocalizations.of(
-                                                    //         context)!
-                                                    //     .professionals,
-                                                    "Professionals",
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .professionals,
+                                                    // "Professionals",
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 22,
+                                                        color:
+                                                            UiColors.whiteColor,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   ),
@@ -396,27 +382,29 @@ class PremiumPopUp {
                                             snapshot.data != null
                                                 ? payWallController
                                                     .premiumContainer(
-                                                        "Monthly",
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .monthly,
-                                                        // 30,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .most_flexible,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .monthly,
                                                         0,
                                                         false,
                                                         context)
                                                 : shimmerContainer(
                                                     context, 170, 170),
                                             const SizedBox(
-                                              width: 10,
+                                              width: 20,
                                             ),
                                             snapshot.data != null
                                                 ? payWallController
                                                     .premiumContainer(
-                                                        "Yearly",
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .yearly,
-                                                        // 60,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .most_popular,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .yearly,
                                                         1,
                                                         true,
                                                         context)
@@ -425,29 +413,6 @@ class PremiumPopUp {
                                           ],
                                         ),
                                         const Spacer(),
-                                        snapshot.data != null
-                                            ? Obx(
-                                                () => payWallController
-                                                            .selectPackage
-                                                            .value ==
-                                                        1
-                                                    ? Text(
-                                                        // "${AppLocalizations.of(context)!.three_days_trial}, ${AppLocalizations.of(context)!.then} ${payWallController.offerings.current!.annual!.storeProduct.currencyCode} ${payWallController.offerings.current!.annual!.storeProduct.price.toStringAsFixed(2)} /${AppLocalizations.of(context)!.year}",
-                                                        "3 Days Trail, then ${payWallController.offerings.current!.annual!.storeProduct.currencyCode} ${payWallController.offerings.current!.annual!.storeProduct.price.toStringAsFixed(2)} /year",
-
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                fontSize: 12),
-                                                      )
-                                                    : const Text(""),
-                                              )
-                                            : shimmerContainer(
-                                                context,
-                                                30,
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    4),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -464,39 +429,41 @@ class PremiumPopUp {
                                               children: [
                                                 payWallController
                                                     .hyperLinksOptionsText(
-                                                        "Terms of Services",
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .terms_of_services,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .terms_of_services,
                                                         () {
                                                   var urlTermsofServices =
                                                       Uri.parse(
                                                           "https://eclixtech.com/terms-service");
                                                   launchUrl(urlTermsofServices);
                                                 }),
-                                                const VerticalDivider(
+                                                VerticalDivider(
                                                   thickness: 2,
+                                                  color: UiColors.whiteColor
+                                                      .withOpacity(0.4),
                                                 ),
                                                 payWallController
                                                     .hyperLinksOptionsText(
-                                                        "Privacy Policy",
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .privacy,
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .privacy_policy,
                                                         () {
                                                   var urlPrivacyPolicy = Uri.parse(
                                                       "https://eclixtech.com/privacy-policy");
                                                   launchUrl(urlPrivacyPolicy);
                                                 }),
-                                                const VerticalDivider(
+                                                VerticalDivider(
                                                   thickness: 2,
+                                                  color: UiColors.whiteColor
+                                                      .withOpacity(0.4),
                                                 ),
                                                 payWallController
                                                     .hyperLinksOptionsText(
-                                                        "Restore Purchase",
-                                                        // AppLocalizations.of(
-                                                        //         context)!
-                                                        //     .restore_purchase,
+                                                        // "Restore Purchase",
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .restore_purchase,
                                                         () {
                                                   payWallController
                                                       .restorePurchase(context);
@@ -543,16 +510,16 @@ class PremiumPopUp {
 
   Widget customLockColumn(String image) {
     return Container(
-      height: 25,
-      width: 25,
-      decoration: BoxDecoration(
+        height: 20,
+        width: 20,
+        decoration: BoxDecoration(
           // border: Border.all(),
           image: DecorationImage(
-        image: AssetImage(
-          "assets/$image.png",
-        ),
-      )),
-    );
+            image: AssetImage(
+              "assets/$image.png",
+            ),
+          ),
+        ));
   }
 
   Widget customRow(BuildContext context, String title, String image) {
@@ -564,8 +531,6 @@ class PremiumPopUp {
           borderRadius: BorderRadius.circular(10)),
       child: Row(children: [
         SizedBox(
-          // decoration: BoxDecoration(border: Border.all()),
-          // margin: const EdgeInsets.only(left: 15.0, right: 15.0),
           width: 24,
           height: 24,
           child: Image.asset(image),
@@ -574,7 +539,6 @@ class PremiumPopUp {
           width: 15,
         ),
         SizedBox(
-          // decoration: BoxDecoration(border: Border.all()),
           width: 260,
           child: Text(
             title,
@@ -582,9 +546,10 @@ class PremiumPopUp {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
-                fontSize: 18,
+                fontSize: 16,
                 textStyle: TextStyle(
-                    color: UiColors.whiteColor, fontWeight: FontWeight.w500)),
+                  color: UiColors.whiteColor,
+                )),
           ),
         ),
       ]),

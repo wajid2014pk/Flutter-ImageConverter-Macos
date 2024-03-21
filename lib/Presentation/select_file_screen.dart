@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/HomeScreenController/home_screen_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectFileScreen extends StatefulWidget {
   const SelectFileScreen({super.key});
@@ -64,7 +65,8 @@ class _SelectFileScreenState extends State<SelectFileScreen> {
                               height: 20.0,
                             ),
                             Text(
-                              "Drag or Paste File",
+                              // "Drag or Paste File",
+                              AppLocalizations.of(context)!.drag_or_paste_file,
                               style: GoogleFonts.poppins(
                                 textStyle: const TextStyle(
                                     fontSize: 20.0,
@@ -87,8 +89,8 @@ class _SelectFileScreenState extends State<SelectFileScreen> {
               children: [
                 customHomeButton(
                   "assets/link.png",
-                  "URL Link",
-                  "File from URL",
+                  AppLocalizations.of(context)!.url_link,
+                  AppLocalizations.of(context)!.file_from_url,
                   () {
                     homeScreenController.handleUrlImage();
                   },
@@ -98,8 +100,8 @@ class _SelectFileScreenState extends State<SelectFileScreen> {
                 ),
                 customHomeButton(
                   'assets/Drive.png',
-                  "Google Drive",
-                  "Choose from Files",
+                  AppLocalizations.of(context)!.google_drive,
+                  AppLocalizations.of(context)!.choose_from_files,
                   () async {
                     await homeScreenController.handleDriveImage();
                   },
@@ -109,8 +111,8 @@ class _SelectFileScreenState extends State<SelectFileScreen> {
                 ),
                 customHomeButton(
                   'assets/dropbox.png',
-                  "Dropbox",
-                  "Choose from Files",
+                 AppLocalizations.of(context)!.dropbox,
+                  AppLocalizations.of(context)!.choose_from_files,
                   () async {
                     await homeScreenController.handleDriveImage();
                   },

@@ -8,6 +8,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -68,9 +69,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .inverseSurface),
-                                decoration: const InputDecoration(
-                                  hintText: "Search Image",
-                                  hintStyle: TextStyle(color: Colors.grey),
+                                decoration: InputDecoration(
+                                  hintText: AppLocalizations.of(Get.context!)!
+                                      .search_image,
+                                  hintStyle:
+                                      const TextStyle(color: Colors.grey),
                                   border: InputBorder.none,
                                 ),
                                 onChanged: (value) {
@@ -247,7 +250,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 print("bdhdh ${showOnTapOptions.value}");
               },
               child: Text(
-                "No Data Found",
+                AppLocalizations.of(Get.context!)!.no_data_found,
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                 ),
@@ -335,7 +338,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       size: 25.0,
                     ),
                     itemBuilder: (BuildContext context) {
-                      return ["Delete", "Share"].map((String choice) {
+                      return [
+                        AppLocalizations.of(Get.context!)!.delete,
+                        AppLocalizations.of(Get.context!)!.share
+                      ].map((String choice) {
                         return PopupMenuItem<String>(
                           value: choice,
                           child: Text(
@@ -349,9 +355,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       }).toList();
                     },
                     onSelected: (value) async {
-                      if (value == "Delete") {
+                      if (value == AppLocalizations.of(Get.context!)!.delete) {
                         _deleteFile(allfiles[index]);
-                      } else if (value == "Share") {
+                      } else if (value ==
+                          AppLocalizations.of(Get.context!)!.share) {
                         _shareFile(allfiles[index]);
                       }
                     },
@@ -465,7 +472,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void _shareFile(FileSystemEntity fileEntity) {
     if (fileEntity is File) {
       String fileName = fileEntity.uri.pathSegments.last;
-      Share.shareFiles([fileEntity.path], text: 'Sharing file: $fileName');
+      Share.shareFiles([fileEntity.path],
+          text:
+              '${AppLocalizations.of(Get.context!)!.sharing_file}: $fileName');
     } else {
       print('Selected item is not a file.');
     }
@@ -520,6 +529,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
         height: 40,
         width: 40,
       );
+    } else if (fileName.toLowerCase().endsWith('.heic')) {
+      return Image.asset(
+        'assets/logo.png',
+        height: 40,
+        width: 40,
+      );
     } else {
       return const SizedBox();
     }
@@ -562,10 +577,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
         colorText: Colors.black,
         backgroundColor: Colors.white,
         duration: const Duration(seconds: 4),
-        'ERROR!!!',
-        // AppLocalizations.of(Get.context!)!.error,
-        'Error opening File',
-        // AppLocalizations.of(Get.context!)!.opening_file,
+        "${AppLocalizations.of(Get.context!)!.error} !!!",
+        AppLocalizations.of(Get.context!)!.no_app_found_to_open,
       );
     }
   }
