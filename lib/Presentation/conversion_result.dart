@@ -172,9 +172,10 @@ class _ConversionResultState extends State<ConversionResult> {
                               ),
                             ),
                             Text(
-                              widget.originalFilePath.length > 20
-                                  ? '${widget.originalFilePath.substring(0, 10)}...${widget.originalFilePath.substring(widget.originalFilePath.length - 10)}'
-                                  : widget.originalFilePath,
+                              _getFileName(widget.originalFilePath),
+                              // widget.originalFilePath.length > 20
+                              //     ? '${widget.originalFilePath.substring(0, 10)}...${widget.originalFilePath.substring(widget.originalFilePath.length - 10)}'
+                              //     : widget.originalFilePath,
                               style: GoogleFonts.poppins(
                                   fontSize: 20, fontWeight: FontWeight.w500),
                             )
@@ -239,9 +240,12 @@ class _ConversionResultState extends State<ConversionResult> {
                               ),
                             ),
                             Text(
-                              widget.convertedFile.path.length > 20
-                                  ? '${widget.convertedFile.path.substring(0, 10)}...${widget.convertedFile.path.substring(widget.convertedFile.path.length - 10)}'
-                                  : widget.convertedFile.path,
+                              _getFileName(
+                                widget.convertedFile.path,
+                              ),
+                              // widget.convertedFile.path.length > 20
+                              //     ? '${widget.convertedFile.path.substring(0, 10)}...${widget.convertedFile.path.substring(widget.convertedFile.path.length - 10)}'
+                              //     : widget.convertedFile.path,
                               style: GoogleFonts.poppins(
                                   fontSize: 20, fontWeight: FontWeight.w500),
                             )
@@ -416,6 +420,15 @@ class _ConversionResultState extends State<ConversionResult> {
         ),
       ),
     );
+  }
+
+  String _getFileName(String filePath) {
+    String fileName = filePath.split('/').last;
+    if (fileName.length > 20) {
+      fileName =
+          '${fileName.substring(0, 8)}...${fileName.substring(fileName.length - 10)}';
+    }
+    return fileName;
   }
 
   Future<void> _openFile(FileSystemEntity file) async {

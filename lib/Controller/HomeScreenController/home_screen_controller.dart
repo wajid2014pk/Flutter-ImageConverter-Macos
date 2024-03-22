@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Presentation/convert_file.dart';
+import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:path/path.dart' as path;
@@ -25,29 +28,54 @@ class HomeScreenController extends GetxController {
   ].contains(Localizations.localeOf(Get.context!).languageCode);
 
   customAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: UiColors.whiteColor,
-      elevation: 0.0,
-      automaticallyImplyLeading: false,
-      title: Row(
-        children: [
-          Image.asset(
-            'assets/logo.png',
-            height: 40,
-            width: 40,
+    return Obx(
+      () => AppBar(
+        backgroundColor: UiColors.whiteColor,
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        title: IntrinsicHeight(
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/logo.png',
+                height: 40,
+                width: 40,
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              Text(
+                '${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}',
+                style: GoogleFonts.poppins(
+                  color: UiColors.blackColor,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              sideBarSelectedIndex.value == 2
+                  ? VerticalDivider(
+                      thickness: 1.5,
+                      color: UiColors.blackColor.withOpacity(0.2),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                width: 20,
+              ),
+              sideBarSelectedIndex.value == 2
+                  ? Text(
+                      AppLocalizations.of(context)!.history,
+                      style: GoogleFonts.poppins(
+                        color: UiColors.blackColor,
+                        fontSize: 22.0,
+                      ),
+                    )
+                  : const SizedBox(),
+            ],
           ),
-          const SizedBox(
-            width: 16,
-          ),
-          Text(
-            '${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}',
-            style: GoogleFonts.poppins(
-              color: UiColors.blackColor,
-              fontSize: 22.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -120,6 +148,21 @@ class HomeScreenController extends GetxController {
 
     if (result != null) {
       PlatformFile file = result.files.first;
+      int fileSizeInBytes = File(file.path!).lengthSync();
+      double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
+      print("Size in Mb $fileSizeInMb ");
+
+      if (fileSizeInMb > 3) {
+        Get.snackbar(
+          AppLocalizations.of(Get.context!)!.attention,
+          "File Size is greater then 3 MBs. Buy Premium to Convert",
+        );
+
+        Future.delayed(const Duration(seconds: 3), () {
+          PremiumPopUp().premiumScreenPopUp(Get.context!);
+        });
+        return;
+      }
 
       Get.to(() => ConvertFile(imagePath: file.path));
     } else {
@@ -130,6 +173,20 @@ class HomeScreenController extends GetxController {
   Future<void> handleDragDropImage(var details) async {
     if (details.files.length == 1) {
       String imagePath = details.files.first.path;
+
+      int fileSizeInBytes = File(imagePath).lengthSync();
+      double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
+
+      if (fileSizeInMb > 5) {
+        Get.snackbar(
+          AppLocalizations.of(Get.context!)!.attention,
+          "File Size is greater then 3 MBs. Buy Premium to Convert",
+        );
+        Future.delayed(const Duration(seconds: 3), () {
+          PremiumPopUp().premiumScreenPopUp(Get.context!);
+        });
+        return;
+      }
 
       if (imagePath.toLowerCase().endsWith('.png') ||
           imagePath.toLowerCase().endsWith('.jpg') ||
@@ -237,23 +294,41 @@ class HomeScreenController extends GetxController {
                               final dio = di.Dio();
                               try {
                                 await dio.download(enteredUrl, filePath);
+
+                                // Check file size
+                                int fileSizeInBytes =
+                                    File(filePath).lengthSync();
+                                double fileSizeInMb =
+                                    fileSizeInBytes / (1024 * 1024);
+                                if (fileSizeInMb > 3) {
+                                  Get.snackbar(
+                                    AppLocalizations.of(Get.context!)!
+                                        .attention,
+                                    "File Size is greater then 3 MBs. Buy Premium to Convert",
+                                  );
+                                  Future.delayed(const Duration(seconds: 3),
+                                      () {
+                                    PremiumPopUp()
+                                        .premiumScreenPopUp(Get.context!);
+                                  });
+                                  return;
+                                }
+
+                                // Proceed to convert file
+                                Get.to(() => ConvertFile(
+                                      imagePath: filePath,
+                                    ));
                               } catch (e) {
                                 ScaffoldMessenger.of(Get.context!)
                                     .showSnackBar(SnackBar(
                                   duration: const Duration(seconds: 2),
                                   behavior: SnackBarBehavior.floating,
                                   content: Text(
-                                    //AppLocalizations.of(Get.context!)!.please_enter_valid_url,
                                     AppLocalizations.of(Get.context!)!
                                         .please_enter_valid_url,
                                   ),
                                 ));
                               }
-                              print("YYYYYY $filePath");
-                              print("DDDD ${directory.path}");
-                              // Get.to(() => ConvertFile(
-                              //       imagePath: filePath,
-                              //     ));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

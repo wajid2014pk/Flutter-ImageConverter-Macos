@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/HomeScreenController/home_screen_controller.dart';
+import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Presentation/history.dart';
 import 'package:image_converter_macos/Presentation/select_file_screen.dart';
 import 'package:image_converter_macos/Screens/feedback_screen.dart';
@@ -21,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   final homeScreenController = Get.put(HomeScreenController());
+  final payWallController = Get.put(PayWallController());
 
   late AnimationController _controller;
   late Animation<double> animation;
@@ -117,121 +119,134 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                   const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      PremiumPopUp().premiumScreenPopUp(context);
-                    },
-                    child: SizedBox(
-                      height: 180,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            // Use Positioned.fill instead of Padding
-                            child: Container(
-                              width: 280,
-                              decoration: BoxDecoration(
-                                color: UiColors.lightblueColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 12, right: 12, top: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(Get.context!)!.imagee,
-                                      style: GoogleFonts.poppins(
-                                          color: UiColors.whiteColor,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600),
+                  payWallController.isPro.value == false
+                      ? GestureDetector(
+                          onTap: () {
+                            PremiumPopUp().premiumScreenPopUp(context);
+                          },
+                          child: SizedBox(
+                            height: 180,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  // Use Positioned.fill instead of Padding
+                                  child: Container(
+                                    width: 280,
+                                    decoration: BoxDecoration(
+                                      color: UiColors.lightblueColor,
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    Text(
-                                      AppLocalizations.of(Get.context!)!
-                                          .converterr,
-                                      style: GoogleFonts.poppins(
-                                          color: UiColors.whiteColor,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: UiColors.whiteColor,
-                                            borderRadius:
-                                                BorderRadius.circular(4)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 7,
-                                              right: 7,
-                                              top: 2,
-                                              bottom: 2),
-                                          child: Text(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 12, right: 12, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
                                             AppLocalizations.of(Get.context!)!
-                                                .proo,
+                                                .imagee,
                                             style: GoogleFonts.poppins(
-                                                color: UiColors.yellowColor,
-                                                fontSize: 14,
+                                                color: UiColors.whiteColor,
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.w600),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10),
-                                      child: Container(
-                                        width: 90,
-                                        height: 28,
-                                        decoration: BoxDecoration(
-                                          color: UiColors.yellowColor,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                        ),
-                                        child: SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.2,
-                                          child: Center(
-                                            child: Text(
-                                              AppLocalizations.of(Get.context!)!
-                                                  .upgrade,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 14,
+                                          Text(
+                                            AppLocalizations.of(Get.context!)!
+                                                .converterr,
+                                            style: GoogleFonts.poppins(
+                                                color: UiColors.whiteColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 4.0),
+                                            child: Container(
+                                              decoration: BoxDecoration(
                                                   color: UiColors.whiteColor,
-                                                  fontWeight: FontWeight.w600),
+                                                  borderRadius:
+                                                      BorderRadius.circular(4)),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 7,
+                                                    right: 7,
+                                                    top: 2,
+                                                    bottom: 2),
+                                                child: Text(
+                                                  AppLocalizations.of(
+                                                          Get.context!)!
+                                                      .proo,
+                                                  style: GoogleFonts.poppins(
+                                                      color:
+                                                          UiColors.yellowColor,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          const Spacer(),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Container(
+                                              width: 90,
+                                              height: 28,
+                                              decoration: BoxDecoration(
+                                                color: UiColors.yellowColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    1.2,
+                                                child: Center(
+                                                  child: Text(
+                                                    AppLocalizations.of(
+                                                            Get.context!)!
+                                                        .upgrade,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        color:
+                                                            UiColors.whiteColor,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                                Positioned(
+                                  // top: 5,
+                                  right: isArabicOrPersianOrHebrew ? null : 1,
+                                  left: isArabicOrPersianOrHebrew ? 1 : null,
+                                  bottom: 10,
+                                  child: Image.asset(
+                                    "assets/Pro-Banner-Image.png",
+                                    width: 185,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Positioned(
-                            // top: 5,
-                            right: isArabicOrPersianOrHebrew ? null : 1,
-                            left: isArabicOrPersianOrHebrew ? 1 : null,
-                            bottom: 10,
-                            child: Image.asset(
-                              "assets/Pro-Banner-Image.png",
-                              width: 185,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),
