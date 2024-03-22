@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
+import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Presentation/convert_file.dart';
 import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,6 +21,7 @@ class HomeScreenController extends GetxController {
   RxBool isVisible = false.obs;
 
   TextEditingController textController = TextEditingController();
+  final payWallController = Get.put(PayWallController());
 
   bool isArabicOrPersianOrHebrew = [
     'ar',
@@ -152,7 +154,7 @@ class HomeScreenController extends GetxController {
       double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
       print("Size in Mb $fileSizeInMb ");
 
-      if (fileSizeInMb > 3) {
+      if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
         Get.snackbar(
           AppLocalizations.of(Get.context!)!.attention,
           "File Size is greater then 3 MBs. Buy Premium to Convert",
@@ -177,7 +179,7 @@ class HomeScreenController extends GetxController {
       int fileSizeInBytes = File(imagePath).lengthSync();
       double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
 
-      if (fileSizeInMb > 5) {
+      if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
         Get.snackbar(
           AppLocalizations.of(Get.context!)!.attention,
           "File Size is greater then 3 MBs. Buy Premium to Convert",
@@ -300,7 +302,8 @@ class HomeScreenController extends GetxController {
                                     File(filePath).lengthSync();
                                 double fileSizeInMb =
                                     fileSizeInBytes / (1024 * 1024);
-                                if (fileSizeInMb > 3) {
+                                if (fileSizeInMb > 3 &&
+                                    payWallController.isPro.value == false) {
                                   Get.snackbar(
                                     AppLocalizations.of(Get.context!)!
                                         .attention,
