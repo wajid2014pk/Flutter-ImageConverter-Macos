@@ -81,7 +81,6 @@ class PremiumPopUp {
                               child: Row(
                                 children: [
                                   Text(
-                                    // "Pro",
                                     AppLocalizations.of(context)!.pro,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins(
@@ -144,7 +143,7 @@ class PremiumPopUp {
                                                 'assets/Multiple_images.png',
                                               ),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
                                                 context,
@@ -153,7 +152,7 @@ class PremiumPopUp {
                                                 'assets/any_format.png',
                                               ),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
                                                   context,
@@ -161,7 +160,7 @@ class PremiumPopUp {
                                                       .unlimited_conversions,
                                                   'assets/Unlimited.png'),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
                                                   context,
@@ -169,7 +168,7 @@ class PremiumPopUp {
                                                       .support_upto_20mbs_files,
                                                   'assets/20mb.png'),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
                                                   context,
@@ -384,9 +383,6 @@ class PremiumPopUp {
                                                     .premiumContainer(
                                                         AppLocalizations.of(
                                                                 context)!
-                                                            .most_flexible,
-                                                        AppLocalizations.of(
-                                                                context)!
                                                             .monthly,
                                                         0,
                                                         false,
@@ -394,14 +390,11 @@ class PremiumPopUp {
                                                 : shimmerContainer(
                                                     context, 170, 170),
                                             const SizedBox(
-                                              width: 20,
+                                              width: 30,
                                             ),
                                             snapshot.data != null
                                                 ? payWallController
                                                     .premiumContainer(
-                                                        AppLocalizations.of(
-                                                                context)!
-                                                            .most_popular,
                                                         AppLocalizations.of(
                                                                 context)!
                                                             .yearly,
@@ -510,10 +503,9 @@ class PremiumPopUp {
 
   Widget customLockColumn(String image) {
     return Container(
-        height: 20,
-        width: 20,
+        height: 16,
+        width: 16,
         decoration: BoxDecoration(
-          // border: Border.all(),
           image: DecorationImage(
             image: AssetImage(
               "assets/$image.png",
@@ -531,8 +523,8 @@ class PremiumPopUp {
           borderRadius: BorderRadius.circular(10)),
       child: Row(children: [
         SizedBox(
-          width: 24,
-          height: 24,
+          width: 20,
+          height: 20,
           child: Image.asset(image),
         ),
         const SizedBox(
@@ -547,6 +539,7 @@ class PremiumPopUp {
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
                 fontSize: 16,
+                fontWeight: FontWeight.w400,
                 textStyle: TextStyle(
                   color: UiColors.whiteColor,
                 )),
