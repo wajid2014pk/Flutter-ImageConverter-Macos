@@ -62,12 +62,11 @@ class HomeScreenController extends GetxController {
               const SizedBox(
                 width: 20,
               ),
-              sideBarSelectedIndex.value == 2
-                  ? VerticalDivider(
+              VerticalDivider(
                       thickness: 1.5,
                       color: UiColors.blackColor.withOpacity(0.2),
-                    )
-                  : const SizedBox(),
+                    ),
+
               const SizedBox(
                 width: 20,
               ),
