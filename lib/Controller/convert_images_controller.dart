@@ -1672,9 +1672,12 @@ class ConvertImagesController extends GetxController {
           Get.back();
         }
         if (index == 2 || index == 4 || index == 8) {
-          payWallController.isPro.value == true
-              ? selectedIndex.value = index
-              : PremiumPopUp().premiumScreenPopUp(context);
+          if (payWallController.isPro.value == true) {
+            selectedIndex.value = index;
+            Get.back();
+          } else {
+            PremiumPopUp().premiumScreenPopUp(context);
+          }
         }
       },
       child: Obx(
@@ -1716,11 +1719,13 @@ class ConvertImagesController extends GetxController {
                   width: 5,
                 ),
                 if (index == 2 || index == 4 || index == 8)
-                  Image.asset(
-                    'assets/Star.png',
-                    height: 20,
-                    width: 20,
-                  ),
+                  payWallController.isPro.value == true
+                      ? const SizedBox()
+                      : Image.asset(
+                          'assets/Star.png',
+                          height: 20,
+                          width: 20,
+                        ),
               ],
             ),
           ),

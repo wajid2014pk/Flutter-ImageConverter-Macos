@@ -138,15 +138,8 @@ class _ConvertFileState extends State<ConvertFile> {
                                                                               '.svg'
                                                                           ? "assets/SVG.png"
                                                                           : "assets/JPG.png",
-                                          height: 50,
-                                          width: 50,
+                                          height: 45,
                                         ),
-                                        // Image.file(
-                                        //   File(widget.imagePath!),
-                                        // height: 50,
-                                        // width: 50,
-                                        //   fit: BoxFit.cover,
-                                        // ),
                                         const SizedBox(
                                           width: 15,
                                         ),

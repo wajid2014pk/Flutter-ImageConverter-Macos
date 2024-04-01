@@ -6,7 +6,6 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -110,7 +109,7 @@ class _ConversionResultState extends State<ConversionResult> {
             optionList(
                 "assets/EXport.png", AppLocalizations.of(context)!.export,
                 () async {
-              _exportFile(widget.convertedFile);
+              _exportFile();
             }),
             const SizedBox(
               width: 30,
@@ -168,7 +167,7 @@ class _ConversionResultState extends State<ConversionResult> {
                                                                     '.svg'
                                                                 ? "assets/SVG.png"
                                                                 : "assets/JPG.png",
-                                height: 55,
+                                height: 45,
                               ),
                             ),
                             Text(
@@ -238,7 +237,7 @@ class _ConversionResultState extends State<ConversionResult> {
                                                                     8
                                                                 ? "assets/SVG.png"
                                                                 : "assets/JPG.png",
-                                height: 55,
+                                height: 45,
                               ),
                             ),
                             Text(
@@ -341,44 +340,44 @@ class _ConversionResultState extends State<ConversionResult> {
   }
 
   Future<void> _exportFile(
-    FileSystemEntity file,
-  ) async {
+      // FileSystemEntity file,
+      ) async {
     try {
-      final filePath = file.uri.toFilePath();
-      File imageFile = File(filePath);
+      // final filePath = file.uri.toFilePath();
+      // File imageFile = File(filePath);
 
-      Directory? dir = await getDownloadsDirectory();
+      // Directory? dir = await getDownloadsDirectory();
 
-      var targetDirectoryPath = '${dir!.path}/ImageConverterExport';
+      // var targetDirectoryPath = '${dir!.path}/ImageConverterExport';
 
-      // Check if the source file exists
-      if (!imageFile.existsSync()) {
-        print("#### Error: Source file doesn't exist");
-        return;
-      }
+      // // Check if the source file exists
+      // if (!imageFile.existsSync()) {
+      //   print("#### Error: Source file doesn't exist");
+      //   return;
+      // }
 
-      // Create the target directory if it doesn't exist
-      Directory exportDir = Directory(targetDirectoryPath);
-      if (!exportDir.existsSync()) {
-        exportDir.createSync(recursive: true);
-      }
+      // // Create the target directory if it doesn't exist
+      // Directory exportDir = Directory(targetDirectoryPath);
+      // if (!exportDir.existsSync()) {
+      //   exportDir.createSync(recursive: true);
+      // }
 
-      // Construct the target file path
-      String fileName = imageFile.path.split('/').last;
-      String targetFilePath = '$targetDirectoryPath/$fileName';
+      // // Construct the target file path
+      // String fileName = imageFile.path.split('/').last;
+      // String targetFilePath = '$targetDirectoryPath/$fileName';
 
-      // Copy the source file to the target file path
-      await imageFile.copy(targetFilePath);
+      // // Copy the source file to the target file path
+      // await imageFile.copy(targetFilePath);
 
       Get.offAll(() => const HomeScreen());
 
       Get.snackbar(
         backgroundColor: Colors.white,
         AppLocalizations.of(Get.context!)!.attention,
-        "File Saved Successfully",
+        "File Saved Successfully in History",
       );
 
-      print("#### Image exported to: $targetFilePath");
+      // print("#### Image exported to: $targetFilePath");
     } catch (e) {
       print('####Error exporting file: $e');
     }

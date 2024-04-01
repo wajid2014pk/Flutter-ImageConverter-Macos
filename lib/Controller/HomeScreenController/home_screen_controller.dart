@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -28,6 +29,12 @@ class HomeScreenController extends GetxController {
     'fa',
     'he',
   ].contains(Localizations.localeOf(Get.context!).languageCode);
+
+  @override
+  void onInit() {
+    super.onInit();
+    showPremium();
+  }
 
   customAppBar(BuildContext context) {
     return Obx(
@@ -357,6 +364,7 @@ class HomeScreenController extends GetxController {
                         } catch (e) {
                           print('Error in onPressed: $e');
                         }
+                        textController.clear();
                       },
                       child: Text(
                         AppLocalizations.of(context)!.proceed,
@@ -372,5 +380,13 @@ class HomeScreenController extends GetxController {
         );
       },
     );
+  }
+
+  showPremium() {
+    Future.delayed(const Duration(seconds: 2), () {
+      payWallController.isPro.value == false
+          ? PremiumPopUp().premiumScreenPopUp(Get.context!)
+          : () {};
+    });
   }
 }

@@ -51,13 +51,13 @@ class PremiumPopUp {
                           children: [
                             const Spacer(),
                             Text(
-                              "${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}",
+                              "${AppLocalizations.of(context)!.heic} ${AppLocalizations.of(context)!.converter}",
                               textAlign: TextAlign.center,
                               style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                      fontSize: 24.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white)),
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w500,
+                                color: UiColors.whiteColor,
+                              ),
                             ),
                             const SizedBox(
                               width: 10.0,
@@ -85,11 +85,9 @@ class PremiumPopUp {
                                     AppLocalizations.of(context)!.pro,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: UiColors.whiteColor,
                                     ),
                                   )
                                 ],
@@ -107,6 +105,7 @@ class PremiumPopUp {
                                   child: Icon(
                                     Icons.close_rounded,
                                     color: UiColors.whiteColor,
+                                    // color: UiColors.blackColor.withOpacity(0.5),
                                     size: 30.0,
                                   )),
                             ),
@@ -144,7 +143,7 @@ class PremiumPopUp {
                                                 'assets/Multiple_images.png',
                                               ),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
                                                 context,
@@ -153,33 +152,35 @@ class PremiumPopUp {
                                                 'assets/any_format.png',
                                               ),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
-                                                  context,
-                                                  AppLocalizations.of(context)!
-                                                      .unlimited_conversions,
-                                                  'assets/Unlimited.png'),
+                                                context,
+                                                AppLocalizations.of(context)!
+                                                    .unlimited_conversions,
+                                                'assets/Unlimited.png',
+                                              ),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
-                                                  context,
-                                                  AppLocalizations.of(context)!
-                                                      .support_upto_20mbs_files,
-                                                  'assets/20mb.png'),
+                                                context,
+                                                AppLocalizations.of(context)!
+                                                    .support_upto_20mbs_files,
+                                                'assets/20mb.png',
+                                              ),
                                               const SizedBox(
-                                                height: 20.0,
+                                                height: 14.0,
                                               ),
                                               customRow(
-                                                  context,
-                                                  AppLocalizations.of(context)!
-                                                      .customer_support,
-                                                  'assets/Customer_support.png'),
+                                                context,
+                                                AppLocalizations.of(context)!
+                                                    .customer_support,
+                                                'assets/Customer_support.png',
+                                              ),
                                             ],
                                           ),
                                         ),
-                                        // const Spacer(),
                                         Column(
                                           children: [
                                             SizedBox(
@@ -200,7 +201,7 @@ class PremiumPopUp {
                                             const SizedBox(
                                               height: 22.0,
                                             ),
-                                            customLockColumn('tick'),
+                                            customLockColumn('ic_tick'),
                                             const SizedBox(
                                               height: 22.0,
                                             ),
@@ -277,23 +278,23 @@ class PremiumPopUp {
                                                 const SizedBox(
                                                   height: 18.0,
                                                 ),
-                                                customLockColumn('tick_Blue'),
+                                                customLockColumn('ic_tick'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick_Blue'),
+                                                customLockColumn('ic_tick'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick_Blue'),
+                                                customLockColumn('ic_tick'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick_Blue'),
+                                                customLockColumn('ic_tick'),
                                                 const SizedBox(
                                                   height: 20.0,
                                                 ),
-                                                customLockColumn('tick_Blue'),
+                                                customLockColumn('ic_tick'),
                                                 const SizedBox(
                                                   height: 30.0,
                                                 ),
@@ -328,7 +329,6 @@ class PremiumPopUp {
                                                     AppLocalizations.of(
                                                             context)!
                                                         .trusted_by,
-                                                    // "Trusted By",
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 18,
                                                         color:
@@ -340,7 +340,6 @@ class PremiumPopUp {
                                                     AppLocalizations.of(
                                                             context)!
                                                         .professionals,
-                                                    // "Professionals",
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 22,
                                                         color:
@@ -384,9 +383,6 @@ class PremiumPopUp {
                                                     .premiumContainer(
                                                         AppLocalizations.of(
                                                                 context)!
-                                                            .most_flexible,
-                                                        AppLocalizations.of(
-                                                                context)!
                                                             .monthly,
                                                         0,
                                                         false,
@@ -399,9 +395,6 @@ class PremiumPopUp {
                                             snapshot.data != null
                                                 ? payWallController
                                                     .premiumContainer(
-                                                        AppLocalizations.of(
-                                                                context)!
-                                                            .most_popular,
                                                         AppLocalizations.of(
                                                                 context)!
                                                             .yearly,
@@ -439,10 +432,12 @@ class PremiumPopUp {
                                                   launchUrl(urlTermsofServices);
                                                 }),
                                                 VerticalDivider(
-                                                  thickness: 2,
-                                                  color: UiColors.whiteColor
-                                                      .withOpacity(0.4),
-                                                ),
+                                                    thickness: 2,
+                                                    color: UiColors
+                                                        .lightGreyBackground
+                                                    //  UiColors.blackColor
+                                                    // .withOpacity(0.4),
+                                                    ),
                                                 payWallController
                                                     .hyperLinksOptionsText(
                                                         AppLocalizations.of(
@@ -455,8 +450,10 @@ class PremiumPopUp {
                                                 }),
                                                 VerticalDivider(
                                                   thickness: 2,
-                                                  color: UiColors.whiteColor
-                                                      .withOpacity(0.4),
+                                                  color: UiColors
+                                                      .lightGreyBackground,
+                                                  // color: UiColors.blackColor
+                                                  //     .withOpacity(0.4),
                                                 ),
                                                 payWallController
                                                     .hyperLinksOptionsText(
@@ -510,8 +507,8 @@ class PremiumPopUp {
 
   Widget customLockColumn(String image) {
     return Container(
-        height: 20,
-        width: 20,
+        height: 16,
+        width: 16,
         decoration: BoxDecoration(
           // border: Border.all(),
           image: DecorationImage(
@@ -522,7 +519,11 @@ class PremiumPopUp {
         ));
   }
 
-  Widget customRow(BuildContext context, String title, String image) {
+  Widget customRow(
+    BuildContext context,
+    String title,
+    String image,
+  ) {
     return Container(
       decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.dark
@@ -531,9 +532,12 @@ class PremiumPopUp {
           borderRadius: BorderRadius.circular(10)),
       child: Row(children: [
         SizedBox(
-          width: 24,
-          height: 24,
-          child: Image.asset(image),
+          width: 20,
+          height: 20,
+          child: Image.asset(
+            image,
+            // color: applyColor == true ? UiColors.lightblueColor : null,
+          ),
         ),
         const SizedBox(
           width: 15,
