@@ -1644,7 +1644,7 @@ class ConvertImagesController extends GetxController {
                           conversionOptions(
                               ".SVG", 'assets/SVG.png', 8, context),
                           const SizedBox(
-                            width: 133,
+                            width: 140,
                           )
                         ],
                       ),
@@ -1657,57 +1657,6 @@ class ConvertImagesController extends GetxController {
         );
       },
     );
-
-    //--------
-
-    //  Container(
-    //   decoration: BoxDecoration(
-    //       color: UiColors.whiteColor, borderRadius: BorderRadius.circular(8)),
-    //   height: 260,
-    //   width: MediaQuery.of(context).size.width / 2.6,
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.start,
-    //     children: [
-    //       Padding(
-    //         padding: const EdgeInsets.all(8.0),
-    //         child: Text(
-    //           "Choose File Format",
-    //           textAlign: TextAlign.center,
-    //           style: GoogleFonts.poppins(
-    //             fontSize: 14,
-    //             color: Colors.black.withOpacity(0.7),
-    //           ),
-    //         ),
-    //       ),
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           conversionOptions(".JPG", 'assets/JPG.png', 1, context),
-    //           conversionOptions(".PDF", 'assets/PDF.png', 2, context),
-    //           conversionOptions(".PNG", 'assets/PNG.png', 3, context),
-    //         ],
-    //       ),
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           conversionOptions(".WEBP", 'assets/WEBP.png', 4, context),
-    //           conversionOptions(".GIF", 'assets/GIF.png', 5, context),
-    //           conversionOptions(".JPEG", 'assets/JPEG.png', 6, context),
-    //         ],
-    //       ),
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.center,
-    //         children: [
-    //           conversionOptions(".BMP", 'assets/BMP.png', 7, context),
-    //           conversionOptions(".SVG", 'assets/SVG.png', 8, context),
-    //           const SizedBox(
-    //             width: 133,
-    //           )
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   conversionOptions(String extensionName, String extensionImage, int index,
@@ -1746,8 +1695,11 @@ class ConvertImagesController extends GetxController {
               borderRadius: BorderRadius.circular(6),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                const SizedBox(
+                  width: 15,
+                ),
                 Image.asset(
                   extensionImage,
                   height: 30,
@@ -1761,7 +1713,7 @@ class ConvertImagesController extends GetxController {
                   style: const TextStyle(fontSize: 14),
                 ),
                 const SizedBox(
-                  width: 2,
+                  width: 5,
                 ),
                 if (index == 2 || index == 4 || index == 8)
                   Image.asset(

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
@@ -259,23 +258,14 @@ class _ConvertFileState extends State<ConvertFile> {
                             Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    width: 0.5,
-                                    color: Colors.black.withOpacity(0.5)),
-                                // boxShadow: [
-                                //   BoxShadow(
-                                //     color: Colors.grey.withOpacity(0.5),
-                                //     spreadRadius: 5,
-                                //     blurRadius: 7,
-                                //     offset: Offset(
-                                //         0, 3), // changes position of shadow
-                                //   ),
-                                // ],
+                                  width: 0.5,
+                                  color: Colors.black.withOpacity(0.5),
+                                ),
                               ),
                               height: MediaQuery.of(context).size.height / 2.5,
                               width: MediaQuery.of(context).size.width / 2.5,
                               child: Image.file(File(widget.imagePath!)),
                             ),
-                            // conversionController.conversionOptionList(context),
                           ],
                         ),
                       ),
@@ -593,46 +583,90 @@ class _ConvertFileState extends State<ConvertFile> {
                                 .toLowerCase()
                                 .endsWith('.heic')) {
                               print("@@@@heic");
-                              conversionController.convertingIntoDiffFormats(
-                                context,
-                                widget.imagePath,
-                                'heic',
-                                conversionController.selectedIndex.value == 1
-                                    ? 'jpg'
-                                    : conversionController
-                                                .selectedIndex.value ==
-                                            2
-                                        ? 'pdf'
-                                        : conversionController
-                                                    .selectedIndex.value ==
-                                                3
-                                            ? 'png'
-                                            : conversionController
-                                                        .selectedIndex.value ==
-                                                    4
-                                                ? 'webp'
-                                                : conversionController
-                                                            .selectedIndex
-                                                            .value ==
-                                                        5
-                                                    ? 'gif'
-                                                    : conversionController
-                                                                .selectedIndex
-                                                                .value ==
-                                                            6
-                                                        ? 'jpeg'
-                                                        : conversionController
-                                                                    .selectedIndex
-                                                                    .value ==
-                                                                7
-                                                            ? 'bmp'
-                                                            : conversionController
-                                                                        .selectedIndex
-                                                                        .value ==
-                                                                    8
-                                                                ? 'svg'
-                                                                : 'heic',
-                              );
+
+                              conversionController.selectedIndex.value == 1
+                                  ? conversionController
+                                      .convertingIntoDiffFormats(
+                                      context,
+                                      widget.imagePath,
+                                      'heic',
+                                      'jpg',
+                                    )
+                                  : conversionController.selectedIndex.value ==
+                                          2
+                                      ? conversionController
+                                          .convertingIntoDiffFormats(
+                                          context,
+                                          widget.imagePath,
+                                          'heic',
+                                          'pdf',
+                                        )
+                                      : conversionController
+                                                  .selectedIndex.value ==
+                                              3
+                                          ? conversionController
+                                              .convertingIntoDiffFormats(
+                                              context,
+                                              widget.imagePath,
+                                              'heic',
+                                              'png',
+                                            )
+                                          : conversionController
+                                                      .selectedIndex.value ==
+                                                  4
+                                              ? conversionController
+                                                  .convertingIntoDiffFormats(
+                                                  context,
+                                                  widget.imagePath,
+                                                  'heic',
+                                                  'webp',
+                                                )
+                                              : conversionController
+                                                          .selectedIndex
+                                                          .value ==
+                                                      5
+                                                  ? conversionController
+                                                      .convertingIntoDiffFormats(
+                                                      context,
+                                                      widget.imagePath,
+                                                      'heic',
+                                                      'gif',
+                                                    )
+                                                  : conversionController
+                                                              .selectedIndex
+                                                              .value ==
+                                                          6
+                                                      ? conversionController
+                                                          .convertingIntoDiffFormats(
+                                                          context,
+                                                          widget.imagePath,
+                                                          'heic',
+                                                          'jpeg',
+                                                        )
+                                                      : conversionController
+                                                                  .selectedIndex
+                                                                  .value ==
+                                                              7
+                                                          ? conversionController
+                                                              .convertingIntoDiffFormats(
+                                                              context,
+                                                              widget.imagePath,
+                                                              'heic',
+                                                              'bmp',
+                                                            )
+                                                          : conversionController
+                                                                      .selectedIndex
+                                                                      .value ==
+                                                                  2
+                                                              ? conversionController
+                                                                  .convertingIntoDiffFormats(
+                                                                  context,
+                                                                  widget
+                                                                      .imagePath,
+                                                                  'heic',
+                                                                  'svg',
+                                                                )
+                                                              : const SizedBox();
                             }
                           },
                           child: Obx(

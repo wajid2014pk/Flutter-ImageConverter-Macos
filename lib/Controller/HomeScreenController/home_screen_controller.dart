@@ -55,7 +55,7 @@ class HomeScreenController extends GetxController {
                 ),
               ),
               const SizedBox(
-                width: 20,
+                width: 40,
               ),
               sideBarSelectedIndex.value == 2
                   ? VerticalDivider(
