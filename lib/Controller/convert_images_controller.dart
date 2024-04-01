@@ -1569,54 +1569,145 @@ class ConvertImagesController extends GetxController {
   }
 
   conversionOptionList(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: UiColors.whiteColor, borderRadius: BorderRadius.circular(8)),
-      height: 260,
-      width: MediaQuery.of(context).size.width / 2.6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              "Choose File Format",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                color: Colors.black.withOpacity(0.7),
+    return showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (_) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: AlertDialog(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
+                insetPadding: const EdgeInsets.only(top: 0),
+                elevation: 4.0,
+                contentPadding: const EdgeInsets.all(0),
+                content: Container(
+                  decoration: BoxDecoration(
+                      color: UiColors.whiteColor,
+                      borderRadius: BorderRadius.circular(8)),
+                  height: 300,
+                  width: MediaQuery.of(context).size.width / 2.4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 12.0,
+                          bottom: 8.0,
+                          left: 8.0,
+                          right: 8.0,
+                        ),
+                        child: Text(
+                          "Choose File Format",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          conversionOptions(
+                              ".JPG", 'assets/JPG.png', 1, context),
+                          conversionOptions(
+                              ".PDF", 'assets/PDF.png', 2, context),
+                          conversionOptions(
+                              ".PNG", 'assets/PNG.png', 3, context),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          conversionOptions(
+                              ".WEBP", 'assets/WEBP.png', 4, context),
+                          conversionOptions(
+                              ".GIF", 'assets/GIF.png', 5, context),
+                          conversionOptions(
+                              ".JPEG", 'assets/JPEG.png', 6, context),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          conversionOptions(
+                              ".BMP", 'assets/BMP.png', 7, context),
+                          conversionOptions(
+                              ".SVG", 'assets/SVG.png', 8, context),
+                          const SizedBox(
+                            width: 133,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              conversionOptions(".JPG", 'assets/JPG.png', 1, context),
-              conversionOptions(".PDF", 'assets/PDF.png', 2, context),
-              conversionOptions(".PNG", 'assets/PNG.png', 3, context),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              conversionOptions(".WEBP", 'assets/WEBP.png', 4, context),
-              conversionOptions(".GIF", 'assets/GIF.png', 5, context),
-              conversionOptions(".JPEG", 'assets/JPEG.png', 6, context),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              conversionOptions(".BMP", 'assets/BMP.png', 7, context),
-              conversionOptions(".SVG", 'assets/SVG.png', 8, context),
-              const SizedBox(
-                width: 133,
-              )
-            ],
-          ),
-        ],
-      ),
+            );
+          },
+        );
+      },
     );
+
+    //--------
+
+    //  Container(
+    //   decoration: BoxDecoration(
+    //       color: UiColors.whiteColor, borderRadius: BorderRadius.circular(8)),
+    //   height: 260,
+    //   width: MediaQuery.of(context).size.width / 2.6,
+    //   child: Column(
+    //     mainAxisAlignment: MainAxisAlignment.start,
+    //     children: [
+    //       Padding(
+    //         padding: const EdgeInsets.all(8.0),
+    //         child: Text(
+    //           "Choose File Format",
+    //           textAlign: TextAlign.center,
+    //           style: GoogleFonts.poppins(
+    //             fontSize: 14,
+    //             color: Colors.black.withOpacity(0.7),
+    //           ),
+    //         ),
+    //       ),
+    //       Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           conversionOptions(".JPG", 'assets/JPG.png', 1, context),
+    //           conversionOptions(".PDF", 'assets/PDF.png', 2, context),
+    //           conversionOptions(".PNG", 'assets/PNG.png', 3, context),
+    //         ],
+    //       ),
+    //       Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           conversionOptions(".WEBP", 'assets/WEBP.png', 4, context),
+    //           conversionOptions(".GIF", 'assets/GIF.png', 5, context),
+    //           conversionOptions(".JPEG", 'assets/JPEG.png', 6, context),
+    //         ],
+    //       ),
+    //       Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         children: [
+    //           conversionOptions(".BMP", 'assets/BMP.png', 7, context),
+    //           conversionOptions(".SVG", 'assets/SVG.png', 8, context),
+    //           const SizedBox(
+    //             width: 133,
+    //           )
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 
   conversionOptions(String extensionName, String extensionImage, int index,
@@ -1629,6 +1720,7 @@ class ConvertImagesController extends GetxController {
             index == 6 ||
             index == 7) {
           selectedIndex.value = index;
+          Get.back();
         }
         if (index == 2 || index == 4 || index == 8) {
           payWallController.isPro.value == true
@@ -1641,7 +1733,7 @@ class ConvertImagesController extends GetxController {
           padding:
               const EdgeInsets.only(left: 10.0, right: 10, top: 12, bottom: 12),
           child: Container(
-            width: 115,
+            width: 125,
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             decoration: BoxDecoration(
               color: UiColors.lightGreyBackground.withOpacity(0.3),
@@ -1662,12 +1754,21 @@ class ConvertImagesController extends GetxController {
                   width: 30,
                 ),
                 const SizedBox(
-                  width: 8,
+                  width: 5,
                 ),
                 Text(
                   extensionName,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 14),
                 ),
+                const SizedBox(
+                  width: 2,
+                ),
+                if (index == 2 || index == 4 || index == 8)
+                  Image.asset(
+                    'assets/Star.png',
+                    height: 20,
+                    width: 20,
+                  ),
               ],
             ),
           ),

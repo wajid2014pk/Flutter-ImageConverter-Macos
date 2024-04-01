@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path/path.dart' as path;
 
 class ConvertFile extends StatefulWidget {
   final String? imagePath;
@@ -36,6 +38,9 @@ class _ConvertFileState extends State<ConvertFile> {
         ? fileName
         : '${fileName.substring(0, 10)}...${fileName.substring(fileName.length - 10)}';
 
+    String fileExtension = path.extension(fileName);
+    print("fileExtension $fileExtension");
+
     return Scaffold(
       backgroundColor: UiColors.backgroundColor,
       appBar: PreferredSize(
@@ -53,8 +58,8 @@ class _ConvertFileState extends State<ConvertFile> {
                   flipX: true,
                   child: Image.asset(
                     'assets/Right.png',
-                    height: 25,
-                    width: 25,
+                    height: 20,
+                    width: 20,
                   ),
                 ),
               ),
@@ -71,7 +76,7 @@ class _ConvertFileState extends State<ConvertFile> {
                         : AppLocalizations.of(context)!.converted,
                     style: GoogleFonts.poppins(
                       color: UiColors.blueColor,
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -112,20 +117,46 @@ class _ConvertFileState extends State<ConvertFile> {
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Image.file(
-                                          File(widget.imagePath!),
+                                        Image.asset(
+                                          fileExtension == '.jpg'
+                                              ? "assets/JPG.png"
+                                              : fileExtension == '.pdf'
+                                                  ? "assets/PDF.png"
+                                                  : fileExtension == '.png'
+                                                      ? "assets/PNG.png"
+                                                      : fileExtension == '.webp'
+                                                          ? "assets/WEBP.png"
+                                                          : fileExtension ==
+                                                                  '.gif'
+                                                              ? "assets/GIF.png"
+                                                              : fileExtension ==
+                                                                      '.jpeg'
+                                                                  ? "assets/JPEG.png"
+                                                                  : fileExtension ==
+                                                                          '.bmp'
+                                                                      ? "assets/BMP.png"
+                                                                      : fileExtension ==
+                                                                              '.svg'
+                                                                          ? "assets/SVG.png"
+                                                                          : "assets/JPG.png",
                                           height: 50,
                                           width: 50,
-                                          fit: BoxFit.cover,
                                         ),
+                                        // Image.file(
+                                        //   File(widget.imagePath!),
+                                        // height: 50,
+                                        // width: 50,
+                                        //   fit: BoxFit.cover,
+                                        // ),
                                         const SizedBox(
                                           width: 15,
                                         ),
                                         Text(
                                           shortenedFileName,
                                           style: GoogleFonts.poppins(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500),
+                                            fontSize: 16,
+                                            // fontWeight: FontWeight.w500
+                                          ),
                                         )
                                       ],
                                     ),
@@ -139,76 +170,85 @@ class _ConvertFileState extends State<ConvertFile> {
                                     height: 40,
                                   ),
                                 ),
-                                Container(
-                                  height: 70,
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: UiColors.whiteColor,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      Image.asset(
-                                        conversionController
-                                                    .selectedIndex.value ==
-                                                1
-                                            ? "assets/JPG.png"
-                                            : conversionController
-                                                        .selectedIndex.value ==
-                                                    2
-                                                ? "assets/PDF.png"
-                                                : conversionController
-                                                            .selectedIndex
-                                                            .value ==
-                                                        3
-                                                    ? "assets/PNG.png"
-                                                    : conversionController
-                                                                .selectedIndex
-                                                                .value ==
-                                                            4
-                                                        ? "assets/WEBP.png"
-                                                        : conversionController
-                                                                    .selectedIndex
-                                                                    .value ==
-                                                                5
-                                                            ? "assets/GIF.png"
-                                                            : conversionController
-                                                                        .selectedIndex
-                                                                        .value ==
-                                                                    6
-                                                                ? "assets/JPEG.png"
-                                                                : conversionController
-                                                                            .selectedIndex
-                                                                            .value ==
-                                                                        7
-                                                                    ? "assets/BMP.png"
-                                                                    : conversionController.selectedIndex.value ==
-                                                                            8
-                                                                        ? "assets/SVG.png"
-                                                                        : "assets/JPG.png",
-                                        height: 45,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "${AppLocalizations.of(context)!.convert_into} ${conversionController.selectedIndex.value == 1 ? "jpg" : conversionController.selectedIndex.value == 2 ? "pdf" : conversionController.selectedIndex.value == 3 ? "png" : conversionController.selectedIndex.value == 4 ? "webp" : conversionController.selectedIndex.value == 5 ? "gif" : conversionController.selectedIndex.value == 6 ? "jpeg" : conversionController.selectedIndex.value == 7 ? "bmp" : conversionController.selectedIndex.value == 8 ? "svg" : " "}",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      const Spacer(),
-                                      const Icon(
-                                        Icons.arrow_right_rounded,
-                                        size: 50,
-                                      ),
-                                      const SizedBox(
-                                        width: 15,
-                                      ),
-                                    ],
+                                GestureDetector(
+                                  onTap: () {
+                                    conversionController
+                                        .conversionOptionList(context);
+                                  },
+                                  child: Container(
+                                    height: 70,
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: UiColors.whiteColor,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Image.asset(
+                                          conversionController
+                                                      .selectedIndex.value ==
+                                                  1
+                                              ? "assets/JPG.png"
+                                              : conversionController
+                                                          .selectedIndex
+                                                          .value ==
+                                                      2
+                                                  ? "assets/PDF.png"
+                                                  : conversionController
+                                                              .selectedIndex
+                                                              .value ==
+                                                          3
+                                                      ? "assets/PNG.png"
+                                                      : conversionController
+                                                                  .selectedIndex
+                                                                  .value ==
+                                                              4
+                                                          ? "assets/WEBP.png"
+                                                          : conversionController
+                                                                      .selectedIndex
+                                                                      .value ==
+                                                                  5
+                                                              ? "assets/GIF.png"
+                                                              : conversionController
+                                                                          .selectedIndex
+                                                                          .value ==
+                                                                      6
+                                                                  ? "assets/JPEG.png"
+                                                                  : conversionController
+                                                                              .selectedIndex
+                                                                              .value ==
+                                                                          7
+                                                                      ? "assets/BMP.png"
+                                                                      : conversionController.selectedIndex.value ==
+                                                                              8
+                                                                          ? "assets/SVG.png"
+                                                                          : "assets/JPG.png",
+                                          height: 45,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "${AppLocalizations.of(context)!.convert_into} ${conversionController.selectedIndex.value == 1 ? "jpg" : conversionController.selectedIndex.value == 2 ? "pdf" : conversionController.selectedIndex.value == 3 ? "png" : conversionController.selectedIndex.value == 4 ? "webp" : conversionController.selectedIndex.value == 5 ? "gif" : conversionController.selectedIndex.value == 6 ? "jpeg" : conversionController.selectedIndex.value == 7 ? "bmp" : conversionController.selectedIndex.value == 8 ? "svg" : " "}",
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16,
+                                            // fontWeight: FontWeight.w500
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        const Icon(
+                                          Icons.arrow_right_rounded,
+                                          size: 50,
+                                        ),
+                                        const SizedBox(
+                                          width: 15,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -216,7 +256,26 @@ class _ConvertFileState extends State<ConvertFile> {
                             const SizedBox(
                               width: 30,
                             ),
-                            conversionController.conversionOptionList(context),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 0.5,
+                                    color: Colors.black.withOpacity(0.5)),
+                                // boxShadow: [
+                                //   BoxShadow(
+                                //     color: Colors.grey.withOpacity(0.5),
+                                //     spreadRadius: 5,
+                                //     blurRadius: 7,
+                                //     offset: Offset(
+                                //         0, 3), // changes position of shadow
+                                //   ),
+                                // ],
+                              ),
+                              height: MediaQuery.of(context).size.height / 2.5,
+                              width: MediaQuery.of(context).size.width / 2.5,
+                              child: Image.file(File(widget.imagePath!)),
+                            ),
+                            // conversionController.conversionOptionList(context),
                           ],
                         ),
                       ),
@@ -594,7 +653,7 @@ class _ConvertFileState extends State<ConvertFile> {
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width /
-                                                7,
+                                                8,
                                             child: Text(
                                               AppLocalizations.of(context)!
                                                   .convert_file,
@@ -603,7 +662,7 @@ class _ConvertFileState extends State<ConvertFile> {
                                               overflow: TextOverflow.ellipsis,
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.poppins(
-                                                fontSize: 18,
+                                                fontSize: 16,
                                                 fontWeight: FontWeight.w700,
                                                 color: UiColors.whiteColor,
                                               ),

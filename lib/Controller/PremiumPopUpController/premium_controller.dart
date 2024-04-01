@@ -41,10 +41,10 @@ class PayWallController extends GetxController {
     }
   }
 
-  premiumContainer(String subscriptionDuration, int index,
+  premiumContainer(String title, String subscriptionDuration, int index,
       bool showTrailText, BuildContext context) {
     return SizedBox(
-      width: 150,
+      width: 160,
       child: Stack(
         children: [
           Obx(
@@ -55,14 +55,15 @@ class PayWallController extends GetxController {
                   hoverColor: Colors.transparent,
                   onTap: () => {selectPackage.value = index},
                   child: Container(
-                    height: 150,
+                    // width: 190,
+                    height: 165,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: selectPackage.value == index
                             ? UiColors.lightblueColor
                             : Colors.white,
                         style: BorderStyle.solid,
-                       width: 1.5
+                        width: 2.2,
                       ),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(
@@ -76,7 +77,7 @@ class PayWallController extends GetxController {
                         children: [
                           Container(
                             width: double.infinity,
-                            height: 30,
+                            height: 40,
                             decoration: BoxDecoration(
                                 color: selectPackage.value == index
                                     ? UiColors.lightblueColor
@@ -89,14 +90,14 @@ class PayWallController extends GetxController {
                               width: 10,
                               child: Center(
                                 child: Text(
-                                  subscriptionDuration,
+                                  title,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.poppins(
                                     color: selectPackage.value == index
                                         ? UiColors.whiteColor
-                                        : UiColors.blackColor,
-                                    fontSize: 18,
+                                        : UiColors.lightblueColor,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -106,17 +107,33 @@ class PayWallController extends GetxController {
                           Expanded(
                             child: Container(
                               width: MediaQuery.sizeOf(context).width,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.1),
+                                borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(12),
                                   bottomRight: Radius.circular(12),
                                 ),
                               ),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: SizedBox(
+                                      width: 170,
+                                      child: Text(
+                                        subscriptionDuration,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   Text(
                                     index == 0
                                         ? "${offerings.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings.current!.availablePackages[3].storeProduct.price, 30)}"
@@ -128,54 +145,20 @@ class PayWallController extends GetxController {
                                         decoration: TextDecoration.lineThrough),
                                   ),
                                   const SizedBox(
-                                    height: 2.0,
+                                    height: 12.0,
                                   ),
                                   Text(
                                     index == 0
-                                        ? "30% OFF"
-                                        : "60% OFF",
+                                        ? "${offerings.current!.availablePackages[4].storeProduct.currencyCode} ${offerings.current!.availablePackages[4].storeProduct.price.toStringAsFixed(2)}"
+                                        : "${offerings.current!.availablePackages[3].storeProduct.currencyCode} ${offerings.current!.availablePackages[3].storeProduct.price.toStringAsFixed(2)}",
                                     style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        color: Colors.red,
-                                        ),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 22,
+                                      color: selectPackage.value == index
+                                          ? UiColors.lightblueColor
+                                          : Colors.black,
+                                    ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                                    child: Divider(),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        index == 0
-                                            ? "${offerings.current!.availablePackages[4].storeProduct.currencyCode} "
-                                            : "${offerings.current!.availablePackages[3].storeProduct.currencyCode} ",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                          color: selectPackage.value == index
-                                              ? UiColors.lightblueColor
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      Text(
-                                        index == 0
-                                            ? offerings.current!.availablePackages[4].storeProduct.price.toStringAsFixed(2)
-                                            : offerings.current!.availablePackages[3].storeProduct.price.toStringAsFixed(2),
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 22,
-                                          color: selectPackage.value == index
-                                              ? UiColors.lightblueColor
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  )
                                 ],
                               ),
                             ),
@@ -369,9 +352,9 @@ class PayWallController extends GetxController {
         makePurchase();
       },
       child: Container(
-        width: 230.0,
+        width: 300,
         padding: const EdgeInsets.symmetric(
-          vertical: 6,
+          vertical: 10,
         ),
         decoration: BoxDecoration(
           // color: textScannerColor,
@@ -392,14 +375,14 @@ class PayWallController extends GetxController {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              width: 200,
+              width: 280,
               child: Text(
                 AppLocalizations.of(Get.context!)!.continuee,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
-                  fontSize: 20,
+                  fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                 ),

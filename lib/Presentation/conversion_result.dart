@@ -6,6 +6,7 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -51,8 +52,8 @@ class _ConversionResultState extends State<ConversionResult> {
                     flipX: true,
                     child: Image.asset(
                       'assets/Right.png',
-                      height: 25,
-                      width: 25,
+                      height: 20,
+                      width: 20,
                     ),
                   ),
                 ),
@@ -65,7 +66,7 @@ class _ConversionResultState extends State<ConversionResult> {
                     AppLocalizations.of(context)!.converted,
                     style: GoogleFonts.poppins(
                       color: UiColors.blueColor,
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -109,9 +110,7 @@ class _ConversionResultState extends State<ConversionResult> {
             optionList(
                 "assets/EXport.png", AppLocalizations.of(context)!.export,
                 () async {
-              _exportFile(
-                 // widget.convertedFile
-              );
+              _exportFile(widget.convertedFile);
             }),
             const SizedBox(
               width: 30,
@@ -178,7 +177,9 @@ class _ConversionResultState extends State<ConversionResult> {
                               //     ? '${widget.originalFilePath.substring(0, 10)}...${widget.originalFilePath.substring(widget.originalFilePath.length - 10)}'
                               //     : widget.originalFilePath,
                               style: GoogleFonts.poppins(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
+                                fontSize: 16,
+                                // fontWeight: FontWeight.w500
+                              ),
                             )
                           ],
                         ),
@@ -248,7 +249,9 @@ class _ConversionResultState extends State<ConversionResult> {
                               //     ? '${widget.convertedFile.path.substring(0, 10)}...${widget.convertedFile.path.substring(widget.convertedFile.path.length - 10)}'
                               //     : widget.convertedFile.path,
                               style: GoogleFonts.poppins(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
+                                fontSize: 16,
+                                // fontWeight: FontWeight.w500
+                              ),
                             )
                           ],
                         ),
@@ -290,10 +293,16 @@ class _ConversionResultState extends State<ConversionResult> {
                         )
                       : Stack(
                           children: [
-                            SizedBox(
-                              // decoration: BoxDecoration(border: Border.all()),
-                              width: 300,
-                              height: 250,
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 0.5,
+                                    color: Colors.black.withOpacity(0.5)),
+                              ),
+                              // width: 300,
+                              // height: 250,
+                              height: MediaQuery.of(context).size.height / 2.5,
+                              width: MediaQuery.of(context).size.width / 2.5,
                               child: Image.file(
                                 File(
                                   widget.convertedFile.path,
@@ -332,44 +341,44 @@ class _ConversionResultState extends State<ConversionResult> {
   }
 
   Future<void> _exportFile(
-    //FileSystemEntity file,
+    FileSystemEntity file,
   ) async {
     try {
-      // final filePath = file.uri.toFilePath();
-      // File imageFile = File(filePath);
-      //
-      // Directory? dir = await getDownloadsDirectory();
-      //
-      // var targetDirectoryPath = '${dir!.path}/ImageConverterExport';
-      //
-      // // Check if the source file exists
-      // if (!imageFile.existsSync()) {
-      //   print("#### Error: Source file doesn't exist");
-      //   return;
-      // }
-      //
-      // // Create the target directory if it doesn't exist
-      // Directory exportDir = Directory(targetDirectoryPath);
-      // if (!exportDir.existsSync()) {
-      //   exportDir.createSync(recursive: true);
-      // }
-      //
-      // // Construct the target file path
-      // String fileName = imageFile.path.split('/').last;
-      // String targetFilePath = '$targetDirectoryPath/$fileName';
-      //
-      // // Copy the source file to the target file path
-      // await imageFile.copy(targetFilePath);
+      final filePath = file.uri.toFilePath();
+      File imageFile = File(filePath);
+
+      Directory? dir = await getDownloadsDirectory();
+
+      var targetDirectoryPath = '${dir!.path}/ImageConverterExport';
+
+      // Check if the source file exists
+      if (!imageFile.existsSync()) {
+        print("#### Error: Source file doesn't exist");
+        return;
+      }
+
+      // Create the target directory if it doesn't exist
+      Directory exportDir = Directory(targetDirectoryPath);
+      if (!exportDir.existsSync()) {
+        exportDir.createSync(recursive: true);
+      }
+
+      // Construct the target file path
+      String fileName = imageFile.path.split('/').last;
+      String targetFilePath = '$targetDirectoryPath/$fileName';
+
+      // Copy the source file to the target file path
+      await imageFile.copy(targetFilePath);
 
       Get.offAll(() => const HomeScreen());
 
       Get.snackbar(
         backgroundColor: Colors.white,
         AppLocalizations.of(Get.context!)!.attention,
-        "File Saved Successfully in History",
+        "File Saved Successfully",
       );
 
-      //print("#### Image exported to: $targetFilePath");
+      print("#### Image exported to: $targetFilePath");
     } catch (e) {
       print('####Error exporting file: $e');
     }
@@ -403,7 +412,7 @@ class _ConversionResultState extends State<ConversionResult> {
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

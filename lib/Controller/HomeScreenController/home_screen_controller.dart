@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,19 +14,14 @@ import 'package:path/path.dart' as path;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreenController extends GetxController {
-
   var scaffoldKey = GlobalKey<ScaffoldState>();
+
   RxInt sideBarSelectedIndex = 1.obs;
+
   RxBool isVisible = false.obs;
+
   TextEditingController textController = TextEditingController();
   final payWallController = Get.put(PayWallController());
-
-  @override
-  void onInit() {
-   showPremium();
-    super.onInit();
-  }
-
 
   bool isArabicOrPersianOrHebrew = [
     'ar',
@@ -55,18 +50,19 @@ class HomeScreenController extends GetxController {
                 '${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}',
                 style: GoogleFonts.poppins(
                   color: UiColors.blackColor,
-                  fontSize: 22.0,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(
                 width: 20,
               ),
-              VerticalDivider(
+              sideBarSelectedIndex.value == 2
+                  ? VerticalDivider(
                       thickness: 1.5,
                       color: UiColors.blackColor.withOpacity(0.2),
-                    ),
-
+                    )
+                  : const SizedBox(),
               const SizedBox(
                 width: 20,
               ),
@@ -75,7 +71,7 @@ class HomeScreenController extends GetxController {
                       AppLocalizations.of(context)!.history,
                       style: GoogleFonts.poppins(
                         color: UiColors.blackColor,
-                        fontSize: 22.0,
+                        fontSize: 20.0,
                       ),
                     )
                   : const SizedBox(),
@@ -102,7 +98,7 @@ class HomeScreenController extends GetxController {
             width: 15,
           ),
           SizedBox(
-            width: 220,
+            width: MediaQuery.of(context).size.width / 8,
             child: Text(
               sideBarItem,
               maxLines: 1,
@@ -376,11 +372,5 @@ class HomeScreenController extends GetxController {
         );
       },
     );
-  }
-
-  showPremium() {
-    Timer(const Duration(seconds: 2), () {
-      if(!payWallController.isPro.value)  PremiumPopUp().premiumScreenPopUp(Get.context!);
-    });
   }
 }
