@@ -118,8 +118,8 @@ class PayWallController extends GetxController {
                                 children: [
                                   Text(
                                     index == 0
-                                        ? "${offerings.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings.current!.availablePackages[3].storeProduct.price, 30)}"
-                                        : "${offerings.current!.availablePackages[3].storeProduct.currencyCode} ${getActualPrice(offerings.current!.availablePackages[4].storeProduct.price, 60)}",
+                                        ? "${offerings.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings.current!.availablePackages[4].storeProduct.price, 30)}"
+                                        : "${offerings.current!.availablePackages[3].storeProduct.currencyCode} ${getActualPrice(offerings.current!.availablePackages[3].storeProduct.price, 60)}",
                                     style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 18,
