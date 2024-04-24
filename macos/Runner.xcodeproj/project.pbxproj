@@ -574,10 +574,10 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.11;
+				CURRENT_PROJECT_VERSION = 1.0.12;
 				DEVELOPMENT_TEAM = 3473JRY265;
-				FLUTTER_BUILD_NAME = 1.0.11;
-				FLUTTER_BUILD_NUMBER = 12;
+				FLUTTER_BUILD_NAME = 1.0.12;
+				FLUTTER_BUILD_NUMBER = 13;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Image Converter";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -586,7 +586,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 12;
+				MARKETING_VERSION = 13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.image.converter.heic.convert.photos.jpg.png.jpeg;
 				PRODUCT_NAME = "Image Converter";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -717,10 +717,10 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.11;
+				CURRENT_PROJECT_VERSION = 1.0.12;
 				DEVELOPMENT_TEAM = 3473JRY265;
-				FLUTTER_BUILD_NAME = 1.0.11;
-				FLUTTER_BUILD_NUMBER = 12;
+				FLUTTER_BUILD_NAME = 1.0.12;
+				FLUTTER_BUILD_NUMBER = 13;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Image Converter";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -729,7 +729,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 12;
+				MARKETING_VERSION = 13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.image.converter.heic.convert.photos.jpg.png.jpeg;
 				PRODUCT_NAME = "Image Converter";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -748,10 +748,10 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1.0.11;
+				CURRENT_PROJECT_VERSION = 1.0.12;
 				DEVELOPMENT_TEAM = 3473JRY265;
-				FLUTTER_BUILD_NAME = 1.0.11;
-				FLUTTER_BUILD_NUMBER = 12;
+				FLUTTER_BUILD_NAME = 1.0.12;
+				FLUTTER_BUILD_NUMBER = 13;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Image Converter";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -760,7 +760,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 12;
+				MARKETING_VERSION = 13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.image.converter.heic.convert.photos.jpg.png.jpeg;
 				PRODUCT_NAME = "Image Converter";
 				PROVISIONING_PROFILE_SPECIFIER = "";
