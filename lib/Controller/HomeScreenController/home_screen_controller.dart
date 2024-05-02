@@ -30,11 +30,11 @@ class HomeScreenController extends GetxController {
     'he',
   ].contains(Localizations.localeOf(Get.context!).languageCode);
 
-  @override
-  void onInit() {
-    super.onInit();
-    showPremium();
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   showPremium();
+  // }
 
   customAppBar(BuildContext context) {
     return Obx(
@@ -383,7 +383,7 @@ class HomeScreenController extends GetxController {
   }
 
   showPremium() {
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 1), () {
       payWallController.isPro.value == false
           ? PremiumPopUp().premiumScreenPopUp(Get.context!)
           : () {};

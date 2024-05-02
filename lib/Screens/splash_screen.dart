@@ -33,7 +33,9 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     Timer(const Duration(milliseconds: 3000), () {
-      Get.to(() => const HomeScreen());
+      Get.to(() => const HomeScreen(
+            index: -1,
+          ));
     });
 
     _controller.forward();

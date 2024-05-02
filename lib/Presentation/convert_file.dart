@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
+import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,10 +21,14 @@ class ConvertFile extends StatefulWidget {
 
 class _ConvertFileState extends State<ConvertFile> {
   final conversionController = Get.put(ConvertImagesController());
+  final payWallController = Get.put(PayWallController());
 
   @override
   void initState() {
     super.initState();
+    payWallController.offerings == null
+        ? payWallController.getProductsPrice()
+        : null;
     conversionController.selectedIndex.value = 0;
   }
 

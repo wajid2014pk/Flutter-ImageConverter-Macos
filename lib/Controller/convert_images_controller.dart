@@ -1676,6 +1676,9 @@ class ConvertImagesController extends GetxController {
             selectedIndex.value = index;
             Get.back();
           } else {
+            payWallController.offerings == null
+                ? payWallController.getProductsPrice()
+                : null;
             PremiumPopUp().premiumScreenPopUp(context);
           }
         }

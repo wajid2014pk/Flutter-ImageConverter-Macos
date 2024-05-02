@@ -8,13 +8,14 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:image_converter_macos/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PayWallController extends GetxController {
   RxInt selectPackage = 1.obs;
 
-  late Offerings offerings;
+  Offerings? offerings;
   final _revenueCatKey =
       PurchasesConfiguration("appl_oVHFcWVOWeYVrUfYgjXDEoNsGQG");
   RxBool isPro = false.obs;
@@ -33,7 +34,7 @@ class PayWallController extends GetxController {
     try {
       offerings = await Purchases.getOfferings();
       print("offerings $offerings");
-      if (offerings.current != null) {
+      if (offerings!.current != null) {
         return true;
       }
     } on PlatformException catch (e) {
@@ -118,8 +119,8 @@ class PayWallController extends GetxController {
                                 children: [
                                   Text(
                                     index == 0
-                                        ? "${offerings.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings.current!.availablePackages[4].storeProduct.price, 30)}"
-                                        : "${offerings.current!.availablePackages[3].storeProduct.currencyCode} ${getActualPrice(offerings.current!.availablePackages[3].storeProduct.price, 60)}",
+                                        ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[4].storeProduct.price, 30)}"
+                                        : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[3].storeProduct.price, 60)}",
                                     style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 18,
@@ -149,8 +150,8 @@ class PayWallController extends GetxController {
                                     children: [
                                       Text(
                                         index == 0
-                                            ? "${offerings.current!.availablePackages[4].storeProduct.currencyCode} "
-                                            : "${offerings.current!.availablePackages[3].storeProduct.currencyCode} ",
+                                            ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} "
+                                            : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ",
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w600,
@@ -162,13 +163,13 @@ class PayWallController extends GetxController {
                                       ),
                                       Text(
                                         index == 0
-                                            ? offerings
+                                            ? offerings!
                                                 .current!
                                                 .availablePackages[4]
                                                 .storeProduct
                                                 .price
                                                 .toStringAsFixed(2)
-                                            : offerings
+                                            : offerings!
                                                 .current!
                                                 .availablePackages[3]
                                                 .storeProduct
@@ -240,8 +241,8 @@ class PayWallController extends GetxController {
     try {
       showLoading(Get.context!);
       bool isPro = false;
-      Package? monthlyPackage = offerings.current!.availablePackages[4];
-      Package? yearlyPackage = offerings.current!.availablePackages[3];
+      Package? monthlyPackage = offerings!.current!.availablePackages[4];
+      Package? yearlyPackage = offerings!.current!.availablePackages[3];
 
       if (selectPackage.value == 0) {
         CustomerInfo purchaserInfo =
@@ -376,7 +377,12 @@ class PayWallController extends GetxController {
   purchaseButton(BuildContext context) {
     return InkWell(
       onTap: () {
-        makePurchase();
+        payWallController.offerings == null
+            ? Get.snackbar(
+                backgroundColor: Colors.white,
+                "Failed",
+                "No Internet Connecion")
+            : payWallController.makePurchase();
       },
       child: Container(
         width: 300,

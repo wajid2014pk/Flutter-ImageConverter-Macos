@@ -12,7 +12,8 @@ import 'package:image_converter_macos/Screens/rate_us_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final int? index;
+  const HomeScreen({super.key, this.index});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -29,6 +30,10 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
+    payWallController.offerings == null
+        ? payWallController.getProductsPrice()
+        : null;
+    widget.index == -1 ? homeScreenController.showPremium() : null;
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1), // Adjust the duration as needed
@@ -121,160 +126,290 @@ class _HomeScreenState extends State<HomeScreen>
                   payWallController.isPro.value == false
                       ? GestureDetector(
                           onTap: () {
+                            payWallController.offerings == null
+                                ? payWallController.getProductsPrice()
+                                : null;
                             payWallController.selectPackage.value = 1;
-                            payWallController.makePurchase();
+                            payWallController.offerings == null
+                                ? Get.snackbar(
+                                    backgroundColor: Colors.white,
+                                    "Failed",
+                                    "No Internet Connecion")
+                                : payWallController.makePurchase();
+                            // payWallController.makePurchase();
                             // PremiumPopUp().premiumScreenPopUp(context);
                           },
-                          child: FutureBuilder(
-                              future: payWallController.getProductsPrice(),
-                              builder: ((BuildContext buildContext,
-                                  AsyncSnapshot snapshot) {
-                                return SizedBox(
-                                  height: 180,
-                                  child: Stack(
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        // Use Positioned.fill instead of Padding
-                                        child: Container(
-                                          width: 280,
-                                          decoration: BoxDecoration(
-                                            color: UiColors.lightblueColor,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                          child: SizedBox(
+                            height: 180,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  // Use Positioned.fill instead of Padding
+                                  child: Container(
+                                    width: 280,
+                                    decoration: BoxDecoration(
+                                      color: UiColors.lightblueColor,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 12, right: 12, top: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            AppLocalizations.of(Get.context!)!
+                                                .imagee,
+                                            style: GoogleFonts.poppins(
+                                                color: UiColors.whiteColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 12, right: 12, top: 10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
+                                          Text(
+                                            AppLocalizations.of(Get.context!)!
+                                                .converterr,
+                                            style: GoogleFonts.poppins(
+                                                color: UiColors.whiteColor,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 4.0),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: UiColors.whiteColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4)),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 7,
+                                                    right: 7,
+                                                    top: 2,
+                                                    bottom: 2),
+                                                child: Text(
                                                   AppLocalizations.of(
                                                           Get.context!)!
-                                                      .imagee,
+                                                      .proo,
                                                   style: GoogleFonts.poppins(
-                                                      color:
-                                                          UiColors.whiteColor,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                Text(
-                                                  AppLocalizations.of(
-                                                          Get.context!)!
-                                                      .converterr,
-                                                  style: GoogleFonts.poppins(
-                                                      color:
-                                                          UiColors.whiteColor,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 4.0),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color:
-                                                            UiColors.whiteColor,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 7,
-                                                              right: 7,
-                                                              top: 2,
-                                                              bottom: 2),
-                                                      child: Text(
-                                                        AppLocalizations.of(
-                                                                Get.context!)!
-                                                            .proo,
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                color: UiColors
-                                                                    .yellowColor,
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const Spacer(),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 10),
-                                                  child: Container(
-                                                    width: 90,
-                                                    height: 28,
-                                                    decoration: BoxDecoration(
                                                       color:
                                                           UiColors.yellowColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                    ),
-                                                    child: SizedBox(
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              1.2,
-                                                      child: Center(
-                                                        child: Text(
-                                                          AppLocalizations.of(
-                                                                  Get.context!)!
-                                                              .upgrade,
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: GoogleFonts
-                                                              .poppins(
-                                                                  fontSize: 14,
-                                                                  color: UiColors
-                                                                      .whiteColor,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                 ),
-                                              ],
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          const Spacer(),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
+                                            child: Container(
+                                              width: 90,
+                                              height: 28,
+                                              decoration: BoxDecoration(
+                                                color: UiColors.yellowColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    1.2,
+                                                child: Center(
+                                                  child: Text(
+                                                    AppLocalizations.of(
+                                                            Get.context!)!
+                                                        .upgrade,
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 14,
+                                                        color:
+                                                            UiColors.whiteColor,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Positioned(
-                                        // top: 5,
-                                        right: isArabicOrPersianOrHebrew
-                                            ? null
-                                            : 1,
-                                        left: isArabicOrPersianOrHebrew
-                                            ? 1
-                                            : null,
-                                        bottom: 10,
-                                        child: Image.asset(
-                                          "assets/Pro-Banner-Image.png",
-                                          width: 185,
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                );
-                              })))
+                                ),
+                                Positioned(
+                                  // top: 5,
+                                  right: isArabicOrPersianOrHebrew ? null : 1,
+                                  left: isArabicOrPersianOrHebrew ? 1 : null,
+                                  bottom: 10,
+                                  child: Image.asset(
+                                    "assets/Pro-Banner-Image.png",
+                                    width: 185,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ))
                       : const SizedBox(),
+                  // FutureBuilder(
+                  //     future: payWallController.getProductsPrice(),
+                  //     builder: ((BuildContext buildContext,
+                  //         AsyncSnapshot snapshot) {
+                  //       return SizedBox(
+                  //         height: 180,
+                  //         child: Stack(
+                  //           clipBehavior: Clip.none,
+                  //           children: [
+                  //             Padding(
+                  //               padding: const EdgeInsets.all(10),
+                  //               // Use Positioned.fill instead of Padding
+                  //               child: Container(
+                  //                 width: 280,
+                  //                 decoration: BoxDecoration(
+                  //                   color: UiColors.lightblueColor,
+                  //                   borderRadius:
+                  //                       BorderRadius.circular(8),
+                  //                 ),
+                  //                 child: Padding(
+                  //                   padding: const EdgeInsets.only(
+                  //                       left: 12, right: 12, top: 10),
+                  //                   child: Column(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.start,
+                  //                     crossAxisAlignment:
+                  //                         CrossAxisAlignment.start,
+                  //                     children: [
+                  //                       Text(
+                  //                         AppLocalizations.of(
+                  //                                 Get.context!)!
+                  //                             .imagee,
+                  //                         style: GoogleFonts.poppins(
+                  //                             color:
+                  //                                 UiColors.whiteColor,
+                  //                             fontSize: 18,
+                  //                             fontWeight:
+                  //                                 FontWeight.w600),
+                  //                       ),
+                  //                       Text(
+                  //                         AppLocalizations.of(
+                  //                                 Get.context!)!
+                  //                             .converterr,
+                  //                         style: GoogleFonts.poppins(
+                  //                             color:
+                  //                                 UiColors.whiteColor,
+                  //                             fontSize: 18,
+                  //                             fontWeight:
+                  //                                 FontWeight.w600),
+                  //                       ),
+                  //                       Padding(
+                  //                         padding:
+                  //                             const EdgeInsets.only(
+                  //                                 top: 4.0),
+                  //                         child: Container(
+                  //                           decoration: BoxDecoration(
+                  //                               color:
+                  //                                   UiColors.whiteColor,
+                  //                               borderRadius:
+                  //                                   BorderRadius
+                  //                                       .circular(4)),
+                  //                           child: Padding(
+                  //                             padding:
+                  //                                 const EdgeInsets.only(
+                  //                                     left: 7,
+                  //                                     right: 7,
+                  //                                     top: 2,
+                  //                                     bottom: 2),
+                  //                             child: Text(
+                  //                               AppLocalizations.of(
+                  //                                       Get.context!)!
+                  //                                   .proo,
+                  //                               style:
+                  //                                   GoogleFonts.poppins(
+                  //                                       color: UiColors
+                  //                                           .yellowColor,
+                  //                                       fontSize: 14,
+                  //                                       fontWeight:
+                  //                                           FontWeight
+                  //                                               .w600),
+                  //                             ),
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                       const Spacer(),
+                  //                       Padding(
+                  //                         padding:
+                  //                             const EdgeInsets.only(
+                  //                                 bottom: 10),
+                  //                         child: Container(
+                  //                           width: 90,
+                  //                           height: 28,
+                  //                           decoration: BoxDecoration(
+                  //                             color:
+                  //                                 UiColors.yellowColor,
+                  //                             borderRadius:
+                  //                                 BorderRadius.circular(
+                  //                                     6),
+                  //                           ),
+                  //                           child: SizedBox(
+                  //                             width:
+                  //                                 MediaQuery.of(context)
+                  //                                         .size
+                  //                                         .width /
+                  //                                     1.2,
+                  //                             child: Center(
+                  //                               child: Text(
+                  //                                 AppLocalizations.of(
+                  //                                         Get.context!)!
+                  //                                     .upgrade,
+                  //                                 maxLines: 1,
+                  //                                 overflow: TextOverflow
+                  //                                     .ellipsis,
+                  //                                 style: GoogleFonts
+                  //                                     .poppins(
+                  //                                         fontSize: 14,
+                  //                                         color: UiColors
+                  //                                             .whiteColor,
+                  //                                         fontWeight:
+                  //                                             FontWeight
+                  //                                                 .w600),
+                  //                               ),
+                  //                             ),
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //             Positioned(
+                  //               // top: 5,
+                  //               right: isArabicOrPersianOrHebrew
+                  //                   ? null
+                  //                   : 1,
+                  //               left: isArabicOrPersianOrHebrew
+                  //                   ? 1
+                  //                   : null,
+                  //               bottom: 10,
+                  //               child: Image.asset(
+                  //                 "assets/Pro-Banner-Image.png",
+                  //                 width: 185,
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       );
+                  //     })))
                 ],
               ),
             ),
