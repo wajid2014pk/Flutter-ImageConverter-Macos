@@ -281,7 +281,7 @@ class PayWallController extends GetxController {
       }
     } on PlatformException catch (e) {
       // Get.back();
-      Get.offAll(() => const HomeScreen());
+      Get.offAll(() => const HomeScreen(index: -1));
       ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
           duration: const Duration(seconds: 2),
           behavior: SnackBarBehavior.floating,

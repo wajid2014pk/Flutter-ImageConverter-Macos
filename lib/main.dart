@@ -32,6 +32,15 @@ final payWallController = Get.put(PayWallController());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize the window
+  doWhenWindowReady(() {
+    final initialSize = Size(1100, 700);
+    final minSize = Size(1100, 700);
+    appWindow.minSize = minSize;
+    appWindow.size = initialSize;
+    appWindow.show();
+  });
+
   RevenuecatKey.initPlatformState();
 
   var connectivityResult = await (Connectivity().checkConnectivity());
@@ -45,15 +54,6 @@ void main() async {
     // No internet connection, simply run the app
     runAppApp();
   }
-
-  // Initialize the window
-  doWhenWindowReady(() {
-    final initialSize = Size(1100, 700);
-    final minSize = Size(1100, 700);
-    appWindow.minSize = minSize;
-    appWindow.size = initialSize;
-    appWindow.show();
-  });
 }
 
 Future<void> getOfferingsAndRunApp() async {
