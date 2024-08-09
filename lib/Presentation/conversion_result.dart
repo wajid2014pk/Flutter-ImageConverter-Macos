@@ -5,9 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:image_converter_macos/Presentation/rating_dialog.dart';
 import 'package:open_file/open_file.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConversionResult extends StatefulWidget {
   final String imageFormat;
@@ -26,6 +28,21 @@ class ConversionResult extends StatefulWidget {
 
 class _ConversionResultState extends State<ConversionResult> {
   final conversionController = Get.put(ConvertImagesController());
+
+  int? rateUs;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      rateUs = prefs.getInt("rateUs");
+      rateUs == null
+          ? DialogBoxRating().dialogRating(Get.context!)
+          : const SizedBox();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {

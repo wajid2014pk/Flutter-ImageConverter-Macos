@@ -10,23 +10,6 @@ import 'package:image_converter_macos/Screens/splash_screen.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-// push latest comit
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   await RevenuecatKey.initPlatformState();
-
-//   SystemChrome.setPreferredOrientations(
-//       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-//   runApp(const MyApp());
-//   doWhenWindowReady(() {
-//     final initialSize = Size(1100, 700);
-//     final minSize = Size(1100, 700);
-//     appWindow.minSize = minSize;
-//     appWindow.size = initialSize;
-//     appWindow.show();
-//   });
-// }
 String key = 'appl_oVHFcWVOWeYVrUfYgjXDEoNsGQG';
 final payWallController = Get.put(PayWallController());
 void main() async {
@@ -34,10 +17,11 @@ void main() async {
 
   // Initialize the window
   doWhenWindowReady(() {
-    final initialSize = Size(1100, 700);
-    final minSize = Size(1100, 700);
+    final initialSize = Size(1300, 720);
+    final minSize = Size(1300, 720);
     appWindow.minSize = minSize;
     appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
     appWindow.show();
   });
 
@@ -57,9 +41,6 @@ void main() async {
 }
 
 Future<void> getOfferingsAndRunApp() async {
-  // Your existing code to get offerings goes here
-  // ...
-
   // Completer to handle the timeout logic
   Completer<void> offeringsCompleter = Completer<void>();
 

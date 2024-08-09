@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -340,7 +341,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     itemBuilder: (BuildContext context) {
                       return [
                         AppLocalizations.of(Get.context!)!.delete,
-                        AppLocalizations.of(Get.context!)!.share
+                        AppLocalizations.of(Get.context!)!.share,
+                        "Download"
                       ].map((String choice) {
                         return PopupMenuItem<String>(
                           value: choice,
@@ -360,6 +362,70 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       } else if (value ==
                           AppLocalizations.of(Get.context!)!.share) {
                         _shareFile(allfiles[index]);
+                      } else if (value == "Download") {
+                        File file = File(allfiles[index].path);
+                        print("###file $file");
+
+                        // Separate the file name and extension
+                        String fileName = basenameWithoutExtension(file.path);
+                        String fileExtension = extension(file.path)
+                            .replaceFirst('.', ''); // remove the leading dot
+                        print("###fileName $fileName");
+                        print("###fileExtension $fileExtension");
+
+                        final bytes = await file.readAsBytes();
+
+                        final result = await FileSaver.instance.saveAs(
+                          name: fileName,
+                          bytes: bytes,
+                          ext: fileExtension == 'jpg'
+                              ? 'jpg'
+                              : fileExtension == 'jpeg'
+                                  ? 'jpeg'
+                                  : fileExtension == 'png'
+                                      ? 'png'
+                                      : fileExtension == 'gif'
+                                          ? 'gif'
+                                          : fileExtension == 'bmp'
+                                              ? 'bmp'
+                                              : fileExtension == 'svg'
+                                                  ? 'svg'
+                                                  : fileExtension == 'webp'
+                                                      ? 'webp'
+                                                      : fileExtension == 'pdf'
+                                                          ? 'pdf'
+                                                          : 'svg',
+                          mimeType: fileExtension == 'jpg'
+                              ? MimeType.jpeg
+                              : fileExtension == 'jpeg'
+                                  ? MimeType.jpeg
+                                  : fileExtension == 'png'
+                                      ? MimeType.png
+                                      : fileExtension == 'gif'
+                                          ? MimeType.gif
+                                          : fileExtension == 'bmp'
+                                              ? MimeType.bmp
+                                              : fileExtension == 'svg'
+                                                  ? MimeType.other
+                                                  : fileExtension == 'webp'
+                                                      ? MimeType.other
+                                                      : fileExtension == 'pdf'
+                                                          ? MimeType.pdf
+                                                          : MimeType.other,
+                        );
+
+                        if (result != "") {
+                          ScaffoldMessenger.of(Get.context!).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'File saved successfully in Downloads Folder!')),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(Get.context!).showSnackBar(
+                            const SnackBar(
+                                content: Text('Failed to save file.')),
+                          );
+                        }
                       }
                     },
                   ),

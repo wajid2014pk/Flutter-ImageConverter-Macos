@@ -5,17 +5,18 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DialogBoxRating {
   RxDouble finalRating = 0.0.obs;
 
-  // static setinitScreen() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setInt("rateUs", 1);
-  //   print("rate us");
-  // }
+  static setinitScreen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("rateUs", 1);
+    print("rate us");
+  }
 
   dialogRating(BuildContext context) {
     bool isArabicOrPersianOrHebrew = [
@@ -159,7 +160,7 @@ class DialogBoxRating {
                 ),
                 InkWell(
                   onTap: () {
-                    // setinitScreen();
+                    setinitScreen();
                     if (finalRating.value > 0.0 && finalRating.value <= 5.0) {
                       Navigator.pop(context);
 
