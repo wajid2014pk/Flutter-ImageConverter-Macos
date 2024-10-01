@@ -48,7 +48,7 @@ class PremiumPopUp {
                     children: [
                       const Spacer(),
                       Text(
-                        "${AppLocalizations.of(context)!.heic} ${AppLocalizations.of(context)!.converter}",
+                        "${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.poppins(
                           fontSize: 24.0,
