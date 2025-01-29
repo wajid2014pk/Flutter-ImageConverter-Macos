@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Presentation/convert_file.dart';
+import 'package:image_converter_macos/Presentation/image_resizer.dart';
 import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart' as di;
@@ -140,7 +141,7 @@ class HomeScreenController extends GetxController {
   Future<void> handleDriveImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowMultiple: false,
+      allowMultiple: true,
       allowedExtensions: [
         'bmp',
         'tiff',
@@ -174,6 +175,48 @@ class HomeScreenController extends GetxController {
       }
 
       Get.to(() => ConvertFile(imagePath: file.path));
+    } else {
+      print('User canceled file selection');
+    }
+  }
+
+  Future<void> imageResizerFunction() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowMultiple: false,
+      allowedExtensions: [
+        'bmp',
+        'tiff',
+        'heic',
+        'bmp',
+        'png',
+        'jpg',
+        'jpeg',
+        'gif'
+      ],
+    );
+
+    print("Result : $result ");
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      int fileSizeInBytes = File(file.path!).lengthSync();
+      double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
+      print("Size in Mb $fileSizeInMb ");
+
+      if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
+        Get.snackbar(
+          AppLocalizations.of(Get.context!)!.attention,
+          "File Size is greater then 3 MBs. Buy Premium to Convert",
+        );
+
+        Future.delayed(const Duration(seconds: 3), () {
+          PremiumPopUp().premiumScreenPopUp(Get.context!);
+        });
+        return;
+      }
+
+      Get.to(() => ImageResizerScreen(file: File(file.path!)));
     } else {
       print('User canceled file selection');
     }
