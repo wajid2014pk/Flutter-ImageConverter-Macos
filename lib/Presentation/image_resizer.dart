@@ -18,30 +18,31 @@ class ImageResizerScreen extends StatefulWidget {
 class _ImageResizerScreenState extends State<ImageResizerScreen> {
   final resizedController = Get.put(ResizeImageController());
   RxInt qualitySelectedIndex = 0.obs;
+  RxInt percentgeSelectedIndex = 0.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: UiColors.whiteColor,
       bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.sizeOf(context).width / 3.5),
-          child: GestureDetector(
-            onTap: () {
-              print("IBBIBIUI");
-              // Get.to(() => const LoaderScreen());
-            },
-            child: Padding(
-              padding: EdgeInsets.only(bottom: Platform.isAndroid ? 10.0 : 0),
-              child: Container(
+        child: GestureDetector(
+          onTap: () {
+            print("IBBIBIUI");
+            // Get.to(() => const LoaderScreen());
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 22),
                 height: 50,
+                width: 120,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: UiColors.blueColor),
+                  gradient: UiColors().linearGradientBlueColor,
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 child: const Center(
                   child: Text(
-                    // AppLocalizations.of(context)!.resizeImage,
-                    "Resize Image",
+                    "Compress",
                     style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
@@ -49,243 +50,185 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //- Image Preview
-            widget.file != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: EdgeInsets.only(left: 22, right: 22, top: 22, bottom: 22),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
                     child: Container(
+                      padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
+                        color: UiColors.lightGreyBackground.withOpacity(0.5),
                       ),
-                      child: Image.file(
-                        File(widget.file!.path),
-                        fit: BoxFit.cover,
-                        height: 150,
-                        width: 150,
+                      child: Image.asset(
+                        'assets/back_arrow.png',
+                        height: 22,
+                        width: 22,
                       ),
-                    ),
-                  )
-                : const Center(
-                    child: Text(
-                      "No Image Selected",
-                      style: TextStyle(color: Colors.white),
                     ),
                   ),
-            const SizedBox(height: 20),
-
-            //- Options
-            Obx(
-              () => Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SizedBox(
-                  // height: MediaQuery.sizeOf(context).width / 0.82,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Dimension/Percentage toggle
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 45,
-                            // width: Get.width / 5,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(11),
-                                border: Border.all(
-                                    color: UiColors.lightGreyBackground)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: Get.width * 0.15,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      resizedController.resizeOption.value =
-                                          'Quality';
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1.5,
-                                            color: resizedController
-                                                        .resizeOption.value ==
-                                                    'Quality'
-                                                ? UiColors.blueColor
-                                                : Colors.transparent),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Dimension",
-                                          // AppLocalizations.of(context)!.dimension,
-                                          style: TextStyle(
-                                            color: resizedController
-                                                        .resizeOption.value ==
-                                                    ''
-                                                ? UiColors.blueColor
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  width: Get.width * 0.15,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      resizedController.resizeOption.value =
-                                          'Percentage';
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 1.5,
-                                            color: resizedController
-                                                        .resizeOption.value ==
-                                                    'Percentage'
-                                                ? UiColors.blueColor
-                                                : Colors.transparent),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Percentage",
-                                          // AppLocalizations.of(context)!
-                                          //     .percentage,
-                                          style: TextStyle(
-                                            color: resizedController
-                                                        .resizeOption.value ==
-                                                    'Percentage'
-                                                ? UiColors.blueColor
-                                                : Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                  sizedBoxWidth,
+                  Text(
+                    "Image Resizer",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              //- Image Preview
+              widget.file != null
+                  ? Container(
+                      height: 240,
+                      width: 240,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: FileImage(
+                          File(widget.file!.path),
+                        )),
+                        border: Border.all(
+                            color: UiColors.lightGreyBackground, width: 8),
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                    ],
+                    )
+                  : const Center(
+                      child: Text(
+                        "No Image Selected",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+              const SizedBox(height: 20),
+
+              //- Options
+              Obx(
+                () => Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SizedBox(
+                    // height: MediaQuery.sizeOf(context).width / 0.82,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Dimension/Percentage toggle
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 45,
+                              // width: Get.width / 5,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(11),
+                                  border: Border.all(
+                                      color: UiColors.lightGreyBackground)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: Get.width * 0.15,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        resizedController.resizeOption.value =
+                                            'Quality';
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 1.5,
+                                              color: resizedController
+                                                          .resizeOption.value ==
+                                                      'Quality'
+                                                  ? UiColors.blueColorNew
+                                                  : Colors.transparent),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Dimension",
+                                            // AppLocalizations.of(context)!.dimension,
+                                            style: TextStyle(
+                                              color: resizedController
+                                                          .resizeOption.value ==
+                                                      'Quality'
+                                                  ? UiColors.blueColorNew
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: Get.width * 0.15,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        resizedController.resizeOption.value =
+                                            'Percentage';
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 1.5,
+                                              color: resizedController
+                                                          .resizeOption.value ==
+                                                      'Percentage'
+                                                  ? UiColors.blueColorNew
+                                                  : Colors.transparent),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Percentage",
+                                            // AppLocalizations.of(context)!
+                                            //     .percentage,
+                                            style: TextStyle(
+                                              color: resizedController
+                                                          .resizeOption.value ==
+                                                      'Percentage'
+                                                  ? UiColors.blueColorNew
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-
-            // if (resizedController.resizeOption.value == 'Dimensions') ...
-            SizedBox(
-              width: Get.width / 1.92,
-              child: Obx(
-                () => resizedController.resizeOption.value == 'Quality'
-                    ? Column(children: [
-                        GestureDetector(
-                          onTap: () {
-                            resizedController.selectedResizeType.value =
-                                'Reduce By Quality';
-                            resizedController.widthController.clear();
-                            resizedController.heightController.clear();
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.radio_button_checked_rounded,
-                                color: resizedController
-                                            .selectedResizeType.value ==
-                                        'Reduce By Quality'
-                                    ? UiColors.blueColor
-                                    : UiColors.blackColor,
-                                size: 18,
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                "Reduce Dimensions By",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Preset Dimensions in GridView
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 0;
-                                },
-                                child: reduceQualityWidget("100 x 100", 0)),
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 1;
-                                },
-                                child: reduceQualityWidget("250 x 250", 1)),
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 2;
-                                },
-                                child: reduceQualityWidget("500 x 500", 2)),
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 3;
-                                },
-                                child: reduceQualityWidget("750 x 750", 3)),
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 4;
-                                },
-                                child: reduceQualityWidget("1000 x 1000", 4)),
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 5;
-                                },
-                                child: reduceQualityWidget("1200 x 1200", 5)),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 6;
-                                },
-                                child: reduceQualityWidget("1500 x 1500", 6)),
-                            GestureDetector(
-                                onTap: () {
-                                  qualitySelectedIndex.value = 7;
-                                },
-                                child: reduceQualityWidget("2000 x 2000", 7)),
-                          ],
-                        ),
-
-                        // Custom Dimensions
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 10.0),
-                          child: GestureDetector(
+              SizedBox(
+                height: 22,
+              ),
+              // if (resizedController.resizeOption.value == 'Dimensions') ...
+              SizedBox(
+                width: Get.width / 1.92,
+                child: Obx(
+                  () => resizedController.resizeOption.value == 'Quality'
+                      ? Column(children: [
+                          GestureDetector(
                             onTap: () {
                               resizedController.selectedResizeType.value =
-                                  'Custom';
-                              resizedController.selectedDimension = '';
+                                  'Reduce By Quality';
+                              resizedController.widthController.clear();
+                              resizedController.heightController.clear();
                             },
                             child: Row(
                               children: [
@@ -293,328 +236,438 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                   Icons.radio_button_checked_rounded,
                                   color: resizedController
                                               .selectedResizeType.value ==
-                                          'Custom'
-                                      ? UiColors.blueColor
+                                          'Reduce By Quality'
+                                      ? UiColors.blueColorNew
                                       : UiColors.blackColor,
                                   size: 18,
                                 ),
                                 const SizedBox(width: 8),
                                 const Text(
-                                  "Custom",
-                                  // AppLocalizations.of(context)!.custom,
+                                  "Reduce Dimensions By",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                      fontSize: 16),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.white,
-                                    ),
-                                    child: IgnorePointer(
-                                      ignoring: resizedController
-                                              .selectedResizeType.value !=
-                                          'Custom',
-                                      child: TextField(
-                                        controller:
-                                            resizedController.widthController,
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp(r'[0-9.]')),
-                                        ],
-                                        cursorColor: UiColors.blueColor,
-                                        onTapOutside: (PointerDownEvent event) {
-                                          FocusManager.instance.primaryFocus
-                                              ?.unfocus();
-                                        },
-                                        decoration: InputDecoration(
-                                          hintText: "Width",
-                                          // AppLocalizations.of(context)!
-                                          //     .width,
-                                          hintStyle:
-                                              const TextStyle(fontSize: 12),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: const BorderSide(
-                                                color: Colors.grey),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: BorderSide(
-                                              color: UiColors.blueColor
-                                                  .withOpacity(0.6),
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: const BorderSide(
-                                                color: Colors.grey),
-                                          ),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 20.0),
-                                        ),
-                                        onChanged: (_) => validateInput(),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                const Text("X"),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Container(
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.white,
-                                    ),
-                                    child: IgnorePointer(
-                                      ignoring: resizedController
-                                              .selectedResizeType.value !=
-                                          'Custom',
-                                      child: TextField(
-                                        controller:
-                                            resizedController.heightController,
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp(r'[0-9.]')),
-                                        ],
-                                        onTapOutside: (PointerDownEvent event) {
-                                          FocusManager.instance.primaryFocus
-                                              ?.unfocus();
-                                        },
-                                        cursorColor: UiColors.blueColor,
-                                        decoration: InputDecoration(
-                                          hintText: "Height",
-                                          // AppLocalizations.of(context)!
-                                          //     .height,
-                                          hintStyle:
-                                              const TextStyle(fontSize: 12),
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: const BorderSide(
-                                                color: Colors.grey),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: BorderSide(
-                                              color: UiColors.blueColor
-                                                  .withOpacity(0.6),
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            borderSide: const BorderSide(
-                                                color: Colors.grey),
-                                          ),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  vertical: 10.0,
-                                                  horizontal: 20.0),
-                                        ),
-                                        onChanged: (_) => validateInput(),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (resizedController.widthError != null)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8.0, top: 4),
-                                child: Text(
-                                  resizedController.widthError!,
-                                  style: const TextStyle(
-                                      color: Colors.red, fontSize: 12),
-                                ),
-                              ),
-                            if (resizedController.heightError != null)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8.0, top: 4),
-                                child: Text(
-                                  resizedController.heightError!,
-                                  style: const TextStyle(
-                                      color: Colors.red, fontSize: 12),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ])
-                    : resizedController.resizeOption.value == 'Percentage'
-                        ?
-                        // if (resizedController.resizeOption.value == 'Percentage') ...
-                        Column(children: [
-                            // Radio buttons for Increase and Decrease
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 15.0),
+                          const SizedBox(height: 8),
+
+                          // Preset Dimensions in GridView
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 0;
+                                  },
+                                  child: reduceQualityWidget("100 x 100", 0)),
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 1;
+                                  },
+                                  child: reduceQualityWidget("250 x 250", 1)),
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 2;
+                                  },
+                                  child: reduceQualityWidget("500 x 500", 2)),
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 3;
+                                  },
+                                  child: reduceQualityWidget("750 x 750", 3)),
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 4;
+                                  },
+                                  child: reduceQualityWidget("1000 x 1000", 4)),
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 5;
+                                  },
+                                  child: reduceQualityWidget("1200 x 1200", 5)),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 6;
+                                  },
+                                  child: reduceQualityWidget("1500 x 1500", 6)),
+                              GestureDetector(
+                                  onTap: () {
+                                    qualitySelectedIndex.value = 7;
+                                  },
+                                  child: reduceQualityWidget("2000 x 2000", 7)),
+                            ],
+                          ),
+
+                          // Custom Dimensions
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                resizedController.selectedResizeType.value =
+                                    'Custom';
+                                resizedController.selectedDimension = '';
+                              },
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      resizedController
-                                          .resizeDimensionBy.value = 'Increase';
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.radio_button_checked_rounded,
-                                          color: resizedController
-                                                      .resizeDimensionBy
-                                                      .value ==
-                                                  'Increase'
-                                              ? UiColors.blueColor
-                                              : UiColors.blackColor,
-                                          size: 18,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        const Text(
-                                          "Increase",
-                                          // AppLocalizations.of(context)!.increase,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                              color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
+                                  Icon(
+                                    Icons.radio_button_checked_rounded,
+                                    color: resizedController
+                                                .selectedResizeType.value ==
+                                            'Custom'
+                                        ? UiColors.blueColorNew
+                                        : UiColors.blackColor,
+                                    size: 18,
                                   ),
-                                  const SizedBox(width: 50),
-                                  GestureDetector(
-                                    onTap: () {
-                                      print(
-                                          "befor : ${resizedController.resizeDimensionBy.value}");
-                                      resizedController
-                                          .resizeDimensionBy.value = 'Decrease';
-                                      print(
-                                          "after : ${resizedController.resizeDimensionBy.value}");
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.radio_button_checked_rounded,
-                                          color: resizedController
-                                                      .resizeDimensionBy
-                                                      .value ==
-                                                  'Decrease'
-                                              ? UiColors.blueColor
-                                              : UiColors.blackColor,
-                                          size: 18,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        const Text(
-                                          "Decrease",
-                                          // AppLocalizations.of(context)!.decrease,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    "Custom",
+                                    // AppLocalizations.of(context)!.custom,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                        fontSize: 16),
                                   ),
                                 ],
                               ),
                             ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.white,
+                                      ),
+                                      child: IgnorePointer(
+                                        ignoring: resizedController
+                                                .selectedResizeType.value !=
+                                            'Custom',
+                                        child: TextField(
+                                          controller:
+                                              resizedController.widthController,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r'[0-9.]')),
+                                          ],
+                                          cursorColor: UiColors.blueColorNew,
+                                          onTapOutside:
+                                              (PointerDownEvent event) {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                          },
+                                          decoration: InputDecoration(
+                                            hintText: "Width",
+                                            // AppLocalizations.of(context)!
+                                            //     .width,
+                                            hintStyle:
+                                                const TextStyle(fontSize: 12),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.grey),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: BorderSide(
+                                                color: UiColors.blueColorNew
+                                                    .withOpacity(0.6),
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.grey),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 20.0),
+                                          ),
+                                          onChanged: (_) => validateInput(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  const Text("X"),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Container(
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.white,
+                                      ),
+                                      child: IgnorePointer(
+                                        ignoring: resizedController
+                                                .selectedResizeType.value !=
+                                            'Custom',
+                                        child: TextField(
+                                          controller: resizedController
+                                              .heightController,
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r'[0-9.]')),
+                                          ],
+                                          onTapOutside:
+                                              (PointerDownEvent event) {
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                          },
+                                          cursorColor: UiColors.blueColorNew,
+                                          decoration: InputDecoration(
+                                            hintText: "Height",
+                                            // AppLocalizations.of(context)!
+                                            //     .height,
+                                            hintStyle:
+                                                const TextStyle(fontSize: 12),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.grey),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: BorderSide(
+                                                color: UiColors.blueColorNew
+                                                    .withOpacity(0.6),
+                                                width: 1.0,
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.grey),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 10.0,
+                                                    horizontal: 20.0),
+                                          ),
+                                          onChanged: (_) => validateInput(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  if (resizedController.widthError != null)
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 4),
+                                        child: Text(
+                                          resizedController.widthError!,
+                                          style: const TextStyle(
+                                              color: Colors.red, fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                  if (resizedController.heightError != null)
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, top: 4),
+                                        child: Text(
+                                          resizedController.heightError!,
+                                          style: const TextStyle(
+                                              color: Colors.red, fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ])
+                      : resizedController.resizeOption.value == 'Percentage'
+                          ?
+                          // if (resizedController.resizeOption.value == 'Percentage') ...
+                          Column(children: [
+                              // Radio buttons for Increase and Decrease
 
-                            // Preset Dimensions in GridView
-                            const Text("IIIII"),
-                            // GridView.builder(
-                            //   shrinkWrap: true,
-                            //   itemCount: resizedController.percentageDimensions.length,
-                            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            //     crossAxisCount: 3,
-                            //     crossAxisSpacing: 10,
-                            //     mainAxisSpacing: 10,
-                            //     childAspectRatio: (0.5 / 0.2),
-                            //   ),
-                            //   itemBuilder: (context, index) {
-                            //     final dimension =
-                            //         resizedController.percentageDimensions[index];
-                            //     return GestureDetector(
-                            //       onTap: () {
-                            //         setState(() {
-                            //           resizedController.selectedPercentageDimensions =
-                            //               dimension;
-                            //           print(
-                            //               "selectedPercentageDimensions ${resizedController.selectedPercentageDimensions}");
-                            //           resizedController.selectedDimension = '';
-                            //           resizedController.customWidth = null;
-                            //           resizedController.customHeight = null;
-                            //         });
-                            //       },
-                            //       child: Container(
-                            //         decoration: BoxDecoration(
-                            //           color:
-                            //               resizedController.selectedPercentageDimensions ==
-                            //                       dimension
-                            //                   ? UiColors.blueColor.withOpacity(0.1)
-                            //                   : Colors.white,
-                            //           borderRadius: BorderRadius.circular(10),
-                            //           border: Border.all(
-                            //             color: resizedController
-                            //                         .selectedPercentageDimensions ==
-                            //                     dimension
-                            //                 ? Colors.transparent
-                            //                 : UiColors.blackColor,
-                            //           ),
-                            //         ),
-                            //         alignment: Alignment.center,
-                            //         child: Text(
-                            //           dimension,
-                            //           textAlign: TextAlign.center,
-                            //           style: TextStyle(
-                            //             color: resizedController
-                            //                         .selectedPercentageDimensions ==
-                            //                     dimension
-                            //                 ? UiColors.blueColor
-                            //                 : Colors.black,
-                            //             fontWeight: resizedController
-                            //                         .selectedPercentageDimensions ==
-                            //                     dimension
-                            //                 ? FontWeight.w500
-                            //                 : FontWeight.w400,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     );
-                            //   },
-                            // ),
-                          ])
-                        : const SizedBox(),
+                              // Preset Dimensions in GridView
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 0;
+                                      },
+                                      child: percentageCustomWidget("10%", 0)),
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 1;
+                                      },
+                                      child: percentageCustomWidget("20%", 1)),
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 2;
+                                      },
+                                      child: percentageCustomWidget("30%", 2)),
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 3;
+                                      },
+                                      child: percentageCustomWidget("40%", 3)),
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 4;
+                                      },
+                                      child: percentageCustomWidget("50%", 4)),
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 5;
+                                      },
+                                      child: percentageCustomWidget("60%", 5)),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 6;
+                                      },
+                                      child: percentageCustomWidget("70%", 6)),
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 7;
+                                      },
+                                      child: percentageCustomWidget("80%", 7)),
+                                  GestureDetector(
+                                      onTap: () {
+                                        percentgeSelectedIndex.value = 8;
+                                      },
+                                      child: percentageCustomWidget("90%", 8)),
+                                ],
+                              ),
+
+                              // GridView.builder(
+                              //   shrinkWrap: true,
+                              //   itemCount: resizedController.percentageDimensions.length,
+                              //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              //     crossAxisCount: 3,
+                              //     crossAxisSpacing: 10,
+                              //     mainAxisSpacing: 10,
+                              //     childAspectRatio: (0.5 / 0.2),
+                              //   ),
+                              //   itemBuilder: (context, index) {
+                              //     final dimension =
+                              //         resizedController.percentageDimensions[index];
+                              //     return GestureDetector(
+                              //       onTap: () {
+                              //         setState(() {
+                              //           resizedController.selectedPercentageDimensions =
+                              //               dimension;
+                              //           print(
+                              //               "selectedPercentageDimensions ${resizedController.selectedPercentageDimensions}");
+                              //           resizedController.selectedDimension = '';
+                              //           resizedController.customWidth = null;
+                              //           resizedController.customHeight = null;
+                              //         });
+                              //       },
+                              //       child: Container(
+                              //         decoration: BoxDecoration(
+                              //           color:
+                              //               resizedController.selectedPercentageDimensions ==
+                              //                       dimension
+                              //                   ? UiColors.blueColor.withOpacity(0.1)
+                              //                   : Colors.white,
+                              //           borderRadius: BorderRadius.circular(10),
+                              //           border: Border.all(
+                              //             color: resizedController
+                              //                         .selectedPercentageDimensions ==
+                              //                     dimension
+                              //                 ? Colors.transparent
+                              //                 : UiColors.blackColor,
+                              //           ),
+                              //         ),
+                              //         alignment: Alignment.center,
+                              //         child: Text(
+                              //           dimension,
+                              //           textAlign: TextAlign.center,
+                              //           style: TextStyle(
+                              //             color: resizedController
+                              //                         .selectedPercentageDimensions ==
+                              //                     dimension
+                              //                 ? UiColors.blueColor
+                              //                 : Colors.black,
+                              //             fontWeight: resizedController
+                              //                         .selectedPercentageDimensions ==
+                              //                     dimension
+                              //                 ? FontWeight.w500
+                              //                 : FontWeight.w400,
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     );
+                              //   },
+                              // ),
+                            ])
+                          : const SizedBox(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Obx percentageCustomWidget(String text, int isSelectedIndex) {
+    return Obx(
+      () => Container(
+          margin: EdgeInsets.only(right: 8),
+          padding: EdgeInsets.symmetric(vertical: 6),
+          width: 100,
+          decoration: BoxDecoration(
+              color: percentgeSelectedIndex.value == isSelectedIndex
+                  ? UiColors.blueColorNew.withOpacity(0.1)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                  color: percentgeSelectedIndex.value != isSelectedIndex
+                      ? UiColors.lightGreyBackground
+                      : Colors.transparent)),
+          child: Center(
+              child: Text(text,
+                  style: TextStyle(
+                    color: percentgeSelectedIndex.value == isSelectedIndex
+                        ? UiColors.blueColorNew
+                        : UiColors.blackColor,
+                  )))),
     );
   }
 
@@ -626,7 +679,7 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
               color: qualitySelectedIndex.value == index
-                  ? UiColors.blueColor.withOpacity(0.1)
+                  ? UiColors.blueColorNew.withOpacity(0.1)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
@@ -639,7 +692,7 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
             dimension,
             style: TextStyle(
                 color: qualitySelectedIndex.value == index
-                    ? UiColors.blueColor
+                    ? UiColors.blueColorNew
                     : UiColors.blackColor),
           ))),
     );

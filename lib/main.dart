@@ -9,13 +9,14 @@ import 'package:image_converter_macos/Controller/initialize-revenuecat-keys.dart
 import 'package:image_converter_macos/Screens/splash_screen.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:window_manager/window_manager.dart';
 
 String key = 'appl_oVHFcWVOWeYVrUfYgjXDEoNsGQG';
 final payWallController = Get.put(PayWallController());
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await windowManager.ensureInitialized();
   // Initialize the window
   doWhenWindowReady(() {
     final initialSize = Size(1300, 720);
@@ -115,7 +116,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
+      theme: ThemeData(fontFamily: "Manrope"),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

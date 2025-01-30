@@ -263,7 +263,7 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  Future<void> handleUrlImage() async {
+  Future<void> handleUrlImage(int index) async {
     showDialog(
       context: Get.context!,
       barrierDismissible: false,
@@ -368,9 +368,15 @@ class HomeScreenController extends GetxController {
                                 }
 
                                 // Proceed to convert file
-                                Get.to(() => ConvertFile(
-                                      imagePath: filePath,
-                                    ));
+                                if (index == 0) {
+                                  Get.to(() => ConvertFile(
+                                        imagePath: filePath,
+                                      ));
+                                } else if (index == 1) {
+                                  Get.to(() => ImageResizerScreen(
+                                        file: File(filePath),
+                                      ));
+                                }
                               } catch (e) {
                                 ScaffoldMessenger.of(Get.context!)
                                     .showSnackBar(SnackBar(

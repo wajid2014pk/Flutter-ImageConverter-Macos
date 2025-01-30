@@ -14,4 +14,10 @@ class UiColors {
   static Color blackColor = Colors.black;
   static Color whiteColor = Colors.white;
   static Color? buttonColor = Colors.grey[200];
+
+  //-------------new colors---------------------------
+  LinearGradient linearGradientBlueColor =
+      LinearGradient(colors: [Color(0xFF1E60F9), Color(0xFF144BCB)]);
+  static Color blueColorNew = const Color(0xff144BCB);
+  static Color proBannerGreyColor = const Color(0xff454545);
 }
