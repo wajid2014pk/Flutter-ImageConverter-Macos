@@ -342,6 +342,11 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                   removePopup();
                                   await homeScreenController
                                       .imageResizerFunction();
+                                } else if (index == 2) {
+                                  toolIndex.value = 10;
+                                  removePopup();
+                                  await homeScreenController
+                                      .imageCompressorFunction();
                                 }
                               },
                               child: customPopupButton(
@@ -364,6 +369,11 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                   removePopup();
                                   await homeScreenController
                                       .imageResizerFunction();
+                                } else if (index == 2) {
+                                  toolIndex.value = 10;
+                                  removePopup();
+                                  await homeScreenController
+                                      .imageCompressorFunction();
                                 }
                               },
                               child: customPopupButton(
@@ -382,6 +392,11 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                   await homeScreenController
                                       .handleUrlImage(index);
                                 } else if (index == 1) {
+                                  toolIndex.value = 10;
+                                  removePopup();
+                                  await homeScreenController
+                                      .handleUrlImage(index);
+                                } else if (index == 2) {
                                   toolIndex.value = 10;
                                   removePopup();
                                   await homeScreenController

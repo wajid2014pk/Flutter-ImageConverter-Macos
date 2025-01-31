@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as IMG;
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
+import 'package:image_converter_macos/Presentation/conversion_result.dart';
+import 'package:image_converter_macos/Presentation/conversion_result_new.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ResizeImageController extends GetxController {
@@ -35,37 +37,39 @@ class ResizeImageController extends GetxController {
   Animation<double>? progressAnimation;
   AnimationController? controller;
 
-  final List<String> dimensions = [
-    '100 x 100',
-    '250 x 250',
-    '500 x 500',
-    '750 x 750',
-    '1000 x 1000',
-    '1200 x 1200',
-    '1500 x 1500',
-    '2000 x 2000'
-  ];
-  final List<String> percentageDimensions = [
-    '10%',
-    '20%',
-    '30%',
-    '40%',
-    '50%',
-    '60%',
-    '70%',
-    '80%',
-    '90%',
-  ];
+  // final List<String> dimensions = [
+  //   '100 x 100',
+  //   '250 x 250',
+  //   '500 x 500',
+  //   '750 x 750',
+  //   '1000 x 1000',
+  //   '1200 x 1200',
+  //   '1500 x 1500',
+  //   '2000 x 2000'
+  // ];
+  // final List<String> percentageDimensions = [
+  //   '10%',
+  //   '20%',
+  //   '30%',
+  //   '40%',
+  //   '50%',
+  //   '60%',
+  //   '70%',
+  //   '80%',
+  //   '90%',
+  // ];
   void resizeByDimensions() {
     print("%%%loadingState.value ${loadingState.value}");
+    print("filePath1 $filePath");
     if (filePath != null) {
+      print("filePath2 $filePath");
       // Decode the image from the file
       // final originalImage = IMG.decodePng(filePath!.readAsBytesSync());
-      final originalImage = Platform.isIOS
-          ? IMG.decodeJpg(filePath!.readAsBytesSync())
+      final originalImage = Platform.isMacOS
+          ? IMG.decodePng(filePath!.readAsBytesSync())
           : IMG.decodePng(filePath!.readAsBytesSync());
       print("%%%originalImage $originalImage");
-      if (resizeOption.value == 'Dimensions') {
+      if (resizeOption.value == 'Quality') {
         print("%%%selectedResizeType.value ${selectedResizeType.value}");
         if (selectedResizeType.value == 'Custom') {
           if (widthController.text.isNotEmpty &&
@@ -87,7 +91,7 @@ class ResizeImageController extends GetxController {
               saveResizedImage(resizedImage);
             }
           }
-        } else if (selectedResizeType.value == 'Reduce Dimensions by') {
+        } else if (selectedResizeType.value == 'Reduce By Quality') {
           print("%%%selectedDimension 1: $selectedDimension");
           if (selectedDimension.isNotEmpty) {
             final dimensions =
@@ -123,26 +127,28 @@ class ResizeImageController extends GetxController {
             int adjustedWidth;
             int adjustedHeight;
 
-            if (resizeDimensionBy.value == 'Increase') {
-              adjustedWidth = (originalImage.width +
-                      (originalImage.width * percentage ~/ 100))
-                  .clamp(1,
-                      double.maxFinite.toInt()); // Prevent invalid dimensions
-              adjustedHeight = (originalImage.height +
-                      (originalImage.height * percentage ~/ 100))
-                  .clamp(1, double.maxFinite.toInt());
-            } else if (resizeDimensionBy.value == 'Decrease') {
-              adjustedWidth = (originalImage.width -
-                      (originalImage.width * percentage ~/ 100))
-                  .clamp(1, originalImage.width); // Prevent invalid dimensions
-              adjustedHeight = (originalImage.height -
-                      (originalImage.height * percentage ~/ 100))
-                  .clamp(1, originalImage.height);
-            } else {
-              print(
-                  "Invalid resizeDimensionBy value: ${resizeDimensionBy.value}");
-              return;
-            }
+            // if (resizeDimensionBy.value == 'Increase') {
+            adjustedWidth = (originalImage.width +
+                    (originalImage.width * percentage ~/ 100))
+                .clamp(
+                    1, double.maxFinite.toInt()); // Prevent invalid dimensions
+            adjustedHeight = (originalImage.height +
+                    (originalImage.height * percentage ~/ 100))
+                .clamp(1, double.maxFinite.toInt());
+            // }
+            // else if (resizeDimensionBy.value == 'Decrease') {
+            //   adjustedWidth = (originalImage.width -
+            //           (originalImage.width * percentage ~/ 100))
+            //       .clamp(1, originalImage.width); // Prevent invalid dimensions
+            //   adjustedHeight = (originalImage.height -
+            //           (originalImage.height * percentage ~/ 100))
+            //       .clamp(1, originalImage.height);
+            // }
+            //  else {
+            //   print(
+            //       "Invalid resizeDimensionBy value: ${resizeDimensionBy.value}");
+            //   return;
+            // }
 
             print("%%%Adjusted Width: $adjustedWidth");
             print("%%%Adjusted Height: $adjustedHeight");
@@ -166,7 +172,7 @@ class ResizeImageController extends GetxController {
       DateTime dateTime = DateTime.now();
       print("%%%%dateTime  $dateTime");
 
-      Directory? dir = Platform.isIOS
+      Directory? dir = Platform.isMacOS
           ? await getApplicationCacheDirectory()
           : await getExternalStorageDirectory();
       print("%%%%dir  $dir");
@@ -186,7 +192,7 @@ class ResizeImageController extends GetxController {
 
       // Write the image bytes to the file
       File file = File(path);
-      if (Platform.isIOS) {
+      if (Platform.isMacOS) {
         await file.writeAsBytes(IMG.encodeJpg(resizedImage, quality: 85));
       } else {
         await file.writeAsBytes(IMG.encodePng(resizedImage));
@@ -194,14 +200,15 @@ class ResizeImageController extends GetxController {
       // await file.writeAsBytes(IMG.encodeJpg(resizedImage, quality: 85));
 
       loadingState.value = false;
-
-      // await Get.to(
-      //   () => ConversionResult(
-      //     imageFormat: const [".png"],
-      //     dateTime: [conversionController.getFormattedDateTime(dateTime)],
-      //     convertedFile: [file],
-      //   ),
-      // );
+      print("loadingState.value ${loadingState.value}");
+      await Get.to(
+        () => ConversionPageNew(
+          imageFormat: ".png",
+          originalFilePath: file.path,
+          // [conversionController.getFormattedDateTime(dateTime)],
+          convertedFile: file, toolName: 'ImageResizer',
+        ),
+      );
 
       print('Image saved at $path');
     } catch (e) {
