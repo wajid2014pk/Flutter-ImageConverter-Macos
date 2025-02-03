@@ -39,6 +39,9 @@ dependencies:
   file_saver: ^0.2.13
   shared_preferences: ^2.2.3
   window_manager: ^0.4.3
+  text_scroll: ^0.2.0
+  flutter_svg: ^2.0.17
+  excel: ^2.0.7
 dev_dependencies:
   flutter_test:
     sdk: flutter

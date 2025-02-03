@@ -158,24 +158,32 @@ class HomeScreenController extends GetxController {
     print("Result : $result ");
 
     if (result != null) {
-      PlatformFile file = result.files.first;
-      int fileSizeInBytes = File(file.path!).lengthSync();
-      double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
-      print("Size in Mb $fileSizeInMb ");
-
-      if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
-        Get.snackbar(
-          AppLocalizations.of(Get.context!)!.attention,
-          "File Size is greater then 3 MBs. Buy Premium to Convert",
-        );
-
-        Future.delayed(const Duration(seconds: 3), () {
-          PremiumPopUp().premiumScreenPopUp(Get.context!);
-        });
-        return;
+      List<String> file = [];
+      for (int i = 0; i < result.files.length; i++) {
+        file.add(result.files[i].path!);
       }
 
-      Get.to(() => ConvertFile(imagePath: file.path));
+      // for(int i=0;i<result.files.length;i++)
+      // {
+
+      // }
+      // int fileSizeInBytes = File(file.path!).lengthSync();
+      // double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
+      // print("Size in Mb $fileSizeInMb ");
+
+      // if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
+      //   Get.snackbar(
+      //     AppLocalizations.of(Get.context!)!.attention,
+      //     "File Size is greater then 3 MBs. Buy Premium to Convert",
+      //   );
+
+      //   Future.delayed(const Duration(seconds: 3), () {
+      //     PremiumPopUp().premiumScreenPopUp(Get.context!);
+      //   });
+      //   return;
+      // }
+
+      Get.to(() => ConvertFile(imagePath: file));
     } else {
       print('User canceled file selection');
     }
@@ -222,10 +230,11 @@ class HomeScreenController extends GetxController {
       print('User canceled file selection');
     }
   }
+
   Future<void> imageCompressorFunction() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowMultiple: false,
+      allowMultiple: true,
       allowedExtensions: [
         'bmp',
         'tiff',
@@ -241,8 +250,9 @@ class HomeScreenController extends GetxController {
     print("Result : $result ");
 
     if (result != null) {
-      PlatformFile file = result.files.first;
-      int fileSizeInBytes = File(file.path!).lengthSync();
+      List<PlatformFile> file = result.files;
+
+      int fileSizeInBytes = File(file[0].path!).lengthSync();
       double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
       print("Size in Mb $fileSizeInMb ");
 
@@ -258,52 +268,52 @@ class HomeScreenController extends GetxController {
         return;
       }
 
-      Get.to(() => ImageCompressorScreen(file: File(file.path!)));
+      Get.to(() => ImageCompressorScreen(file: File(file[0].path!)));
     } else {
       print('User canceled file selection');
     }
   }
 
-  Future<void> handleDragDropImage(var details) async {
-    if (details.files.length == 1) {
-      String imagePath = details.files.first.path;
+  // Future<void> handleDragDropImage(var details) async {
+  //   if (details.files.length == 1) {
+  //     String imagePath = details.files.first.path;
 
-      int fileSizeInBytes = File(imagePath).lengthSync();
-      double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
+  //     int fileSizeInBytes = File(imagePath).lengthSync();
+  //     double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
 
-      if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
-        Get.snackbar(
-          AppLocalizations.of(Get.context!)!.attention,
-          "File Size is greater then 3 MBs. Buy Premium to Convert",
-        );
-        Future.delayed(const Duration(seconds: 3), () {
-          PremiumPopUp().premiumScreenPopUp(Get.context!);
-        });
-        return;
-      }
+  //     if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
+  //       Get.snackbar(
+  //         AppLocalizations.of(Get.context!)!.attention,
+  //         "File Size is greater then 3 MBs. Buy Premium to Convert",
+  //       );
+  //       Future.delayed(const Duration(seconds: 3), () {
+  //         PremiumPopUp().premiumScreenPopUp(Get.context!);
+  //       });
+  //       return;
+  //     }
 
-      if (imagePath.toLowerCase().endsWith('.png') ||
-          imagePath.toLowerCase().endsWith('.jpg') ||
-          imagePath.toLowerCase().endsWith('.jpeg') ||
-          imagePath.toLowerCase().endsWith('.bmp') ||
-          imagePath.toLowerCase().endsWith('.heic') ||
-          imagePath.toLowerCase().endsWith('.gif') ||
-          imagePath.toLowerCase().endsWith('.webp')) {
-        Get.to(() => ConvertFile(imagePath: imagePath));
-      } else {
-        Get.snackbar(
-          AppLocalizations.of(Get.context!)!.attention,
-          AppLocalizations.of(Get.context!)!.invalid_image_format,
-        );
-      }
-    } else {
-      Get.snackbar(
-        AppLocalizations.of(Get.context!)!.attention,
-        AppLocalizations.of(Get.context!)!
-            .only_one_image_can_be_dropped_at_a_time,
-      );
-    }
-  }
+  //     if (imagePath.toLowerCase().endsWith('.png') ||
+  //         imagePath.toLowerCase().endsWith('.jpg') ||
+  //         imagePath.toLowerCase().endsWith('.jpeg') ||
+  //         imagePath.toLowerCase().endsWith('.bmp') ||
+  //         imagePath.toLowerCase().endsWith('.heic') ||
+  //         imagePath.toLowerCase().endsWith('.gif') ||
+  //         imagePath.toLowerCase().endsWith('.webp')) {
+  //       Get.to(() => ConvertFile(imagePath: imagePath));
+  //     } else {
+  //       Get.snackbar(
+  //         AppLocalizations.of(Get.context!)!.attention,
+  //         AppLocalizations.of(Get.context!)!.invalid_image_format,
+  //       );
+  //     }
+  //   } else {
+  //     Get.snackbar(
+  //       AppLocalizations.of(Get.context!)!.attention,
+  //       AppLocalizations.of(Get.context!)!
+  //           .only_one_image_can_be_dropped_at_a_time,
+  //     );
+  //   }
+  // }
 
   Future<void> handleUrlImage(int index) async {
     showDialog(
@@ -412,7 +422,7 @@ class HomeScreenController extends GetxController {
                                 // Proceed to convert file
                                 if (index == 0) {
                                   Get.to(() => ConvertFile(
-                                        imagePath: filePath,
+                                        imagePath: [filePath],
                                       ));
                                 } else if (index == 1) {
                                   Get.to(() => ImageResizerScreen(

@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ConversionResult extends StatefulWidget {
   final String imageFormat;
   final String originalFilePath;
-  final File convertedFile;
+  final List<File> convertedFile;
   const ConversionResult({
     required this.imageFormat,
     required this.originalFilePath,
@@ -41,8 +41,8 @@ class _ConversionResultState extends State<ConversionResult> {
           ? DialogBoxRating().dialogRating(Get.context!)
           : const SizedBox();
     });
+    print("convertedFile ${widget.convertedFile}");
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +96,7 @@ class _ConversionResultState extends State<ConversionResult> {
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             InkWell(
               onTap: () {
-                _shareFile(widget.convertedFile);
+                _shareFile(widget.convertedFile[0]);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -259,7 +259,7 @@ class _ConversionResultState extends State<ConversionResult> {
                             ),
                             Text(
                               _getFileName(
-                                widget.convertedFile.path,
+                                widget.convertedFile[0].path,
                               ),
                               // widget.convertedFile.path.length > 20
                               //     ? '${widget.convertedFile.path.substring(0, 10)}...${widget.convertedFile.path.substring(widget.convertedFile.path.length - 10)}'
@@ -296,7 +296,7 @@ class _ConversionResultState extends State<ConversionResult> {
                               right: 10,
                               child: InkWell(
                                 onTap: () {
-                                  _openFile(widget.convertedFile);
+                                  _openFile(widget.convertedFile[0]);
                                 },
                                 child: Image.asset(
                                   "assets/zoom-in.png",
@@ -321,7 +321,7 @@ class _ConversionResultState extends State<ConversionResult> {
                               width: MediaQuery.of(context).size.width / 2.5,
                               child: Image.file(
                                 File(
-                                  widget.convertedFile.path,
+                                  widget.convertedFile[0].path,
                                 ),
                                 fit: BoxFit.cover,
                               ),
@@ -331,7 +331,7 @@ class _ConversionResultState extends State<ConversionResult> {
                               right: 10,
                               child: InkWell(
                                 onTap: () {
-                                  _openFile(widget.convertedFile);
+                                  _openFile(widget.convertedFile[0]);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
