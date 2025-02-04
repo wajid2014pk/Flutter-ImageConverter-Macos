@@ -10,6 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 // ignore: depend_on_referenced_packages
 import 'package:image/image.dart' as im;
 import 'package:excel/excel.dart' as xlsx;
+import 'package:image_converter_macos/Presentation/image_conversion_loading_screen.dart';
+import 'package:image_converter_macos/Presentation/text_tool_preview.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_converter_macos/Constant/ai_config.dart';
 import 'package:image_converter_macos/Constant/api_string.dart';
@@ -46,8 +48,7 @@ class ConvertImagesController extends GetxController {
   RxBool showLoader = false.obs;
 
   final payWallController = Get.put(PayWallController());
-  RxList<String> textToolDataList = <String>[].obs;
-  RxList<String> textToolImagePathList = <String>[].obs;
+
   RxString textToolData = "".obs;
   RxString textToolImagePath = "".obs;
 
@@ -217,6 +218,7 @@ class ConvertImagesController extends GetxController {
   convertJpgToGifMulti(context, List<String>? filePath) async {
     List<File> imageFile = [];
     List<File> compressedImage = [];
+    print("filePath aaa$filePath");
     try {
       showLoader.value = true;
       if (filePath != null) {
@@ -256,7 +258,7 @@ class ConvertImagesController extends GetxController {
           compressedImage.add(
               File('$path.gif')..writeAsBytesSync(im.encodeGif(smallerImage)));
         }
-
+        print("filePath aaa11 ${compressedImage[0].path} ");
         Get.to(
           () => ConversionResult(
             imageFormat: ".gif",
@@ -1612,6 +1614,7 @@ class ConvertImagesController extends GetxController {
   }
 
   convertPngToGifMulti(context, List<String>? filePath) async {
+    print("filePathbb ${filePath}");
     List<File> imageFile = [];
     try {
       showLoader.value = true;
@@ -1931,7 +1934,7 @@ class ConvertImagesController extends GetxController {
                     children: [
                       Center(
                         child: SizedBox(
-                          width: MediaQuery.sizeOf(context).width * 0.7,
+                          width: MediaQuery.sizeOf(context).width * 0.5,
                           child: Center(
                             child: Text(
                               "Choose File Format",
@@ -1956,6 +1959,7 @@ class ConvertImagesController extends GetxController {
                   ),
                 ),
                 content: SizedBox(
+                  height: MediaQuery.sizeOf(context).width * 0.2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -1963,71 +1967,50 @@ class ConvertImagesController extends GetxController {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           conversionOptions(
-                              extensionImage: 'DOC_icon',
+                              extensionImage: 'jpg_icon',
                               index: 1,
                               imagePath: dataList),
                           conversionOptions(
-                              extensionImage: 'PDF_icon',
+                              extensionImage: 'gif_icon',
                               index: 2,
                               imagePath: dataList),
                           conversionOptions(
-                              extensionImage: 'TXT_icon',
+                              extensionImage: 'jpeg_icon',
                               index: 3,
                               imagePath: dataList),
                           conversionOptions(
-                              extensionImage: 'XLS_icon',
+                              extensionImage: 'png_icon',
                               index: 4,
                               imagePath: dataList),
                           conversionOptions(
-                              extensionImage: 'jpg_icon',
+                              extensionImage: 'svg_icon',
                               index: 5,
                               imagePath: dataList),
                           conversionOptions(
-                              extensionImage: 'gif_icon',
+                              extensionImage: 'webp_icon',
                               index: 6,
                               imagePath: dataList),
                         ],
                       ),
-                      const SizedBox(
-                        height: 6,
+                      SizedBox(
+                        height: 12,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          conversionOptions(
-                              extensionImage: 'jpeg_icon',
-                              index: 7,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'png_icon',
-                              index: 8,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'svg_icon',
-                              index: 9,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'webp_icon',
-                              index: 10,
-                              imagePath: dataList),
                           conversionOptions(
                               extensionImage: 'bmp_icon',
-                              index: 11,
+                              index: 7,
                               imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'tiff_icon',
-                              index: 12,
-                              imagePath: dataList),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      // showOtherConversions
-                      //     ?
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'tiff_icon',
+                                  index: 12,
+                                  imagePath: dataList)
+                              : conversionOptions(
+                                  extensionImage: 'DOC_icon',
+                                  index: 8,
+                                  imagePath: dataList),
                           conversionOptions(
                               extensionImage: 'raw_icon',
                               index: 13,
@@ -2044,6 +2027,16 @@ class ConvertImagesController extends GetxController {
                               extensionImage: 'heic_icon',
                               index: 16,
                               imagePath: dataList),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      // showOtherConversions
+                      //     ?
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
                           conversionOptions(
                               extensionImage: 'ppm_icon',
                               index: 17,
@@ -2052,60 +2045,186 @@ class ConvertImagesController extends GetxController {
                               extensionImage: 'tga_icon',
                               index: 18,
                               imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'DOC_icon',
+                              index: 8,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'XLS_icon',
+                              index: 11,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'TXT_icon',
+                              index: 9,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'PDF_icon',
+                              index: 10,
+                              imagePath: dataList),
+                          // showOtherConversions
+                          //     ? const SizedBox(height: 52, width: 68)
+                          //     : conversionOptions(
+                          //         extensionImage: 'XLS_icon',
+                          //         index: 11,
+                          //         imagePath: dataList),
                         ],
-                      )
+                      ),
                       // : const SizedBox(),
-                      // const SizedBox(
-                      //   height: 6,
-                      // ),
+
                       // showOtherConversions
-                      //     ? Row(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //         children: [
-                      //           conversionOptions(
-                      //               extensionImage: 'ppm',
-                      //               index: 17,
-                      //               imagePath: dataList),
-                      //           conversionOptions(
-                      //               extensionImage: 'tga',
-                      //               index: 18,
-                      //               imagePath: dataList),
-                      //           conversionOptions(
-                      //               extensionImage: 'doc',
-                      //               index: 8,
-                      //               imagePath: dataList),
-                      //           conversionOptions(
-                      //               extensionImage: 'xlsx',
-                      //               index: 11,
-                      //               imagePath: dataList),
-                      //         ],
-                      //       )
-                      //     : const SizedBox(),
-                      // const SizedBox(
-                      //   height: 6,
-                      // ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: [
-                      //     conversionOptions(
-                      //         extensionImage: 'text',
-                      //         index: 9,
-                      //         imagePath: dataList),
-                      //     conversionOptions(
-                      //         extensionImage: 'pdf_image',
-                      //         index: 10,
-                      //         imagePath: dataList),
-                      //     showOtherConversions
-                      //         ? const SizedBox(height: 52, width: 68)
-                      //         : conversionOptions(
-                      //             extensionImage: 'xlsx',
-                      //             index: 11,
-                      //             imagePath: dataList),
-                      //     const SizedBox(height: 52, width: 68),
-                      //   ],
-                      // ),
+                      //     ?
                     ],
                   ),
+                  // Column(
+                  //   mainAxisAlignment: MainAxisAlignment.start,
+                  //   children: [
+                  //     Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //       children: [
+                  //         conversionOptions(
+                  //             extensionImage: 'DOC_icon',
+                  //             index: 8,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'PDF_icon',
+                  //             index: 10,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'TXT_icon',
+                  //             index: 9,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'XLS_icon',
+                  //             index: 11,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'jpg_icon',
+                  //             index: 1,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'gif_icon',
+                  //             index: 2,
+                  //             imagePath: dataList),
+                  //       ],
+                  //     ),
+                  //     const SizedBox(
+                  //       height: 6,
+                  //     ),
+                  //     Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //       children: [
+                  //         conversionOptions(
+                  //             extensionImage: 'jpeg_icon',
+                  //             index: 3,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'png_icon',
+                  //             index: 8,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'svg_icon',
+                  //             index: 9,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'webp_icon',
+                  //             index: 10,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'bmp_icon',
+                  //             index: 11,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'tiff_icon',
+                  //             index: 12,
+                  //             imagePath: dataList),
+                  //       ],
+                  //     ),
+                  //     const SizedBox(
+                  //       height: 6,
+                  //     ),
+                  //     // showOtherConversions
+                  //     //     ?
+                  //     Row(
+                  //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //       children: [
+                  //         conversionOptions(
+                  //             extensionImage: 'raw_icon',
+                  //             index: 13,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'psd_icon',
+                  //             index: 14,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'dds_icon',
+                  //             index: 15,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'heic_icon',
+                  //             index: 16,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'ppm_icon',
+                  //             index: 17,
+                  //             imagePath: dataList),
+                  //         conversionOptions(
+                  //             extensionImage: 'tga_icon',
+                  //             index: 18,
+                  //             imagePath: dataList),
+                  //       ],
+                  //     )
+                  //     // : const SizedBox(),
+                  //     // const SizedBox(
+                  //     //   height: 6,
+                  //     // ),
+                  //     // showOtherConversions
+                  //     //     ? Row(
+                  //     //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //     //         children: [
+                  //     //           conversionOptions(
+                  //     //               extensionImage: 'ppm',
+                  //     //               index: 17,
+                  //     //               imagePath: dataList),
+                  //     //           conversionOptions(
+                  //     //               extensionImage: 'tga',
+                  //     //               index: 18,
+                  //     //               imagePath: dataList),
+                  //     //           conversionOptions(
+                  //     //               extensionImage: 'doc',
+                  //     //               index: 8,
+                  //     //               imagePath: dataList),
+                  //     //           conversionOptions(
+                  //     //               extensionImage: 'xlsx',
+                  //     //               index: 11,
+                  //     //               imagePath: dataList),
+                  //     //         ],
+                  //     //       )
+                  //     //     : const SizedBox(),
+                  //     // const SizedBox(
+                  //     //   height: 6,
+                  //     // ),
+                  //     // Row(
+                  //     //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //     //   children: [
+                  //     //     conversionOptions(
+                  //     //         extensionImage: 'text',
+                  //     //         index: 9,
+                  //     //         imagePath: dataList),
+                  //     //     conversionOptions(
+                  //     //         extensionImage: 'pdf_image',
+                  //     //         index: 10,
+                  //     //         imagePath: dataList),
+                  //     //     showOtherConversions
+                  //     //         ? const SizedBox(height: 52, width: 68)
+                  //     //         : conversionOptions(
+                  //     //             extensionImage: 'xlsx',
+                  //     //             index: 11,
+                  //     //             imagePath: dataList),
+                  //     //     const SizedBox(height: 52, width: 68),
+                  //     //   ],
+                  //     // ),
+                  //   ],
+                  // ),
                 ),
               ),
             );
@@ -2115,6 +2234,151 @@ class ConvertImagesController extends GetxController {
     );
   }
 
+  // conversionOptions({
+  //   required String extensionImage,
+  //   required int index,
+  //   required List<String> imagePath,
+  // }) {
+  //   return GestureDetector(
+  //     onTap: () async {
+  //       await AIHandler.checkInternet();
+
+  //       selectedIndex.value = index;
+
+  //       await conversionMethod(imagePath);
+  //     },
+  //     child: Container(
+  //       width: 70,
+  //       height: 70,
+  //       padding: const EdgeInsets.only(top: 5, bottom: 5),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Stack(
+  //             children: [
+  //               Image.asset(
+  //                 // extensionImage,
+  //                 'assets/$extensionImage.png',
+  //                 height: 62,
+  //                 width: 62,
+  //               ),
+  //               //FOR IOS
+
+  //               // extensionImage == 'xlsx'
+  //               //     ? !(bottomNavBarController.currentScans.value <
+  //               //             scanLmit.value)
+  //               //         ? !isPremium.value
+  //               //             ? dimondWidget()
+  //               //             : const SizedBox()
+  //               //         : const SizedBox()
+  //               //     : const SizedBox(),
+
+  //               // FOR ANDROID
+  //               // if (extensionImage == 'svg_image' &&
+  //               //     Platform.isAndroid &&
+  //               //     svgLimit.value > 9 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'bmp' &&
+  //               //     Platform.isAndroid &&
+  //               //     bmpLimit.value > 9 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'webp' &&
+  //               //     Platform.isAndroid &&
+  //               //     webpLimit.value > 9 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'tiff' &&
+  //               //     Platform.isAndroid &&
+  //               //     tiffLimit.value >= 5 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'raw' &&
+  //               //     Platform.isAndroid &&
+  //               //     rawLimit.value >= 5 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'psd' &&
+  //               //     Platform.isAndroid &&
+  //               //     psdLimit.value >= 5 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'dds' &&
+  //               //     Platform.isAndroid &&
+  //               //     ddsLimit.value >= 5 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'heic' &&
+  //               //     Platform.isAndroid &&
+  //               //     heicLimit.value >= 5 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'ppm' &&
+  //               //     Platform.isAndroid &&
+  //               //     ppmLimit.value >= 5 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'tga' &&
+  //               //     Platform.isAndroid &&
+  //               //     tgaLimit.value >= 5 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'pdf_image' &&
+  //               //     Platform.isAndroid &&
+  //               //     simpleLimit >= 10 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'doc' &&
+  //               //     Platform.isAndroid &&
+  //               //     simpleLimit >= 10 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+  //               // if (extensionImage == 'text' &&
+  //               //     Platform.isAndroid &&
+  //               //     simpleLimit >= 10 &&
+  //               //     !isPremium.value)
+  //               //   dimondWidget(),
+
+  //               // --------------------------------------------------------
+
+  //               // extensionImage == 'svg_image' ||
+  //               //         extensionImage == 'bmp' ||
+  //               //         extensionImage == 'tiff' ||
+  //               //         extensionImage == 'raw' ||
+  //               //         extensionImage == 'psd' ||
+  //               //         extensionImage == 'dds' ||
+  //               //         extensionImage == 'heic' ||
+  //               //         extensionImage == 'ppm' ||
+  //               //         extensionImage == 'tga' ||
+  //               //         extensionImage == 'doc' ||
+  //               //         extensionImage == 'text' ||
+  //               //         extensionImage == 'pdf_image'
+  //               //     ? (Platform.isAndroid && usedConversion! > 9)
+  //               //         ? !isPremium.value
+  //               //             ? Positioned(
+  //               //                 top: 5,
+  //               //                 left: 5,
+  //               //                 child: Container(
+  //               //                   decoration: BoxDecoration(
+  //               //                       borderRadius: BorderRadius.circular(4),
+  //               //                       color: Colors.black.withOpacity(0.1)),
+  //               //                   child: Lottie.asset(
+  //               //                     'assets/anim_diamond.json',
+  //               //                     width: 20.0,
+  //               //                   ),
+  //               //                 ),
+  //               //               )
+  //               //             : const SizedBox()
+  //               //         : const SizedBox()
+  //               //     : const SizedBox(),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
   conversionOptions({
     required String extensionImage,
     required int index,
@@ -2123,10 +2387,46 @@ class ConvertImagesController extends GetxController {
     return GestureDetector(
       onTap: () async {
         await AIHandler.checkInternet();
-
+        if (index == 1) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPG_SELECTION');
+        } else if (index == 2) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_GIF_SELECTION');
+        } else if (index == 3) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPEG_SELECTION');
+        } else if (index == 4) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PNG_SELECTION');
+        } else if (index == 5) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_SVG_SELECTION');
+        } else if (index == 6) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_WEBP_SELECTION');
+        } else if (index == 7) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BMP_SELECTION');
+        } else if (index == 8) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_DOC_SELECTION');
+        } else if (index == 9) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TEXT_SELECTION');
+        } else if (index == 10) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PDF_SELECTION');
+        } else if (index == 11) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_XLS_SELECTION');
+        } else if (index == 12) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TIFF_SELECTION');
+        } else if (index == 13) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_RAW_SELECTION');
+        } else if (index == 14) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PSD_SELECTION');
+        } else if (index == 15) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BDS_SELECTION');
+        } else if (index == 16) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_HEIC_SELECTION');
+        } else if (index == 17) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PPM_SELECTION');
+        } else if (index == 18) {
+          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TGA_SELECTION');
+        }
         selectedIndex.value = index;
         // await getAllLimitValues();
-        print("selectedIndex1 ${selectedIndex.value}");
+
         // Get.back();
         if (selectedIndex.value == 5 ||
             selectedIndex.value == 6 ||
@@ -2147,204 +2447,164 @@ class ConvertImagesController extends GetxController {
             selectedIndex.value == 3 ||
             selectedIndex.value == 4 ||
             selectedIndex.value == 7) {
-          // print("image path 111 $imagePath");
-          // if (selectedIndex.value == 7) {
-          //   //  Bmp Limit Check
+          print("image path 111aaa ${selectedIndex.value}");
+          if (selectedIndex.value == 7) {
+            //  Bmp Limit Check
+            //   if (Platform.isAndroid) {
+            //     if (bmpLimit.value >= 10 && !isPremium.value) {
+            //       // Get.to(() => const PremiumPage());
+            //       limitDialogue(Get.context!);
+            //     } else {
+            //       Get.to(() => ConvertFile(imagePath: imagePath));
+            //     // }
+            //   } else {
+            //     if (isPremium.value) {
+            //       Get.to(() => ConvertFile(imagePath: imagePath));
+            //     } else {
+            //       Get.to(const PremiumPage());
+            //     }
+            //   }
+            // } else {
 
-          //   if (payWallController.isPro.value) {
-          //     Get.to(() => ConvertFile(imagePath: imagePath));
-          //   } else {
-          //     // Get.to(const PremiumPage());
-          //     PremiumPopUp().premiumScreenPopUp(Get.context!);
-          //   }
-          // } else {
-          //   Get.to(() => ConvertFile(imagePath: imagePath));
-          // }
-          print("selectedIndex2 ${selectedIndex.value}");
-          // Get.back();
-
-          // Get.to(() => ConvertFile(imagePath: imagePath));
-          print("BBBBB $imagePath");
-        } else {
-          // image to excel tool------------------------
-          if (selectedIndex.value == 11) {
-            if (isInternetConneted.value) {
-              // if (bottomNavBarController.currentScans.value < scanLmit.value) {
-              // log("bottomNavBarController.currentScans ${bottomNavBarController.currentScans}");
-              if (imagePath.length > 1) {
-                Get.snackbar(
-                    backgroundColor: UiColors.whiteColor,
-                    duration: const Duration(seconds: 4),
-                    AppLocalizations.of(Get.context!)!.attention,
-                    "Only 1 image should be selected"
-                    // AppLocalizations.of(Get.context!)!
-                    //     .only_1_image_should_be_selected,
-                    );
-                // Get.to(() => ConvertFile(imagePath: [imagePath[0]]));
+            Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
+            // }
+          } else {
+            // image to excel tool------------------------
+            if (selectedIndex.value == 11) {
+              if (isInternetConneted.value) {
+                // if (bottomNavBarController.currentScans.value < scanLmit.value) {
+                // log("bottomNavBarController.currentScans ${bottomNavBarController.currentScans}");
+                if (imagePath.length > 1) {
+                  Get.snackbar(
+                      backgroundColor: UiColors.whiteColor,
+                      duration: const Duration(seconds: 4),
+                      AppLocalizations.of(Get.context!)!.attention,
+                      // AppLocalizations.of(Get.context!)!
+                      //     .only_1_image_should_be_selected,
+                      "Only 1 image should be selected");
+                  // Get.to(() => ConvertFile(imagePath: [imagePath[0]]));
+                } else {
+                  Get.to(
+                      () => ImageConversionLoadingScreen(imagePath: imagePath));
+                }
+                // } else {
+                //   // Get.snackbar("title", "Scan Limit Reached!");
+                //   limitDialogue(Get.context!);
+                // }
               } else {
-                Get.to(() => ConvertFile(imagePath: imagePath));
-              }
-
-              // } else {
-              //   // Get.snackbar("title", "Scan Limit Reached!");
-              //   // limitDialogue(Get.context!);
-              //    PremiumPopUp().premiumScreenPopUp(Get.context!);
-              // }
-            } else {
-              Get.back();
-              Get.snackbar(
+                Get.back();
+                Get.snackbar(
                   backgroundColor: UiColors.whiteColor,
                   duration: const Duration(seconds: 4),
                   AppLocalizations.of(Get.context!)!.attention,
                   // AppLocalizations.of(Get.context!)!
                   //     .please_check_your_internet_connection,
-                  "Please check your internet connection");
+                  "Please check your internet connection",
+                );
+              }
             }
-          }
-          // image to excel tool------------------------
-          //--------image to text tool----------------
-          if (selectedIndex.value == 9 || selectedIndex.value == 8) {
-            if (imagePath.length > 1) {
-              Get.snackbar(
+            // image to excel tool------------------------
+            //--------image to text tool----------------
+            if (selectedIndex.value == 9 || selectedIndex.value == 8) {
+              if (imagePath.length > 1) {
+                Get.snackbar(
                   backgroundColor: UiColors.whiteColor,
                   duration: const Duration(seconds: 4),
                   AppLocalizations.of(Get.context!)!.attention,
                   // AppLocalizations.of(Get.context!)!
                   //     .only_1_image_should_be_selected,
-                  "Only 1 image should be selected");
-            } else {
-              if (payWallController.isPro.value) {
-                Get.to(() => ConvertFile(imagePath: imagePath));
+                  "Only 1 image should be selected",
+                );
               } else {
-                // Get.to(const PremiumPage());
-                PremiumPopUp().premiumScreenPopUp(Get.context!);
+                if (Platform.isAndroid) {
+                  // if (simpleLimit < 10 || isPremium.value) {
+                  Get.to(
+                      () => ImageConversionLoadingScreen(imagePath: imagePath));
+                  // } else {
+                  //   limitDialogue(Get.context!);
+                  // }
+                } else {
+                  // if (isPremium.value) {
+                  Get.to(
+                      () => ImageConversionLoadingScreen(imagePath: imagePath));
+                  // } else {
+                  //   Get.to(const PremiumPage());
+                  // }
+                }
               }
             }
-          }
-          //---------image to text tool ---------------
+            //---------image to text tool ---------------
 
-          if (selectedIndex.value == 5) {
-            //------------- Svg Tool Limit Check
-
-            if (payWallController.isPro.value) {
-              Get.to(() => ConvertFile(imagePath: imagePath));
-            } else {
-              // Get.to(const PremiumPage());
-              PremiumPopUp().premiumScreenPopUp(Get.context!);
+            if (selectedIndex.value == 5) {
+              //------------- Svg Tool Limit Check
+              if (Platform.isAndroid) {
+                // if (toolValue < 10 || isPremium.value) {
+                //   Get.to(() => ConvertFile(imagePath: imagePath));
+                // } else {
+                //   // Get.to(() => const PremiumPage());
+                //   limitDialogue(Get.context!);
+                // }
+                // if (svgLimit.value >= 10 && !isPremium.value) {
+                //   // Get.to(() => const PremiumPage());
+                //   limitDialogue(Get.context!);
+                // } else {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+                // }
+              } else {
+                // if (isPremium.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+                // } else {
+                //   Get.to(const PremiumPage());
+                // }
+              }
             }
-          }
-          if (selectedIndex.value == 12 ||
-              selectedIndex.value == 13 ||
-              selectedIndex.value == 14 ||
-              selectedIndex.value == 15 ||
-              selectedIndex.value == 16 ||
-              selectedIndex.value == 17 ||
-              selectedIndex.value == 18) {
-            if (Platform.isAndroid) {
-              // if (toolValue < 10 || isPremium.value) {
-              //   Get.to(() => ConvertFile(imagePath: imagePath));
-              // } else {
-              //   limitDialogue(Get.context!);
-              // }
-
-              // log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ selectedIndex.value == 12  ${selectedIndex.value == 12}");
-              // log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@isPremium.value ${!isPremium.value}");
-              // log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ selectedIndex.value ${tiffLimit.value >= 5}");
-              // --------------------- TIFF LIMIT CHECK
-              if (selectedIndex.value == 12) {
-                // if (tiffLimit.value >= 5 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   log("bcccdscsdcvsdcvaadasdfadsrvsdfvdfsvdsfcvbsfdxcvbdfxvdca");
-
-                //   limitDialogue(Get.context!);
-                // } else {
-                //   log("bcccdscsdcvsdcvadca");
-                Get.to(() => ConvertFile(imagePath: imagePath));
-                // }
-              }
-              // --------------------- RAW LIMIT CHECK
-              else if (selectedIndex.value == 13) {
-                // if (rawLimit.value >= 5 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // } else {
-                Get.to(() => ConvertFile(imagePath: imagePath));
-                // }
-              }
-              // // --------------------- PSD LIMIT CHECK
-              else if (selectedIndex.value == 14) {
-                // if (psdLimit.value >= 5 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // } else {
-                Get.to(() => ConvertFile(imagePath: imagePath));
-                // }
-              }
-              // // --------------------- DDS LIMIT CHECK
-              else if (selectedIndex.value == 15) {
-                // if (ddsLimit.value >= 5 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // } else {
-                Get.to(() => ConvertFile(imagePath: imagePath));
-                // }
-              }
-              // // --------------------- Heic LIMIT CHECK
-              else if (selectedIndex.value == 16) {
-                // if (heicLimit.value >= 5 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // } else {
-                Get.to(() => ConvertFile(imagePath: imagePath));
-                // }
-              }
-              // // --------------------- PPM LIMIT CHECK
-              else if (selectedIndex.value == 17) {
-                // if (ppmLimit.value >= 5 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // } else {
-                Get.to(() => ConvertFile(imagePath: imagePath));
-                // }
-              }
-              // // --------------------- Tga LIMIT CHECK
-              else if (selectedIndex.value == 18) {
-                // if (tgaLimit.value >= 5 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // } else {
-                Get.to(() => ConvertFile(imagePath: imagePath));
-                // }
-              }
-            } else {
+            if (selectedIndex.value == 12 ||
+                selectedIndex.value == 13 ||
+                selectedIndex.value == 14 ||
+                selectedIndex.value == 15 ||
+                selectedIndex.value == 16 ||
+                selectedIndex.value == 17 ||
+                selectedIndex.value == 18) {
               // if (isPremium.value) {
-              //   Get.to(() => ConvertFile(imagePath: imagePath));
+
+              Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
               // } else {
-              PremiumPopUp().premiumScreenPopUp(Get.context!);
+              //   Get.to(const PremiumPage());
               // }
             }
-          }
-          if (selectedIndex.value == 6) {
-            // if (webpLimit.value < 10 || isPremium.value) {
-            //   Get.to(() => ConvertFile(imagePath: imagePath));
-            // } else {
-            // Get.to(() => const PremiumPage());
-            PremiumPopUp().premiumScreenPopUp(Get.context!);
+            if (selectedIndex.value == 6) {
+              // if (webpLimit.value < 10 || isPremium.value) {
+              Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
+              // } else {
+              //   // Get.to(() => const PremiumPage());
+              //   limitDialogue(Get.context!);
 
-            // limitDialogue(Get.context!);
-            // }
-          }
-          if (selectedIndex.value == 10) {
-            log("toolValue $simpleLimit");
-
-            if (payWallController.isPro.value) {
-              Get.to(() => ConvertFile(imagePath: imagePath));
-            } else {
-              PremiumPopUp().premiumScreenPopUp(Get.context!);
+              //   // limitDialogue(Get.context!);
+              // }
+            }
+            if (selectedIndex.value == 10) {
+              log("toolValue $simpleLimit");
+              if (Platform.isAndroid) {
+                // if (simpleLimit < 10 || isPremium.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+                // } else {
+                //   // Get.to(() => const PremiumPage());
+                //   limitDialogue(Get.context!);
+                // }
+              } else {
+                // if (isPremium.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+                // } else {
+                //   Get.to(const PremiumPage());
+              }
             }
           }
         }
-        await conversionMethod(imagePath);
+        Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
       },
       child: Container(
         width: 70,
@@ -2362,7 +2622,24 @@ class ConvertImagesController extends GetxController {
                   width: 62,
                 ),
                 //FOR IOS
-
+                // extensionImage == 'svg_image' ||
+                //         extensionImage == 'bmp' ||
+                //         extensionImage == 'tiff' ||
+                //         extensionImage == 'raw' ||
+                //         extensionImage == 'psd' ||
+                //         extensionImage == 'dds' ||
+                //         extensionImage == 'heic' ||
+                //         extensionImage == 'ppm' ||
+                //         extensionImage == 'tga' ||
+                //         extensionImage == 'doc' ||
+                //         extensionImage == 'text' ||
+                //         extensionImage == 'pdf_image'
+                //     ? Platform.isIOS
+                //         ? !isPremium.value
+                //             ? dimondWidget()
+                //             : const SizedBox()
+                //         : const SizedBox()
+                //     : const SizedBox(),
                 // extensionImage == 'xlsx'
                 //     ? !(bottomNavBarController.currentScans.value <
                 //             scanLmit.value)
@@ -2577,7 +2854,7 @@ class ConvertImagesController extends GetxController {
     // int counter = 0;
 
     try {
-      for (int i = 0; i < filePath.length; i++) {
+      for (int i = 0; i < 1; i++) {
         api.Dio dio = api.Dio();
         api.FormData formData = api.FormData.fromMap({
           'api': 'c3c35a68edd632e4be0d619e57a8fff0',
@@ -2639,10 +2916,17 @@ class ConvertImagesController extends GetxController {
         textToolImagePathList.add(filePath[i]);
       }
       if (isError.value) {
-        // Get.offAll(const HomeScreen(index:1));
+        Get.offAll(const HomeScreen(index: 1));
         return;
       } else {
-        // await Get.to(() => const TextToolPreviewPage());
+        Get.to(() => ConversionResult(
+            imageFormat: '.txt',
+            originalFilePath: filePath.first,
+            convertedFile: [File(filePath.first)]));
+        // await Get.to(() => TextToolPreviewPage(
+        //       text: textToolDataList[0],
+        //       imagePath: filePath.first,
+        //     ));
       }
     } catch (e) {
       Get.snackbar(
@@ -2911,8 +3195,6 @@ class ConvertImagesController extends GetxController {
       // await SharedPref().setToolValue(toolValue);
       // if (pdfValue <= 10 || isPremium.value) {
       try {
-       
-
         // await loopFunction();
         if (imagePath[0].toLowerCase().endsWith('.jpg') ||
             imagePath[0].toLowerCase().endsWith('.jpeg')) {

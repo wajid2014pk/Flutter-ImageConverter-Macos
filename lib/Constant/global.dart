@@ -10,6 +10,10 @@ RxBool svgAndBmpApi = false.obs;
 RxString excelString = "".obs;
 RxString excelApiresult = "".obs;
 String apikey = '';
+RxList<String> textToolDataList = <String>[].obs;
+RxList<String> textToolImagePathList = <String>[].obs;
+RxString textToolData = "".obs;
+RxString textToolImagePath = "".obs;
 
 //------image to excel tool-------------
 RxList<String> xlsxImageList = <String>[].obs;
