@@ -42,6 +42,8 @@ dependencies:
   text_scroll: ^0.2.0
   flutter_svg: ^2.0.17
   excel: ^2.0.7
+  # webview_flutter_wkwebview: ^3.18.0
+  webview_flutter: ^4.10.0
   archive:
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,9 @@ flutter:
     - family: Manrope
       fonts:
         - asset: fonts/Manrope-Regular.ttf
+    - family: Manrope-Bold
+      fonts:
+        - asset: fonts/Manrope-Bold.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

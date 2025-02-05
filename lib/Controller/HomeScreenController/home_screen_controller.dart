@@ -147,11 +147,10 @@ class HomeScreenController extends GetxController {
         'bmp',
         'tiff',
         'heic',
-        'bmp',
         'png',
         'jpg',
         'jpeg',
-        'gif'
+        'gif',
       ],
     );
 

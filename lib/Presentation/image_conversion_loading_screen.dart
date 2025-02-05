@@ -60,7 +60,6 @@ class _ImageConversionLoadingScreenState
       isTimerComplete.value = true;
     });
     Future.delayed(const Duration(milliseconds: 1000), () async {
-     
       await conversionMethod();
     });
   }
@@ -116,6 +115,7 @@ class _ImageConversionLoadingScreenState
       },
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: UiColors.whiteColor,
           body: Obx(
             () => Column(
               children: [

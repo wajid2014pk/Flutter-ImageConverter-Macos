@@ -9,8 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
+import 'package:image_converter_macos/Presentation/excel_tool_preview.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
 import 'package:image_converter_macos/Presentation/rating_dialog.dart';
+import 'package:image_converter_macos/Presentation/text_tool_preview.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -88,7 +90,7 @@ class _ConversionResultState extends State<ConversionResult> {
       child: Scaffold(
         backgroundColor: UiColors.whiteColor,
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 42),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 22),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,7 +103,7 @@ class _ConversionResultState extends State<ConversionResult> {
                           index: 1,
                         )),
                     child: Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                           color: UiColors.greyColor.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(8)),
@@ -126,7 +128,8 @@ class _ConversionResultState extends State<ConversionResult> {
                           AppLocalizations.of(context)!.converted,
                           style: TextStyle(
                             color: UiColors.blackColor,
-                            fontSize: 26.0,
+                            fontSize: 24.0,
+                            fontFamily: 'Manrope-Bold',
                             fontWeight: FontWeight.w800,
                           ),
                         ),
@@ -143,7 +146,10 @@ class _ConversionResultState extends State<ConversionResult> {
                   ),
                 ],
               ),
-              widget.convertedFile.length == 1 ? Spacer() : SizedBox(),
+
+              widget.convertedFile.length == 1
+                  ? const Spacer()
+                  : const SizedBox(),
               SizedBox(
                 height: Get.width * 0.05,
               ),
@@ -180,111 +186,120 @@ class _ConversionResultState extends State<ConversionResult> {
                                   mainAxisExtent: 140),
                           itemCount: widget.convertedFile.length,
                           itemBuilder: (context, index) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                      color: UiColors.lightGreyBackground)),
-                              alignment: Alignment.center,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    widget.imageFormat == '.jpg'
-                                        ? 'assets/jpg_icon.png'
-                                        : widget.imageFormat == '.gif'
-                                            ? 'assets/gif_icon.png'
-                                            : widget.imageFormat == '.jpeg'
-                                                ? 'assets/jpeg_icon.png'
-                                                : widget.imageFormat == '.png'
-                                                    ? 'assets/png_icon.png'
-                                                    : widget.imageFormat ==
-                                                            '.svg'
-                                                        ? 'assets/svg_icon.png'
-                                                        : widget.imageFormat ==
-                                                                '.webp'
-                                                            ? 'assets/webp_icon.png'
-                                                            : widget.imageFormat ==
-                                                                    '.bmp'
-                                                                ? 'assets/bmp_icon.png'
-                                                                : widget.imageFormat ==
-                                                                        '.tiff'
-                                                                    ? 'assets/tiff_icon.png'
-                                                                    : widget.imageFormat ==
-                                                                            '.doc'
-                                                                        ? 'assets/DOC_icon.png'
-                                                                        : widget.imageFormat ==
-                                                                                '.raw'
-                                                                            ? 'assets/raw_icon.png'
-                                                                            : widget.imageFormat == '.psd'
-                                                                                ? 'assets/psd_icon.png'
-                                                                                : widget.imageFormat == '.dds'
-                                                                                    ? 'assets/dds_icon.png'
-                                                                                    : widget.imageFormat == '.heic'
-                                                                                        ? 'assets/heic_icon.png'
-                                                                                        : widget.imageFormat == '.ppm'
-                                                                                            ? 'assets/ppm_icon.png'
-                                                                                            : widget.imageFormat == '.tga'
-                                                                                                ? 'assets/tga_icon.png'
-                                                                                                : widget.imageFormat == '.pdf'
-                                                                                                    ? 'assets/pdf_icon.png'
-                                                                                                    : 'assets/jpg_icon.png',
-                                    height: 62,
-                                    width: 62,
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  SizedBox(
-                                      width: Get.width * 0.2,
-                                      child: TextScroll(
-                                        fileName[index],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 14),
-                                        mode: TextScrollMode.endless,
-                                        velocity: const Velocity(
-                                            pixelsPerSecond: Offset(20, 0)),
-                                        delayBefore:
-                                            const Duration(milliseconds: 500),
-                                        numberOfReps: 1111,
-                                        pauseBetween:
-                                            const Duration(milliseconds: 500),
-                                        textAlign: TextAlign.right,
-                                        selectable: true,
-                                      )),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        widget.imageFormat
-                                            .split('.')[1]
-                                            .toUpperCase(),
-                                        style: TextStyle(
-                                            color: UiColors.blackColor,
-                                            fontSize: 12),
-                                      ),
-                                      Text(
-                                        " | ",
-                                        style: TextStyle(
-                                            color: UiColors.greyColor,
-                                            fontSize: 12),
-                                      ),
-                                      Text(
-                                        "${fileSize[index].toInt().toString()}KB",
-                                        style: TextStyle(
-                                            color: UiColors.greyColor,
-                                            fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                  // Text('Item $index',
-                                  //     style: TextStyle(color: Colors.white)),
-                                ],
+                            return GestureDetector(
+                              onTap: () {
+                                // showImageDialog(
+                                //     context, widget.convertedFile[index].path);
+                                showPreviewDialog(
+                                    context,
+                                    widget.convertedFile[index].path,
+                                    widget.convertedFile[index]);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                        color: UiColors.lightGreyBackground)),
+                                alignment: Alignment.center,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset(
+                                      widget.imageFormat == '.jpg'
+                                          ? 'assets/jpg_icon.png'
+                                          : widget.imageFormat == '.gif'
+                                              ? 'assets/gif_icon.png'
+                                              : widget.imageFormat == '.jpeg'
+                                                  ? 'assets/jpeg_icon.png'
+                                                  : widget.imageFormat == '.png'
+                                                      ? 'assets/png_icon.png'
+                                                      : widget.imageFormat ==
+                                                              '.svg'
+                                                          ? 'assets/svg_icon.png'
+                                                          : widget.imageFormat ==
+                                                                  '.webp'
+                                                              ? 'assets/webp_icon.png'
+                                                              : widget.imageFormat ==
+                                                                      '.bmp'
+                                                                  ? 'assets/bmp_icon.png'
+                                                                  : widget.imageFormat ==
+                                                                          '.tiff'
+                                                                      ? 'assets/tiff_icon.png'
+                                                                      : widget.imageFormat ==
+                                                                              '.doc'
+                                                                          ? 'assets/DOC_icon.png'
+                                                                          : widget.imageFormat == '.raw'
+                                                                              ? 'assets/raw_icon.png'
+                                                                              : widget.imageFormat == '.psd'
+                                                                                  ? 'assets/psd_icon.png'
+                                                                                  : widget.imageFormat == '.dds'
+                                                                                      ? 'assets/dds_icon.png'
+                                                                                      : widget.imageFormat == '.heic'
+                                                                                          ? 'assets/heic_icon.png'
+                                                                                          : widget.imageFormat == '.ppm'
+                                                                                              ? 'assets/ppm_icon.png'
+                                                                                              : widget.imageFormat == '.tga'
+                                                                                                  ? 'assets/tga_icon.png'
+                                                                                                  : widget.imageFormat == '.pdf'
+                                                                                                      ? 'assets/pdf_icon.png'
+                                                                                                      : 'assets/jpg_icon.png',
+                                      height: 62,
+                                      width: 62,
+                                    ),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    SizedBox(
+                                        width: Get.width * 0.2,
+                                        child: TextScroll(
+                                          fileName[index],
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14),
+                                          mode: TextScrollMode.endless,
+                                          velocity: const Velocity(
+                                              pixelsPerSecond: Offset(20, 0)),
+                                          delayBefore:
+                                              const Duration(milliseconds: 500),
+                                          numberOfReps: 1111,
+                                          pauseBetween:
+                                              const Duration(milliseconds: 500),
+                                          textAlign: TextAlign.right,
+                                          selectable: true,
+                                        )),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          widget.imageFormat
+                                              .split('.')[1]
+                                              .toUpperCase(),
+                                          style: TextStyle(
+                                              color: UiColors.blackColor,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          " | ",
+                                          style: TextStyle(
+                                              color: UiColors.greyColor,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          "${fileSize[index].toInt().toString()}KB",
+                                          style: TextStyle(
+                                              color: UiColors.greyColor,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                    // Text('Item $index',
+                                    //     style: TextStyle(color: Colors.white)),
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -296,70 +311,114 @@ class _ConversionResultState extends State<ConversionResult> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Spacer(),
-                        Image.asset(
-                          widget.imageFormat == '.jpg'
-                              ? 'assets/jpg_icon.png'
-                              : widget.imageFormat == '.gif'
-                                  ? 'assets/gif_icon.png'
-                                  : widget.imageFormat == '.jpeg'
-                                      ? 'assets/jpeg_icon.png'
-                                      : widget.imageFormat == '.png'
-                                          ? 'assets/png_icon.png'
-                                          : widget.imageFormat == '.svg'
-                                              ? 'assets/svg_icon.png'
-                                              : widget.imageFormat == '.webp'
-                                                  ? 'assets/webp_icon.png'
-                                                  : widget.imageFormat == '.bmp'
-                                                      ? 'assets/bmp_icon.png'
-                                                      : widget.imageFormat ==
-                                                              '.tiff'
-                                                          ? 'assets/tiff_icon.png'
-                                                          : widget.imageFormat ==
-                                                                  '.doc'
-                                                              ? 'assets/DOC_icon.png'
-                                                              : widget.imageFormat ==
-                                                                      '.raw'
-                                                                  ? 'assets/raw_icon.png'
-                                                                  : widget.imageFormat ==
-                                                                          '.psd'
-                                                                      ? 'assets/psd_icon.png'
-                                                                      : widget.imageFormat ==
-                                                                              '.dds'
-                                                                          ? 'assets/dds_icon.png'
-                                                                          : widget.imageFormat == '.heic'
-                                                                              ? 'assets/heic_icon.png'
-                                                                              : widget.imageFormat == '.ppm'
-                                                                                  ? 'assets/ppm_icon.png'
-                                                                                  : widget.imageFormat == '.tga'
-                                                                                      ? 'assets/tga_icon.png'
-                                                                                      : widget.imageFormat == '.pdf'
-                                                                                          ? 'assets/pdf_icon.png'
-                                                                                          : 'assets/jpg_icon.png',
-                          height: 62,
-                          width: 62,
+                        GestureDetector(
+                          onTap: () {
+                            if (widget.imageFormat == ".txt") {
+                              print(
+                                  "textToolData.value ${widget.originalFilePath}");
+                              // print(
+                              //     "textToolData.value11 ${textToolImagePath.value}");
+                              Get.to(() => TextToolPreviewPage(
+                                  text: widget.originalFilePath,
+                                  imagePath: widget.convertedFile[0].path));
+                            } else if (widget.imageFormat == ".xlsx") {
+                              print("eexx ${widget.convertedFile[0]}");
+                              print("eexx22 ${widget.originalFilePath[0]}");
+                              Get.to(() => ExcelToolPreviewPage(
+                                  excelFile: widget.convertedFile[0],
+                                  imagePath: widget.originalFilePath));
+                            }
+                          },
+                          child: Image.asset(
+                            widget.imageFormat == '.jpg'
+                                ? 'assets/jpg_icon.png'
+                                : widget.imageFormat == '.gif'
+                                    ? 'assets/gif_icon.png'
+                                    : widget.imageFormat == '.jpeg'
+                                        ? 'assets/jpeg_icon.png'
+                                        : widget.imageFormat == '.png'
+                                            ? 'assets/png_icon.png'
+                                            : widget.imageFormat == '.svg'
+                                                ? 'assets/svg_icon.png'
+                                                : widget.imageFormat == '.webp'
+                                                    ? 'assets/webp_icon.png'
+                                                    : widget.imageFormat ==
+                                                            '.bmp'
+                                                        ? 'assets/bmp_icon.png'
+                                                        : widget.imageFormat ==
+                                                                '.tiff'
+                                                            ? 'assets/tiff_icon.png'
+                                                            : widget.imageFormat ==
+                                                                    '.doc'
+                                                                ? 'assets/DOC_icon.png'
+                                                                : widget.imageFormat ==
+                                                                        '.raw'
+                                                                    ? 'assets/raw_icon.png'
+                                                                    : widget.imageFormat ==
+                                                                            '.psd'
+                                                                        ? 'assets/psd_icon.png'
+                                                                        : widget.imageFormat ==
+                                                                                '.dds'
+                                                                            ? 'assets/dds_icon.png'
+                                                                            : widget.imageFormat == '.heic'
+                                                                                ? 'assets/heic_icon.png'
+                                                                                : widget.imageFormat == '.ppm'
+                                                                                    ? 'assets/ppm_icon.png'
+                                                                                    : widget.imageFormat == '.tga'
+                                                                                        ? 'assets/tga_icon.png'
+                                                                                        : widget.imageFormat == '.pdf'
+                                                                                            ? 'assets/pdf_icon.png'
+                                                                                            : widget.imageFormat == '.txt'
+                                                                                                ? 'assets/TXT_icon.png'
+                                                                                                : widget.imageFormat == '.xlsx'
+                                                                                                    ? 'assets/XLS_icon.png'
+                                                                                                    : 'assets/jpg_icon.png',
+                            height: 62,
+                            width: 62,
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 28,
                         ),
-                        Text(fileName[0]),
-                        SizedBox(
+                        Text(
+                          "${fileName[0]} ${fileName[0].contains('.') ? "" : ".${widget.imageFormat.split('.')[1]}"}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(
                           height: 12,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                                widget.imageFormat.split('.')[1].toUpperCase()),
-                            Text(" | "),
+                              widget.imageFormat.split('.')[1].toUpperCase(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
                             Text(
-                                "${fileSize[0].toInt() == 0 ? fileSize[0].toStringAsPrecision(2) : fileSize[0].toInt().toString()} KB"),
+                              " | ",
+                              style: TextStyle(
+                                color: UiColors.greyColor,
+                              ),
+                            ),
+                            Text(
+                              "${fileSize[0].toInt() == 0 ? fileSize[0].toStringAsPrecision(2) : fileSize[0].toInt().toString()} KB",
+                              style: TextStyle(
+                                color: UiColors.greyColor,
+                              ),
+                            ),
                           ],
                         ),
                       ],
                     ),
               // ),
-              widget.convertedFile.length == 1 ? Spacer() : SizedBox(),
-              SizedBox(
+              widget.convertedFile.length == 1
+                  ? const Spacer()
+                  : const SizedBox(),
+              const SizedBox(
                 height: 28,
               ),
               Row(
@@ -368,13 +427,19 @@ class _ConversionResultState extends State<ConversionResult> {
                   GestureDetector(
                     onTap: () async {
                       if (widget.convertedFile.length == 1) {
+                        if (widget.imageFormat == ".txt") {
+                          await shareTextFileMacOS(widget.originalFilePath);
+                        } else {
+                          await Share.shareXFiles(
+                              [XFile(widget.convertedFile[0].path)]);
+                        }
                       } else {
                         await createZip(true, widget.convertedFile);
                       }
                     },
                     child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
                         decoration: BoxDecoration(
                             color:
                                 UiColors.lightGreyBackground.withOpacity(0.5),
@@ -387,22 +452,50 @@ class _ConversionResultState extends State<ConversionResult> {
                           ),
                         )),
                   ),
+                  widget.convertedFile.length == 1
+                      ? sizedBoxWidth
+                      : const SizedBox(),
+                  widget.convertedFile.length == 1
+                      ? GestureDetector(
+                          onTap: () {
+                            showImageDialog(context, widget.originalFilePath);
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 16),
+                              decoration: BoxDecoration(
+                                  color: UiColors.lightGreyBackground
+                                      .withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                child: Image.asset(
+                                  'assets/ic_preview.png',
+                                  height: 22,
+                                  width: 22,
+                                ),
+                              )),
+                        )
+                      : const SizedBox(),
                   sizedBoxWidth,
                   GestureDetector(
                     onTap: () async {
                       if (widget.convertedFile.length == 1) {
-                        if (path.extension(widget.convertedFile[0].path) ==
-                            '.txt') {
+                        print(
+                            "path.extension(widget.convertedFile[0].path ${path.extension(widget.originalFilePath)}");
+                        if (widget.imageFormat == '.txt') {
+                          print("textToolDataaa");
                           textToolData.value = textToolDataList[0];
                           textToolImagePath.value = textToolImagePathList[0];
-                          print("YYUUOO");
-                          await downloadTextFile(
-                              path.basenameWithoutExtension(
-                                  widget.convertedFile[0].path),
-                              // textToolImagePath.value,
-                              textToolData.value
-                              // textToolDataList[0]
-                              );
+
+                          await downloadTextFileMacOS(textToolData.value);
+
+                          // await downloadTextFile(
+                          //     path.basenameWithoutExtension(
+                          //         widget.convertedFile[0].path),
+                          //     // textToolImagePath.value,
+                          //     textToolData.value
+                          //     // textToolDataList[0]
+                          //     );
                         } else if (path
                                 .extension(widget.convertedFile[0].path) ==
                             '.svg') {
@@ -425,7 +518,6 @@ class _ConversionResultState extends State<ConversionResult> {
                           print("###file $file");
 
                           final bytes = await file.readAsBytes();
-                          print("###bytes $bytes");
 
                           final result = await FileSaver.instance.saveAs(
                             name:
@@ -455,19 +547,18 @@ class _ConversionResultState extends State<ConversionResult> {
                                 //     .error_while_downloading_file
                                 );
                           }
-                          // await downloadDocFile(
-                          //     path.basenameWithoutExtension(
-                          //         widget.convertedFile[0].path),
-                          //     textToolDataList[0]);
                         } else if (path
                                 .extension(widget.convertedFile[0].path) ==
                             '.xlsx') {
-                          await downloadExcelFile(widget.convertedFile[0]);
-                        } else if (path
-                                .extension(widget.convertedFile[0].path) ==
-                            '.pdf') {
-                          await downloadPdfFile(widget.convertedFile[0]);
-                        } else {
+                          // await downloadExcelFile(widget.convertedFile[0]);
+                          await downloadExcelFileMacOS(widget.convertedFile[0]);
+                        }
+                        // else if (path
+                        //         .extension(widget.convertedFile[0].path) ==
+                        //     '.pdf') {
+                        //   await downloadPdfFile(widget.convertedFile[0]);
+                        // }
+                        else {
                           await _exportFile(widget.convertedFile[0], false);
                         }
                         Future.delayed(const Duration(milliseconds: 100),
@@ -489,8 +580,8 @@ class _ConversionResultState extends State<ConversionResult> {
                       }
                     },
                     child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 14),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           gradient: UiColors().linearGradientBlueColor,
@@ -503,11 +594,13 @@ class _ConversionResultState extends State<ConversionResult> {
                               height: 22,
                               width: 22,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 12,
                             ),
                             Text(
-                              "Download",
+                              widget.convertedFile.length == 1
+                                  ? "Download"
+                                  : "Download zip",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
                             )
@@ -568,7 +661,7 @@ class _ConversionResultState extends State<ConversionResult> {
               //   ]),
               // ),
 
-              SizedBox(
+              const SizedBox(
                 height: 22,
               ),
             ],
@@ -826,9 +919,7 @@ class _ConversionResultState extends State<ConversionResult> {
     try {
       // Get the documents directory
       // final directory = await getExternalStorageDirectory();
-      final documentsDir = Platform.isAndroid
-          ? Directory('/storage/emulated/0/Download')
-          : await getApplicationDocumentsDirectory();
+      final documentsDir = await getApplicationDocumentsDirectory();
       // final destinationPath =
       //     path.join(documentsDir!.path, file.uri.pathSegments.last);
       Uint8List excelData = await file.readAsBytes();
@@ -933,7 +1024,7 @@ class _ConversionResultState extends State<ConversionResult> {
           backgroundColor: Colors.white,
           duration: const Duration(seconds: 4),
           "Note",
-          "PDF saved in Downloads: ${newFile.path}",
+          "PDF saved in Downloads",
         );
       } else if (path.extension(filePath).toLowerCase() == '.txt') {
         // Save TXT file
@@ -948,7 +1039,7 @@ class _ConversionResultState extends State<ConversionResult> {
           "Note",
           "Text file saved in Downloads",
         );
-      } else if (['.bmp', '.webp', '.png', '.jpg', '.jpeg']
+      } else if (['.bmp', '.webp', '.png', '.jpg', '.jpeg', '.heic']
           .contains(path.extension(filePath).toLowerCase())) {
         // Save Images
         File newFile = File(
@@ -981,5 +1072,301 @@ class _ConversionResultState extends State<ConversionResult> {
       );
       print('Error exporting file: $e');
     }
+  }
+
+  Future<void> downloadExcelFileMacOS(File fileData) async {
+    Uint8List bytes = await fileData.readAsBytes();
+    try {
+      // Get the downloads directory
+      final downloadsDir = await getDownloadsDirectory();
+      if (downloadsDir == null) {
+        throw Exception("Downloads directory not found");
+      }
+
+      final fileName = 'ImagetoExcel_${DateTime.now().millisecondsSinceEpoch}';
+      final filePath = '${downloadsDir.path}/$fileName';
+      final file = File(filePath);
+
+      // Write the binary data to the file
+      await file.writeAsBytes(bytes);
+
+      // Save the file using FileSaver (optional, but ensures better cross-platform saving)
+      final result = await FileSaver.instance.saveAs(
+        name: fileName,
+        bytes: bytes,
+        ext: 'xlsx',
+        mimeType: MimeType.csv,
+      );
+
+      if (result != "") {
+        Get.snackbar(
+          "Success",
+          "File Saved Successfully: $filePath",
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+        );
+      } else {
+        Get.snackbar(
+          "Error",
+          "Error while saving the file",
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error exporting Excel file on macOS: $e');
+    }
+  }
+
+  Future<void> downloadTextFileMacOS(String fileContent) async {
+    try {
+      // Get the downloads directory
+      final downloadsDir = await getDownloadsDirectory();
+      if (downloadsDir == null) {
+        throw Exception("Downloads directory not found");
+      }
+
+      final fileName = 'ImagetoText_${DateTime.now().millisecondsSinceEpoch}';
+      final filePath = '${downloadsDir.path}/$fileName';
+      final file = File(filePath);
+
+      // Write text content to file
+      await file.writeAsString(fileContent);
+
+      // Read file bytes (optional for saving with FileSaver)
+      Uint8List bytes = await file.readAsBytes();
+
+      // Save the file using FileSaver
+      final result = await FileSaver.instance.saveAs(
+        name: fileName,
+        bytes: bytes,
+        ext: 'txt',
+        mimeType: MimeType.text,
+      );
+
+      if (result != "") {
+        Get.snackbar(
+          "Note",
+          "File Saved Successfully",
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+        );
+      } else {
+        Get.snackbar(
+          "Note",
+          "Error while downloading file",
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+        );
+      }
+    } catch (e) {
+      print('Error exporting file on macOS: $e');
+    }
+  }
+
+  Future<void> shareTextFileMacOS(String fileContent) async {
+    try {
+      // Get the downloads directory
+      final downloadsDir = await getDownloadsDirectory();
+      if (downloadsDir == null) {
+        throw Exception("Downloads directory not found");
+      }
+
+      final fileName = 'ImagetoText_${DateTime.now().millisecondsSinceEpoch}';
+      final filePath = '${downloadsDir.path}/$fileName.txt';
+      final file = File(filePath);
+      await file.writeAsString(fileContent);
+      await Share.shareXFiles([XFile(file.path)]);
+    } catch (e) {
+      print('Error exporting file on macOS: $e');
+    }
+  }
+
+  void showImageDialog(BuildContext context, String imagePath) {
+    Get.dialog(Dialog(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: Stack(
+          children: [
+            Image.file(
+              File(imagePath), // Replace with your image URL or use AssetImage
+            ),
+            Positioned(
+              right: 22,
+              top: 22,
+              child: GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: UiColors.whiteColor,
+                        borderRadius: BorderRadius.circular(22)),
+                    child: const Icon(Icons.close)),
+              ),
+            )
+          ],
+        ),
+      ),
+    ));
+    // });
+  }
+
+  void showPreviewDialog(
+      BuildContext context, String image, FileSystemEntity file) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          alignment: Alignment.center,
+          backgroundColor: Colors.transparent,
+          child: SizedBox(
+            // height: 400,
+            width: MediaQuery.of(context).size.width * 0.2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Container(
+                              height: 400,
+                              color: Colors.black,
+                              child: Image.file(
+                                File(image),
+                                height: 400,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.only(left: 12, right: 12, top: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(left: 4, right: 4),
+                            decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(22)),
+                            child: Text(
+                              // AppLocalizations.of(context)!.preview,
+                              "Preview",
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                          Text("iiii"),
+                          // InkWell(
+                          //   onTap: () {
+                          //     Get.back();
+                          //   },
+                          //   child: SvgPicture.asset(
+                          //     'assets/images/close-circle.svg',
+                          //     height: 28,
+                          //     width: 28,
+                          //   ),
+                          // )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 22,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        // await _shareFile(file);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            left: 12, right: 12, top: 12, bottom: 12),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("OOO"),
+                            // SvgPicture.asset(
+                            //   'assets/images/share.svg',
+                            //   height: 22,
+                            //   width: 22,
+                            // ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        await _exportFile(file, true);
+                        // Get.back();
+                        Future.delayed(const Duration(milliseconds: 100),
+                            () async {
+                          // if (Platform.isIOS) {
+                          // DialogBoxRating().showNativeRating();
+                          // } else {
+                          //   log("Rating calue ${await SharedPref().getRatingValue()}");
+                          //   await SharedPref().getRatingValue() == false
+                          //       ? DialogBoxRating()
+                          //           .dialogRating(context: Get.context!)
+                          //       : const SizedBox();
+                          // }
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                            left: 22, right: 22, top: 12, bottom: 12),
+                        decoration: BoxDecoration(
+                            color: UiColors.blueColorNew,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // SvgPicture.asset(
+                            //   'assets/images/download.svg',
+                            //   height: 22,
+                            //   width: 22,
+                            // ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              // AppLocalizations.of(context)!.download,
+                              "Download",
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

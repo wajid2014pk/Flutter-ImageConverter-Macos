@@ -1405,15 +1405,22 @@ class ConvertImagesController extends GetxController {
         print("%%%%selectedFile  $selectedFile");
 
         im.Image? gifImage = im.decodeGif(await selectedFile[i].readAsBytes());
-        print("%%%%gifImage  $gifImage");
+        if (gifImage != null) {
+          print("%%%%gifImage  $gifImage");
 
-        // File jpgImageFile =
-        jpgImageFile.add(File('$path.jpg')
-          ..writeAsBytesSync(
-            im.encodeJpg(
-              gifImage!,
-            ),
-          ));
+          // File jpgImageFile =
+          jpgImageFile.add(File('$path.jpg')
+            ..writeAsBytesSync(
+              im.encodeJpg(
+                gifImage,
+              ),
+            ));
+        } else {
+          var path =
+              '${dir?.path}/ImageConverter/giftojpg_$dateTime#File ${dateTime.year}-${dateTime.month}-${dateTime.day} ${dateTime.hour}:${dateTime.minute}:${dateTime.second}';
+          print("%%%%path  $path");
+          jpgImageFile.add(File('$path.jpg'));
+        }
       }
       showLoader.value = false;
       await Get.to(
@@ -1905,14 +1912,9 @@ class ConvertImagesController extends GetxController {
           .contains(extension); // Check if it's one of the allowed extensions
     });
 
-    // await getAllLimitValues();
-    // log("tiff VAlue ==========> ${tiffLimit.value}");
-    // usedConversion = await SharedPref().getToolValue();
-    // print("####1 usedConversion $usedConversion");
-
     print("showOtherConversions $showOtherConversions");
     return showDialog(
-      barrierDismissible: true,
+      barrierDismissible: false,
       context: Get.context!,
       builder: (_) {
         return StatefulBuilder(
@@ -1920,6 +1922,7 @@ class ConvertImagesController extends GetxController {
             return Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),
               child: AlertDialog(
+                backgroundColor: UiColors.whiteColor,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(12),
@@ -1934,15 +1937,15 @@ class ConvertImagesController extends GetxController {
                     children: [
                       Center(
                         child: SizedBox(
-                          width: MediaQuery.sizeOf(context).width * 0.5,
+                          width: MediaQuery.sizeOf(context).width * 0.38,
                           child: Center(
                             child: Text(
                               "Choose File Format",
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontSize: 17,
+                                // fontWeight: FontWeight.w500,
                                 color: UiColors.blackColor,
                               ),
                             ),
@@ -1950,11 +1953,18 @@ class ConvertImagesController extends GetxController {
                         ),
                       ),
                       const Spacer(),
-                      InkWell(
+                      GestureDetector(
                           onTap: () {
-                            Get.back();
+                            Get.offAll(() => HomeScreen(
+                                  index: 1,
+                                ));
                           },
-                          child: const Icon(Icons.close)),
+                          child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(22),
+                                  color: UiColors.greyColor.withOpacity(0.2)),
+                              child: const Icon(Icons.close))),
                     ],
                   ),
                 ),
@@ -1966,85 +1976,6 @@ class ConvertImagesController extends GetxController {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          conversionOptions(
-                              extensionImage: 'jpg_icon',
-                              index: 1,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'gif_icon',
-                              index: 2,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'jpeg_icon',
-                              index: 3,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'png_icon',
-                              index: 4,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'svg_icon',
-                              index: 5,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'webp_icon',
-                              index: 6,
-                              imagePath: dataList),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          conversionOptions(
-                              extensionImage: 'bmp_icon',
-                              index: 7,
-                              imagePath: dataList),
-                          showOtherConversions
-                              ? conversionOptions(
-                                  extensionImage: 'tiff_icon',
-                                  index: 12,
-                                  imagePath: dataList)
-                              : conversionOptions(
-                                  extensionImage: 'DOC_icon',
-                                  index: 8,
-                                  imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'raw_icon',
-                              index: 13,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'psd_icon',
-                              index: 14,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'dds_icon',
-                              index: 15,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'heic_icon',
-                              index: 16,
-                              imagePath: dataList),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      // showOtherConversions
-                      //     ?
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          conversionOptions(
-                              extensionImage: 'ppm_icon',
-                              index: 17,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'tga_icon',
-                              index: 18,
-                              imagePath: dataList),
                           conversionOptions(
                               extensionImage: 'DOC_icon',
                               index: 8,
@@ -2061,15 +1992,94 @@ class ConvertImagesController extends GetxController {
                               extensionImage: 'PDF_icon',
                               index: 10,
                               imagePath: dataList),
-                          // showOtherConversions
-                          //     ? const SizedBox(height: 52, width: 68)
-                          //     : conversionOptions(
-                          //         extensionImage: 'XLS_icon',
-                          //         index: 11,
-                          //         imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'jpg_icon',
+                              index: 1,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'gif_icon',
+                              index: 2,
+                              imagePath: dataList),
                         ],
                       ),
-                      // : const SizedBox(),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          conversionOptions(
+                              extensionImage: 'jpeg_icon',
+                              index: 3,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'png_icon',
+                              index: 4,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'svg_icon',
+                              index: 5,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'webp_icon',
+                              index: 6,
+                              imagePath: dataList),
+                          conversionOptions(
+                              extensionImage: 'bmp_icon',
+                              index: 7,
+                              imagePath: dataList),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'tiff_icon',
+                                  index: 12,
+                                  imagePath: dataList)
+                              : const SizedBox(
+                                  width: 70,
+                                  height: 70,
+                                ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      showOtherConversions
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                conversionOptions(
+                                    extensionImage: 'raw_icon',
+                                    index: 13,
+                                    imagePath: dataList),
+                                conversionOptions(
+                                    extensionImage: 'psd_icon',
+                                    index: 14,
+                                    imagePath: dataList),
+                                conversionOptions(
+                                    extensionImage: 'dds_icon',
+                                    index: 15,
+                                    imagePath: dataList),
+                                conversionOptions(
+                                    extensionImage: 'heic_icon',
+                                    index: 16,
+                                    imagePath: dataList),
+                                conversionOptions(
+                                    extensionImage: 'ppm_icon',
+                                    index: 17,
+                                    imagePath: dataList),
+                                conversionOptions(
+                                    extensionImage: 'tga_icon',
+                                    index: 18,
+                                    imagePath: dataList),
+
+                                // showOtherConversions
+                                //     ? const SizedBox(height: 52, width: 68)
+                                //     : conversionOptions(
+                                //         extensionImage: 'XLS_icon',
+                                //         index: 11,
+                                //         imagePath: dataList),
+                              ],
+                            )
+                          : const SizedBox(),
 
                       // showOtherConversions
                       //     ?
@@ -2912,6 +2922,7 @@ class ConvertImagesController extends GetxController {
 
         log("Text => ${response.data['text']}");
         textToolData.value = response.data['text'];
+        print("aaabbb${textToolData.value}kkk");
         textToolDataList.add(response.data['text']);
         textToolImagePathList.add(filePath[i]);
       }
@@ -2921,7 +2932,7 @@ class ConvertImagesController extends GetxController {
       } else {
         Get.to(() => ConversionResult(
             imageFormat: '.txt',
-            originalFilePath: filePath.first,
+            originalFilePath: textToolData.value,
             convertedFile: [File(filePath.first)]));
         // await Get.to(() => TextToolPreviewPage(
         //       text: textToolDataList[0],
@@ -3048,6 +3059,8 @@ class ConvertImagesController extends GetxController {
 //------------------image to excel ----------
   imageToExcelTool(
       BuildContext context, List<String> filePath, String to) async {
+    print("filePathaa $filePath");
+    print("filePathaabb ${filePath[0]}");
     int counter = 0;
     isError.value = false;
     xlsxImageList.value = [];
@@ -3101,17 +3114,15 @@ class ConvertImagesController extends GetxController {
       // debugPrint("Hive Box Length ${hiveBox.values.length}");
     }
     if (isError.value) {
-      // Get.offAll(const HomeScreen(index:1));
+      Get.offAll(() => const HomeScreen(index: 1));
       return;
     } else {
-      // await Get.to(() =>
-      // ConversionResult(
-      //   imageFormat: [".$to"],
-      //   originalSize: const ['0.2'],
-      //   convertedSize: const ['0.56', '0.22'],
-      //   dateTime: [getFormattedDateTime(DateTime.now())],
-      //   convertedFile: xlsxFilePathList,
-      // ),
+      print("xlsxFilePathList ${filePath[0]}");
+      await Get.to(() => ConversionResult(
+            imageFormat: ".$to",
+            convertedFile: xlsxFilePathList,
+            originalFilePath: filePath[0],
+          ));
       // ImageToExcelTool(
       //   imagePath: filePath.first,
       //   excelFile: xlsxFilePathList.first,

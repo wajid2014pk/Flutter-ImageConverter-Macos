@@ -31,6 +31,7 @@ class DialogBoxRating {
       context: context,
       builder: (_) {
         return AlertDialog(
+          backgroundColor: UiColors.whiteColor,
           insetPadding: const EdgeInsets.all(8),
           elevation: 4.0,
           icon: Row(

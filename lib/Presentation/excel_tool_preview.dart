@@ -1,48 +1,43 @@
-import 'dart:developer';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:excel/excel.dart' as excel;
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Constant/global.dart';
-import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
-class TextToolPreviewPage extends StatefulWidget {
-  String text;
+class ExcelToolPreviewPage extends StatefulWidget {
   String imagePath;
-  TextToolPreviewPage({super.key, required this.text, required this.imagePath});
+  File excelFile;
+  ExcelToolPreviewPage(
+      {super.key, required this.imagePath, required this.excelFile});
 
   @override
-  State<TextToolPreviewPage> createState() => _TextToolPreviewPageState();
+  State<ExcelToolPreviewPage> createState() => _ExcelToolPreviewPageState();
 }
 
-class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
-  TextEditingController textController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
+class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
+  WebViewController controller = WebViewController();
 
-    setState(() {
-      //  textController = TextEditingController(text: widget.text);
-      textController.text = widget.text;
+  void initState() {
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      print("POOOOO111 ${widget.imagePath}");
+      await convertExcelToHtml();
     });
-    log("Enter11 ${textController.text}");
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // void initState() {
-    //   print("Enter11");
-    //   textController = TextEditingController(text: widget.text);
-    //   print("textController $textController");
-    //   super.initState();
-    // }
-
     return Scaffold(
       backgroundColor: UiColors.whiteColor,
       body: Padding(
@@ -77,10 +72,10 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
                     Text(
                       AppLocalizations.of(context)!.converted,
                       style: TextStyle(
-                        color: UiColors.blackColor,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          color: UiColors.blackColor,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Manrope-Bold'),
                     ),
                     Text(
                       "You can download, Share and Preview converted files",
@@ -101,14 +96,34 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: UiColors.blackColor),
-                        child: Image.file(
-                          File(widget.imagePath),
-                          // fit: BoxFit.fitWidth,
-                        )),
+                    child: GestureDetector(
+                      onTap: () {
+                        showImageDialog(context, widget.imagePath);
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: UiColors.blackColor),
+                          child: Stack(
+                            children: [
+                              SingleChildScrollView(
+                                child: Image.file(
+                                  File(widget.imagePath),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Positioned(
+                                left: 22,
+                                top: 22,
+                                child: Image.asset(
+                                  'assets/preview_icon.png',
+                                  height: 22,
+                                  width: 22,
+                                ),
+                              )
+                            ],
+                          )),
+                    ),
                   ),
                   sizedBoxWidth,
                   Expanded(
@@ -119,20 +134,9 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                                 color: UiColors.greyColor.withOpacity(0.5))),
-                        child: SingleChildScrollView(
-                            child:
-                                // TextField(controller: textController)
-                                TextField(
-                          controller: textController,
-                          maxLines: null,
-                          keyboardType: TextInputType.multiline,
-                          decoration: const InputDecoration(
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
-                          ),
-
-                          // "${textToolData.value}"
-                        ))),
+                        child: WebViewWidget(
+                          controller: controller,
+                        )),
                   )
                 ],
               ),
@@ -145,7 +149,7 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    await shareTextFileMacOS(textController.text);
+                    await Share.shareXFiles([XFile(widget.excelFile.path)]);
                   },
                   child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -164,7 +168,7 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
                 sizedBoxWidth,
                 GestureDetector(
                   onTap: () async {
-                    await downloadTextFileMacOS(textController.text);
+                    await downloadExcelFileMacOS(widget.excelFile);
                   },
                   child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -205,7 +209,98 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
     );
   }
 
-  Future<void> downloadTextFileMacOS(String fileContent) async {
+  Future<void> convertExcelToHtml() async {
+    print("PPOOOO ");
+    // isHtmlLoading.value = true;
+    // debugPrint("isHtmlLoading.value ${isHtmlLoading.value}");
+
+    var bytes = widget.excelFile.readAsBytesSync();
+    var excels = excel.Excel.decodeBytes(bytes);
+
+    StringBuffer htmlContent = StringBuffer();
+
+    // Start HTML and body with CSS and set UTF-8 encoding
+    htmlContent.write('<html><head><meta charset="UTF-8"><style>');
+    htmlContent.write(
+        'table { border-collapse: collapse;width: 100%; border: 2px solid black; }');
+    htmlContent.write(
+        'td, th { padding: 20px; text-align: center; font-size: 40px; border: 1px solid black; }');
+    htmlContent.write('</style></head><body>');
+
+    // Write table
+    htmlContent.write('<table>');
+
+    for (var table in excels.tables.keys) {
+      htmlContent.write('<tr><th colspan="10">$table</th></tr>');
+      var sheet = excels.tables[table]!;
+      for (var row in sheet.rows) {
+        htmlContent.write('<tr>');
+        for (var cell in row) {
+          // Make sure the cell value is correctly encoded for HTML
+          String cellValue = cell?.value.toString() ?? ' ';
+          htmlContent
+              .write('<td>${const HtmlEscape().convert(cellValue)}</td>');
+        }
+        htmlContent.write('</tr>');
+      }
+    }
+
+    // End table and body
+    htmlContent.write('</table></body></html>');
+
+    // Save HTML content to a temporary file
+    Directory tempDir = await getTemporaryDirectory();
+    File tempFile = File('${tempDir.path}/temp.html');
+    await tempFile.writeAsString(htmlContent.toString());
+
+    controller.loadFile(tempFile.path);
+    controller.runJavaScript('''
+    window.onload = function() {
+      HeightChannel.postMessage(document.body.scrollHeight.toString());
+      document.body.style.zoom = "5"; // Adjust the zoom level as needed
+    }
+  ''');
+    // isHtmlLoading.value = false;
+  }
+
+  void showImageDialog(BuildContext context, String imagePath) {
+    Get.dialog(
+        // context: context,
+        // builder: (BuildContext context) {
+        // return
+        // (widget)
+        Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Stack(
+        children: [
+          Image.file(
+            File(imagePath), // Replace with your image URL or use AssetImage
+          ),
+          Positioned(
+            right: 22,
+            top: 22,
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: UiColors.whiteColor,
+                      borderRadius: BorderRadius.circular(22)),
+                  child: Icon(Icons.close)),
+            ),
+          )
+        ],
+      ),
+    ));
+    // });
+  }
+
+
+  Future<void> downloadExcelFileMacOS(File fileData) async {
+    Uint8List bytes = await fileData.readAsBytes();
     try {
       // Get the downloads directory
       final downloadsDir = await getDownloadsDirectory();
@@ -213,61 +308,40 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
         throw Exception("Downloads directory not found");
       }
 
-      final fileName = 'ImagetoText_${DateTime.now().millisecondsSinceEpoch}';
+      final fileName = 'ImagetoExcel_${DateTime.now().millisecondsSinceEpoch}';
       final filePath = '${downloadsDir.path}/$fileName';
       final file = File(filePath);
 
-      // Write text content to file
-      await file.writeAsString(fileContent);
+      // Write the binary data to the file
+      await file.writeAsBytes(bytes);
 
-      // Read file bytes (optional for saving with FileSaver)
-      Uint8List bytes = await file.readAsBytes();
-
-      // Save the file using FileSaver
+      // Save the file using FileSaver (optional, but ensures better cross-platform saving)
       final result = await FileSaver.instance.saveAs(
         name: fileName,
         bytes: bytes,
-        ext: 'txt',
-        mimeType: MimeType.text,
+        ext: 'xlsx',
+        mimeType: MimeType.csv,
       );
 
       if (result != "") {
         Get.snackbar(
-          "Note",
-          "File Saved Successfully",
+          "Success",
+          "File Saved Successfully: $filePath",
           colorText: Colors.black,
           backgroundColor: Colors.grey.withOpacity(0.3),
           duration: const Duration(seconds: 4),
         );
       } else {
         Get.snackbar(
-          "Note",
-          "Error while downloading file",
+          "Error",
+          "Error while saving the file",
           colorText: Colors.black,
           backgroundColor: Colors.grey.withOpacity(0.3),
           duration: const Duration(seconds: 4),
         );
       }
     } catch (e) {
-      print('Error exporting file on macOS: $e');
-    }
-  }
-
-  Future<void> shareTextFileMacOS(String fileContent) async {
-    try {
-      // Get the downloads directory
-      final downloadsDir = await getDownloadsDirectory();
-      if (downloadsDir == null) {
-        throw Exception("Downloads directory not found");
-      }
-
-      final fileName = 'ImagetoText_${DateTime.now().millisecondsSinceEpoch}';
-      final filePath = '${downloadsDir.path}/$fileName.txt';
-      final file = File(filePath);
-      await file.writeAsString(fileContent);
-      await Share.shareXFiles([XFile(file.path)]);
-    } catch (e) {
-      print('Error exporting file on macOS: $e');
+      debugPrint('Error exporting Excel file on macOS: $e');
     }
   }
 

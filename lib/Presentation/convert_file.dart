@@ -38,17 +38,15 @@ class _ConvertFileState extends State<ConvertFile> {
         : null;
     conversionController.selectedIndex.value = 0;
     for (int i = 0; i < widget.imagePath.length; i++) {
-      print("iiii ${widget.imagePath[i]}");
       getFileNames.add(getName(widget.imagePath[i]));
     }
-    print("getFileNames $getFileNames");
+
     for (int i = 0; i < widget.imagePath.length; i++) {
-      print("iiii ${widget.imagePath[i]}");
       getFileSize.add(getFileSizeInKB(File(widget.imagePath[i])));
     }
-    print("getFileSize $getFileSize");
-    Future.delayed(Duration(milliseconds: 1000), () async {
-      await Future.delayed(Duration(milliseconds: 1000), () {
+
+    Future.delayed(const Duration(milliseconds: 50), () async {
+      await Future.delayed(const Duration(milliseconds: 50), () {
         conversionController.conversionOptionList(context, widget.imagePath);
       });
     });
@@ -78,7 +76,7 @@ class _ConvertFileState extends State<ConvertFile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: UiColors.whiteColor,
+      backgroundColor: UiColors.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 22),
         child: Column(
@@ -97,13 +95,15 @@ class _ConvertFileState extends State<ConvertFile> {
                 ),
                 sizedBoxWidth,
                 sizedBoxWidth,
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Choose Output Format",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w800, fontSize: 26),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                          fontFamily: 'Manrope-Bold'),
                     ),
                     Text(
                       "Choose file output format",
@@ -114,18 +114,29 @@ class _ConvertFileState extends State<ConvertFile> {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 22,
+            ),
             Expanded(
               child: Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: Get.width * 0.1, vertical: Get.width * 0.01),
                 decoration: BoxDecoration(
+                    // border: Border.all(),
+                    boxShadow: [
+                      BoxShadow(
+                        color: UiColors.blackColor.withOpacity(0.1),
+                        blurRadius: 4,
+                      )
+                    ],
                     borderRadius: BorderRadius.circular(22),
                     color: UiColors.whiteColor),
                 child: Column(
                   children: [
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: Get.width * 0.02,
-                            vertical: Get.width * 0.01),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 22, vertical: 22),
                         child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
@@ -174,7 +185,7 @@ class _ConvertFileState extends State<ConvertFile> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
-                                            width: 150,
+                                            width: 110,
                                             child: TextScroll(
                                               getFileNames[index],
                                               mode: TextScrollMode.endless,

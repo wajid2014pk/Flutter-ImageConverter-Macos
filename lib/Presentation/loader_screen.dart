@@ -85,6 +85,7 @@ class _LoaderScreenState extends State<LoaderScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: UiColors.whiteColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
