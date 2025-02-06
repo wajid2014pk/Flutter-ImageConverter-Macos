@@ -62,24 +62,27 @@ class _HomeScreenState extends State<HomeScreen>
     ].contains(Localizations.localeOf(context).languageCode);
     return Scaffold(
       backgroundColor: UiColors.backgroundColor,
-      appBar: PreferredSize(
-        preferredSize: const Size(double.infinity, 65),
-        child: homeScreenController.customAppBar(context),
-      ),
+      // appBar: PreferredSize(
+      //   preferredSize: const Size(double.infinity, 65),
+      //   child: homeScreenController.customAppBar(context),
+      // ),
       body: Row(
         children: [
           Obx(
             () => Container(
               width: 290,
-              decoration: BoxDecoration(color: UiColors.whiteColor),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(22),
+                    topRight: Radius.circular(22),
+                  ),
+                  color: UiColors.whiteColor,
+                  border: Border.all()),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: isArabicOrPersianOrHebrew ? 0 : 20,
-                      right: isArabicOrPersianOrHebrew ? 20 : 0,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
                       children: [
                         const SizedBox(
@@ -248,7 +251,6 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                 ),
                                 Positioned(
-                                  // top: 5,
                                   right: isArabicOrPersianOrHebrew ? null : 1,
                                   left: isArabicOrPersianOrHebrew ? 1 : null,
                                   bottom: 10,
@@ -261,155 +263,6 @@ class _HomeScreenState extends State<HomeScreen>
                             ),
                           ))
                       : const SizedBox(),
-                  // FutureBuilder(
-                  //     future: payWallController.getProductsPrice(),
-                  //     builder: ((BuildContext buildContext,
-                  //         AsyncSnapshot snapshot) {
-                  //       return SizedBox(
-                  //         height: 180,
-                  //         child: Stack(
-                  //           clipBehavior: Clip.none,
-                  //           children: [
-                  //             Padding(
-                  //               padding: const EdgeInsets.all(10),
-                  //               // Use Positioned.fill instead of Padding
-                  //               child: Container(
-                  //                 width: 280,
-                  //                 decoration: BoxDecoration(
-                  //                   color: UiColors.lightblueColor,
-                  //                   borderRadius:
-                  //                       BorderRadius.circular(8),
-                  //                 ),
-                  //                 child: Padding(
-                  //                   padding: const EdgeInsets.only(
-                  //                       left: 12, right: 12, top: 10),
-                  //                   child: Column(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.start,
-                  //                     crossAxisAlignment:
-                  //                         CrossAxisAlignment.start,
-                  //                     children: [
-                  //                       Text(
-                  //                         AppLocalizations.of(
-                  //                                 Get.context!)!
-                  //                             .imagee,
-                  //                         style: GoogleFonts.poppins(
-                  //                             color:
-                  //                                 UiColors.whiteColor,
-                  //                             fontSize: 18,
-                  //                             fontWeight:
-                  //                                 FontWeight.w600),
-                  //                       ),
-                  //                       Text(
-                  //                         AppLocalizations.of(
-                  //                                 Get.context!)!
-                  //                             .converterr,
-                  //                         style: GoogleFonts.poppins(
-                  //                             color:
-                  //                                 UiColors.whiteColor,
-                  //                             fontSize: 18,
-                  //                             fontWeight:
-                  //                                 FontWeight.w600),
-                  //                       ),
-                  //                       Padding(
-                  //                         padding:
-                  //                             const EdgeInsets.only(
-                  //                                 top: 4.0),
-                  //                         child: Container(
-                  //                           decoration: BoxDecoration(
-                  //                               color:
-                  //                                   UiColors.whiteColor,
-                  //                               borderRadius:
-                  //                                   BorderRadius
-                  //                                       .circular(4)),
-                  //                           child: Padding(
-                  //                             padding:
-                  //                                 const EdgeInsets.only(
-                  //                                     left: 7,
-                  //                                     right: 7,
-                  //                                     top: 2,
-                  //                                     bottom: 2),
-                  //                             child: Text(
-                  //                               AppLocalizations.of(
-                  //                                       Get.context!)!
-                  //                                   .proo,
-                  //                               style:
-                  //                                   GoogleFonts.poppins(
-                  //                                       color: UiColors
-                  //                                           .yellowColor,
-                  //                                       fontSize: 14,
-                  //                                       fontWeight:
-                  //                                           FontWeight
-                  //                                               .w600),
-                  //                             ),
-                  //                           ),
-                  //                         ),
-                  //                       ),
-                  //                       const Spacer(),
-                  //                       Padding(
-                  //                         padding:
-                  //                             const EdgeInsets.only(
-                  //                                 bottom: 10),
-                  //                         child: Container(
-                  //                           width: 90,
-                  //                           height: 28,
-                  //                           decoration: BoxDecoration(
-                  //                             color:
-                  //                                 UiColors.yellowColor,
-                  //                             borderRadius:
-                  //                                 BorderRadius.circular(
-                  //                                     6),
-                  //                           ),
-                  //                           child: SizedBox(
-                  //                             width:
-                  //                                 MediaQuery.of(context)
-                  //                                         .size
-                  //                                         .width /
-                  //                                     1.2,
-                  //                             child: Center(
-                  //                               child: Text(
-                  //                                 AppLocalizations.of(
-                  //                                         Get.context!)!
-                  //                                     .upgrade,
-                  //                                 maxLines: 1,
-                  //                                 overflow: TextOverflow
-                  //                                     .ellipsis,
-                  //                                 style: GoogleFonts
-                  //                                     .poppins(
-                  //                                         fontSize: 14,
-                  //                                         color: UiColors
-                  //                                             .whiteColor,
-                  //                                         fontWeight:
-                  //                                             FontWeight
-                  //                                                 .w600),
-                  //                               ),
-                  //                             ),
-                  //                           ),
-                  //                         ),
-                  //                       ),
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //             Positioned(
-                  //               // top: 5,
-                  //               right: isArabicOrPersianOrHebrew
-                  //                   ? null
-                  //                   : 1,
-                  //               left: isArabicOrPersianOrHebrew
-                  //                   ? 1
-                  //                   : null,
-                  //               bottom: 10,
-                  //               child: Image.asset(
-                  //                 "assets/Pro-Banner-Image.png",
-                  //                 width: 185,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       );
-                  //     })))
                 ],
               ),
             ),

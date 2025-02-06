@@ -298,7 +298,6 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
     // });
   }
 
-
   Future<void> downloadExcelFileMacOS(File fileData) async {
     Uint8List bytes = await fileData.readAsBytes();
     try {
@@ -344,5 +343,4 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
       debugPrint('Error exporting Excel file on macOS: $e');
     }
   }
-
 }

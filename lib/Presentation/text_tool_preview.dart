@@ -101,18 +101,39 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: UiColors.blackColor),
-                        child: Image.file(
-                          File(widget.imagePath),
-                          // fit: BoxFit.fitWidth,
-                        )),
+                    child: GestureDetector(
+                      onTap: () {
+                        showImageDialog(context, widget.imagePath);
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: UiColors.blackColor),
+                              child: SingleChildScrollView(
+                                child: Image.file(
+                                  File(widget.imagePath), fit: BoxFit.cover,
+                                  // fit: BoxFit.fitWidth,
+                                ),
+                              )),
+                          Positioned(
+                            left: 22,
+                            top: 22,
+                            child: Image.asset(
+                              'assets/preview_icon.png',
+                              height: 22,
+                              width: 22,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                   sizedBoxWidth,
                   Expanded(
                     child: Container(
+                        height: double.infinity,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 12),
                         decoration: BoxDecoration(
@@ -271,4 +292,38 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
     }
   }
 
+  void showImageDialog(BuildContext context, String imagePath) {
+    Get.dialog(
+        // context: context,
+        // builder: (BuildContext context) {
+        // return
+        // (widget)
+        Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Stack(
+        children: [
+          Image.file(
+            File(imagePath), // Replace with your image URL or use AssetImage
+          ),
+          Positioned(
+            right: 22,
+            top: 22,
+            child: GestureDetector(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: UiColors.whiteColor,
+                      borderRadius: BorderRadius.circular(22)),
+                  child: Icon(Icons.close)),
+            ),
+          )
+        ],
+      ),
+    ));
+    // });
+  }
 }

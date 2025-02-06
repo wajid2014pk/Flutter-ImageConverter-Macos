@@ -114,9 +114,8 @@ class _ConversionResultState extends State<ConversionResult> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 18,
-                  ),
+                  sizedBoxWidth,
+                  sizedBoxWidth,
                   GestureDetector(
                     onTap: () => Get.offAll(() => const HomeScreen(
                           index: 1,
@@ -137,7 +136,7 @@ class _ConversionResultState extends State<ConversionResult> {
                           "You can download, Share and Preview converted files",
                           style: TextStyle(
                             color: UiColors.blackColor,
-                            fontSize: 16.0,
+                            fontSize: 14.0,
                             fontWeight: FontWeight.w500,
                           ),
                         )
@@ -187,13 +186,56 @@ class _ConversionResultState extends State<ConversionResult> {
                           itemCount: widget.convertedFile.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 // showImageDialog(
                                 //     context, widget.convertedFile[index].path);
-                                showPreviewDialog(
-                                    context,
-                                    widget.convertedFile[index].path,
-                                    widget.convertedFile[index]);
+                                if (path.extension(widget.convertedFile[index].path) == ".svg" ||
+                                    path.extension(widget.convertedFile[index].path) ==
+                                        ".doc" ||
+                                    path.extension(widget.convertedFile[index].path) ==
+                                        ".docx") {
+                                  Get.snackbar(
+                                    colorText: Colors.black,
+                                    backgroundColor: Colors.white,
+                                    duration: const Duration(seconds: 4),
+                                    "Note",
+                                    "Cannot preview this file!",
+                                  );
+                                } else if (path.extension(
+                                        widget.convertedFile[index].path) ==
+                                    '.pdf') {
+                                  await _openFile(
+                                      File(widget.convertedFile[index].path));
+                                } else if ((path.extension(
+                                            widget.convertedFile[index].path) ==
+                                        '.webp') ||
+                                    (path.extension(widget.convertedFile[index].path) ==
+                                        '.tiff') ||
+                                    (path.extension(widget.convertedFile[index].path) ==
+                                        '.raw') ||
+                                    (path.extension(widget.convertedFile[index].path) ==
+                                        '.psd') ||
+                                    (path.extension(widget.convertedFile[index].path) ==
+                                        '.dds') ||
+                                    (path.extension(widget.convertedFile[index].path) ==
+                                        '.heic') ||
+                                    (path.extension(widget.convertedFile[index].path) ==
+                                        '.ppm') ||
+                                    (path.extension(widget.convertedFile[index].path) ==
+                                        '.tga')) {
+                                  Get.snackbar(
+                                    colorText: Colors.black,
+                                    backgroundColor: Colors.white,
+                                    duration: const Duration(seconds: 4),
+                                    "Note",
+                                    "Cannot preview this file!",
+                                  );
+                                } else {
+                                  showPreviewDialog(
+                                      context,
+                                      widget.convertedFile[index].path,
+                                      widget.convertedFile[index]);
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -289,7 +331,8 @@ class _ConversionResultState extends State<ConversionResult> {
                                               fontSize: 12),
                                         ),
                                         Text(
-                                          "${fileSize[index].toInt().toString()}KB",
+                                          "${fileSize[0].toInt() == 0 ? fileSize[0].toStringAsPrecision(2) : fileSize[0].toInt().toString()} KB",
+                                          // "${fileSize[index].toInt().toString()}KB",
                                           style: TextStyle(
                                               color: UiColors.greyColor,
                                               fontSize: 12),
@@ -313,21 +356,22 @@ class _ConversionResultState extends State<ConversionResult> {
                         // Spacer(),
                         GestureDetector(
                           onTap: () {
-                            if (widget.imageFormat == ".txt") {
-                              print(
-                                  "textToolData.value ${widget.originalFilePath}");
-                              // print(
-                              //     "textToolData.value11 ${textToolImagePath.value}");
-                              Get.to(() => TextToolPreviewPage(
-                                  text: widget.originalFilePath,
-                                  imagePath: widget.convertedFile[0].path));
-                            } else if (widget.imageFormat == ".xlsx") {
-                              print("eexx ${widget.convertedFile[0]}");
-                              print("eexx22 ${widget.originalFilePath[0]}");
-                              Get.to(() => ExcelToolPreviewPage(
-                                  excelFile: widget.convertedFile[0],
-                                  imagePath: widget.originalFilePath));
-                            }
+                            // if (widget.imageFormat == ".txt") {
+                            //   print(
+                            //       "textToolData.value ${widget.originalFilePath}");
+                            //   // print(
+                            //   //     "textToolData.value11 ${textToolImagePath.value}");
+                            //   Get.to(() => TextToolPreviewPage(
+                            //       text: widget.originalFilePath,
+                            //       imagePath: widget.convertedFile[0].path));
+                            // }
+                            // else if (widget.imageFormat == ".xlsx") {
+                            //   print("eexx ${widget.convertedFile[0]}");
+                            //   print("eexx22 ${widget.originalFilePath[0]}");
+                            //   Get.to(() => ExcelToolPreviewPage(
+                            //       excelFile: widget.convertedFile[0],
+                            //       imagePath: widget.originalFilePath));
+                            // }
                           },
                           child: Image.asset(
                             widget.imageFormat == '.jpg'
@@ -380,10 +424,25 @@ class _ConversionResultState extends State<ConversionResult> {
                         const SizedBox(
                           height: 28,
                         ),
-                        Text(
-                          "${fileName[0]} ${fileName[0].contains('.') ? "" : ".${widget.imageFormat.split('.')[1]}"}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w800,
+                        SizedBox(
+                          width: 150,
+                          child: Center(
+                            child: TextScroll(
+                              // child: Text(
+                              "${fileName[0]} ${fileName[0].contains('.') ? "" : ".${widget.imageFormat.split('.')[1]}"}",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
+                              // ),
+                              mode: TextScrollMode.endless,
+                              velocity: const Velocity(
+                                  pixelsPerSecond: Offset(20, 0)),
+                              delayBefore: const Duration(milliseconds: 500),
+                              numberOfReps: 1111,
+                              pauseBetween: const Duration(milliseconds: 500),
+                              textAlign: TextAlign.right,
+                              selectable: true,
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -430,6 +489,8 @@ class _ConversionResultState extends State<ConversionResult> {
                         if (widget.imageFormat == ".txt") {
                           await shareTextFileMacOS(widget.originalFilePath);
                         } else {
+                          print(
+                              "widget.convertedFile[0].path ${widget.convertedFile[0].path}");
                           await Share.shareXFiles(
                               [XFile(widget.convertedFile[0].path)]);
                         }
@@ -439,7 +500,7 @@ class _ConversionResultState extends State<ConversionResult> {
                     },
                     child: Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 16),
+                            vertical: 14, horizontal: 16),
                         decoration: BoxDecoration(
                             color:
                                 UiColors.lightGreyBackground.withOpacity(0.5),
@@ -457,12 +518,53 @@ class _ConversionResultState extends State<ConversionResult> {
                       : const SizedBox(),
                   widget.convertedFile.length == 1
                       ? GestureDetector(
-                          onTap: () {
-                            showImageDialog(context, widget.originalFilePath);
+                          onTap: () async {
+                            if (path.extension(widget.originalFilePath) ==
+                                    '.doc' ||
+                                path.extension(widget.originalFilePath) ==
+                                    '.docx') {
+                              await OpenFile.open(widget.originalFilePath);
+                            } else if (widget.imageFormat == ".xlsx") {
+                              //  else if (widget.imageFormat == ".xlsx") {
+                              print("eexx ${widget.convertedFile[0]}");
+                              print("eexx22 ${widget.originalFilePath[0]}");
+                              Get.to(() => ExcelToolPreviewPage(
+                                  excelFile: widget.convertedFile[0],
+                                  imagePath: widget.originalFilePath));
+                              // }
+                            } else if (widget.imageFormat == ".txt") {
+                              Get.to(() => TextToolPreviewPage(
+                                  text: widget.originalFilePath,
+                                  imagePath: widget.convertedFile[0].path));
+                            } else if (widget.imageFormat == '.pdf') {
+                              await _openFile(
+                                  File(widget.convertedFile[0].path));
+                            } else if (widget.imageFormat == '.svg' ||
+                                widget.imageFormat == '.webp' ||
+                                widget.imageFormat == '.tiff' ||
+                                widget.imageFormat == '.raw' ||
+                                widget.imageFormat == '.psd' ||
+                                widget.imageFormat == '.heic' ||
+                                widget.imageFormat == '.ppm' ||
+                                widget.imageFormat == '.tga') {
+                              Get.snackbar(
+                                colorText: Colors.black,
+                                backgroundColor: Colors.grey.withOpacity(0.3),
+                                duration: const Duration(seconds: 4),
+                                // AppLocalizations.of(Get.context!)!.note,
+                                "Note",
+                                "This picture cannot be preview",
+                                // AppLocalizations.of(Get.context!)!
+                                //     .this_picture_cannot_be_downloaded
+                              );
+                            } else {
+                              showImageDialog(
+                                  context, widget.convertedFile[0].path);
+                            }
                           },
                           child: Container(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 16),
+                                  vertical: 14, horizontal: 16),
                               decoration: BoxDecoration(
                                   color: UiColors.lightGreyBackground
                                       .withOpacity(0.5),
@@ -488,17 +590,7 @@ class _ConversionResultState extends State<ConversionResult> {
                           textToolImagePath.value = textToolImagePathList[0];
 
                           await downloadTextFileMacOS(textToolData.value);
-
-                          // await downloadTextFile(
-                          //     path.basenameWithoutExtension(
-                          //         widget.convertedFile[0].path),
-                          //     // textToolImagePath.value,
-                          //     textToolData.value
-                          //     // textToolDataList[0]
-                          //     );
-                        } else if (path
-                                .extension(widget.convertedFile[0].path) ==
-                            '.svg') {
+                        } else if (widget.imageFormat == '.svg') {
                           Get.snackbar(
                             colorText: Colors.black,
                             backgroundColor: Colors.grey.withOpacity(0.3),
@@ -509,72 +601,24 @@ class _ConversionResultState extends State<ConversionResult> {
                             // AppLocalizations.of(Get.context!)!
                             //     .this_picture_cannot_be_downloaded
                           );
-                        } else if (path
-                                    .extension(widget.convertedFile[0].path) ==
-                                '.doc' ||
-                            path.extension(widget.convertedFile[0].path) ==
-                                '.docx') {
-                          File file = File(widget.convertedFile[0].path);
-                          print("###file $file");
-
-                          final bytes = await file.readAsBytes();
-
-                          final result = await FileSaver.instance.saveAs(
-                            name:
-                                'ImagetoDoc_${DateTime.now().millisecondsSinceEpoch}',
-                            bytes: bytes,
-                            ext: 'docx',
-                            mimeType: MimeType.microsoftWord,
-                          );
-
-                          if (result != "") {
-                            Get.snackbar(
-                                colorText: Colors.black,
-                                backgroundColor: Colors.grey.withOpacity(0.3),
-                                duration: const Duration(seconds: 4),
-                                // AppLocalizations.of(Get.context!)!.note,
-                                "Note",
-                                "File Saved Successfully");
-                          } else {
-                            Get.snackbar(
-                                colorText: Colors.black,
-                                backgroundColor: Colors.grey.withOpacity(0.3),
-                                duration: const Duration(seconds: 4),
-                                // AppLocalizations.of(Get.context!)!.note,
-                                "Note",
-                                "Error while downloading file"
-                                // AppLocalizations.of(Get.context!)!
-                                //     .error_while_downloading_file
-                                );
-                          }
-                        } else if (path
-                                .extension(widget.convertedFile[0].path) ==
-                            '.xlsx') {
-                          // await downloadExcelFile(widget.convertedFile[0]);
+                        } else if ((widget.imageFormat == '.doc') ||
+                            widget.imageFormat == '.docx') {
+                          await exportMacMethod(widget.convertedFile[0].path,
+                              widget.imageFormat.split('.')[1]);
+                        } else if (widget.imageFormat == '.xlsx') {
                           await downloadExcelFileMacOS(widget.convertedFile[0]);
+                        } else if (widget.imageFormat == '.gif') {
+                          await _exportFile(
+                              File(widget.originalFilePath), false);
+                        } else {
+                          print(
+                              "widget.convertedFile[0].path ${widget.convertedFile[0].path}");
+                          await exportMacMethod(widget.convertedFile[0].path,
+                              widget.imageFormat.split('.')[1]);
+                          // await _exportFile(widget.convertedFile[0], false);
                         }
-                        // else if (path
-                        //         .extension(widget.convertedFile[0].path) ==
-                        //     '.pdf') {
-                        //   await downloadPdfFile(widget.convertedFile[0]);
-                        // }
-                        else {
-                          await _exportFile(widget.convertedFile[0], false);
-                        }
-                        Future.delayed(const Duration(milliseconds: 100),
-                            () async {
-                          // if (Platform.isIOS) {
-                          // DialogBoxRating().showNativeRating();
-                          // } else {
-                          //   log("Rating calue ${await SharedPref().getRatingValue()}");
-                          //   await SharedPref().getRatingValue() == false
-                          //       ? DialogBoxRating()
-                          //           .dialogRating(context: Get.context!)
-                          //       : const SizedBox();
-                          // }
-                        });
-                        // print()
-                        // await _exportFile(widget.convertedFile[0]);
+                        Future.delayed(
+                            const Duration(milliseconds: 100), () async {});
                       } else {
                         await createZip(false, widget.convertedFile);
                       }
@@ -1039,7 +1083,7 @@ class _ConversionResultState extends State<ConversionResult> {
           "Note",
           "Text file saved in Downloads",
         );
-      } else if (['.bmp', '.webp', '.png', '.jpg', '.jpeg', '.heic']
+      } else if (['.bmp', '.webp', '.png', '.jpg', '.jpeg', '.heic', '.gif']
           .contains(path.extension(filePath).toLowerCase())) {
         // Save Images
         File newFile = File(
@@ -1267,7 +1311,22 @@ class _ConversionResultState extends State<ConversionResult> {
                               style: const TextStyle(fontSize: 14),
                             ),
                           ),
-                          Text("iiii"),
+                          GestureDetector(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(32)),
+                              child: Image.asset(
+                                'assets/close_icon.png',
+                                height: 12,
+                                width: 12,
+                              ),
+                            ),
+                          )
                           // InkWell(
                           //   onTap: () {
                           //     Get.back();
@@ -1289,27 +1348,43 @@ class _ConversionResultState extends State<ConversionResult> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    InkWell(
-                      onTap: () async {
-                        // await _shareFile(file);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.only(
-                            left: 12, right: 12, top: 12, bottom: 12),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("OOO"),
-                            // SvgPicture.asset(
-                            //   'assets/images/share.svg',
-                            //   height: 22,
-                            //   width: 22,
-                            // ),
-                          ],
-                        ),
+                    Container(
+                      padding: const EdgeInsets.only(
+                          left: 12, right: 12, top: 12, bottom: 12),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              if (widget.imageFormat == ".txt") {
+                                await shareTextFileMacOS(
+                                    widget.originalFilePath);
+                              }
+                              //  else if (widget.imageFormat == ".doc" ||
+                              //     widget.imageFormat == ".docx") {
+                              //   await shareTextFileMacOS(
+                              //       widget.originalFilePath);
+                              // }
+                              else {
+                                await Share.shareXFiles([XFile(file.path)]);
+                              }
+                            },
+                            child: Image.asset(
+                              'assets/share_icon.png',
+                              height: 22,
+                              width: 22,
+                            ),
+                          )
+                          // Text("OOO"),
+                          // SvgPicture.asset(
+                          //   'assets/images/share.svg',
+                          //   height: 22,
+                          //   width: 22,
+                          // ),
+                        ],
                       ),
                     ),
                     const SizedBox(
@@ -1317,20 +1392,10 @@ class _ConversionResultState extends State<ConversionResult> {
                     ),
                     InkWell(
                       onTap: () async {
-                        await _exportFile(file, true);
+                        // await _exportFile(file, true);
+                        await exportMacMethod(
+                            file.path, widget.imageFormat.split('.')[1]);
                         // Get.back();
-                        Future.delayed(const Duration(milliseconds: 100),
-                            () async {
-                          // if (Platform.isIOS) {
-                          // DialogBoxRating().showNativeRating();
-                          // } else {
-                          //   log("Rating calue ${await SharedPref().getRatingValue()}");
-                          //   await SharedPref().getRatingValue() == false
-                          //       ? DialogBoxRating()
-                          //           .dialogRating(context: Get.context!)
-                          //       : const SizedBox();
-                          // }
-                        });
                       },
                       child: Container(
                         padding: const EdgeInsets.only(
@@ -1368,5 +1433,37 @@ class _ConversionResultState extends State<ConversionResult> {
         );
       },
     );
+  }
+
+  exportMacMethod(String imagePath, String extension) async {
+    // widget.convertedFile[0].path
+    File file = File(imagePath);
+    print("###file $file");
+
+    final bytes = await file.readAsBytes();
+
+    final result = await FileSaver.instance.saveAs(
+      name: 'ImagetoDoc_${DateTime.now().millisecondsSinceEpoch}',
+      bytes: bytes,
+      ext: extension,
+      mimeType: MimeType.microsoftWord,
+    );
+
+    if (result != "") {
+      Get.snackbar(
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+          // AppLocalizations.of(Get.context!)!.note,
+          "Note",
+          "File Saved Successfully");
+    } else {
+      Get.snackbar(
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+          "Note",
+          "Error while downloading file");
+    }
   }
 }

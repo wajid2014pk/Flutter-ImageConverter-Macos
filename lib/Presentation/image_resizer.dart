@@ -20,6 +20,13 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
   final resizedController = Get.put(ResizeImageController());
   RxInt qualitySelectedIndex = 0.obs;
   RxInt percentgeSelectedIndex = 0.obs;
+  @override
+  void initState() {
+    percentgeSelectedIndex.value = 0;
+
+    resizedController.selectedPercentageDimensions = "10%";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +39,8 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
         bottomNavigationBar: SafeArea(
           child: GestureDetector(
             onTap: () {
-              print("IBBIBIUI");
               resizedController.filePath = widget.file!;
+
               Get.to(() => const LoaderScreen());
             },
             child: Row(
@@ -511,6 +518,7 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                                   .selectedResizeType.value !=
                                               'Custom',
                                           child: TextField(
+                                            textAlign: TextAlign.center,
                                             controller: resizedController
                                                 .widthController,
                                             keyboardType: TextInputType.number,
@@ -526,14 +534,16 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                             },
                                             decoration: InputDecoration(
                                               hintText: "Width",
+
                                               // AppLocalizations.of(context)!
                                               //     .width,
-                                              hintStyle:
-                                                  const TextStyle(fontSize: 12),
+                                              hintStyle: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xFFACACAC)),
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12),
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                     color: Colors.grey),
                                               ),
                                               focusedBorder: OutlineInputBorder(
@@ -548,8 +558,8 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                               enabledBorder: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12),
-                                                borderSide: const BorderSide(
-                                                    color: Colors.grey),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFFDFDFDF)),
                                               ),
                                               contentPadding:
                                                   const EdgeInsets.symmetric(
@@ -562,7 +572,6 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                         ),
                                       ),
                                     ),
-                                  
                                     const SizedBox(width: 16),
                                     const Text("X"),
                                     const SizedBox(width: 16),
@@ -579,6 +588,7 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                                   .selectedResizeType.value !=
                                               'Custom',
                                           child: TextField(
+                                            textAlign: TextAlign.center,
                                             controller: resizedController
                                                 .heightController,
                                             keyboardType: TextInputType.number,
@@ -596,8 +606,9 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                               hintText: "Height",
                                               // AppLocalizations.of(context)!
                                               //     .height,
-                                              hintStyle:
-                                                  const TextStyle(fontSize: 12),
+                                              hintStyle: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color(0xFFACACAC)),
                                               border: OutlineInputBorder(
                                                 borderRadius:
                                                     BorderRadius.circular(12),
@@ -617,7 +628,7 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                                 borderSide: const BorderSide(
-                                                    color: Colors.grey),
+                                                    color: Color(0xFFDFDFDF)),
                                               ),
                                               contentPadding:
                                                   const EdgeInsets.symmetric(

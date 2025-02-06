@@ -66,15 +66,15 @@ class HomeScreenController extends GetxController {
               const SizedBox(
                 width: 40,
               ),
-              sideBarSelectedIndex.value == 2
-                  ? VerticalDivider(
-                      thickness: 1.5,
-                      color: UiColors.blackColor.withOpacity(0.2),
-                    )
-                  : const SizedBox(),
-              const SizedBox(
-                width: 20,
-              ),
+              // sideBarSelectedIndex.value == 2
+              //     ? VerticalDivider(
+              //         thickness: 1.5,
+              //         color: UiColors.blackColor.withOpacity(0.2),
+              //       )
+              //     : const SizedBox(),
+              // const SizedBox(
+              //   width: 20,
+              // ),
               sideBarSelectedIndex.value == 2
                   ? Text(
                       AppLocalizations.of(context)!.history,
@@ -93,40 +93,49 @@ class HomeScreenController extends GetxController {
 
   sideBarItem(
       String assetName, String sideBarItem, int index, BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         sideBarSelectedIndex.value = index;
       },
-      child: Row(
-        children: [
-          Image.asset(
-            assetName,
-            height: 28,
-          ),
-          const SizedBox(
-            width: 15,
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 8,
-            child: Text(
-              sideBarItem,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: UiColors.blackColor,
-                // fontWeight: FontWeight.w500,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+            border: Border.all(),
+            color: sideBarSelectedIndex.value == index
+                ? UiColors.blueColorNew
+                : null,
+            borderRadius: BorderRadius.circular(12)),
+        child: Row(
+          children: [
+            Image.asset(
+              assetName,
+              height: 28,
+            ),
+            const SizedBox(
+              width: 15,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 8,
+              child: Text(
+                sideBarItem,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: UiColors.blackColor,
+                  // fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          const Spacer(),
-          sideBarSelectedIndex.value == index
-              ? Image.asset(
-                  'assets/selection_bar.png',
-                  height: 40,
-                )
-              : const SizedBox()
-        ],
+            const Spacer(),
+            // sideBarSelectedIndex.value == index
+            //     ? Image.asset(
+            //         'assets/selection_bar.png',
+            //         height: 40,
+            //       )
+            //     : const SizedBox()
+          ],
+        ),
       ),
     );
   }

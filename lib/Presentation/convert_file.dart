@@ -99,7 +99,7 @@ class _ConvertFileState extends State<ConvertFile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Choose Output Format",
+                      "Output Format",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 22,

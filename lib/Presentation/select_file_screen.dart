@@ -64,7 +64,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                 Container(
                     decoration: BoxDecoration(
                       color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(18.0),
+                      borderRadius: BorderRadius.circular(16.0),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -245,12 +245,12 @@ class _SelectFileScreenState extends State<SelectFileScreen>
   Obx imagePickupOptions(String optionImage, String optionName, int index) {
     return Obx(
       () => Container(
-        padding: const EdgeInsets.all(6.0),
+        padding: const EdgeInsets.all(8.0),
         decoration: index == toolIndex.value
             ? BoxDecoration(
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.09),
+                    color: Colors.black.withOpacity(0.03),
                     spreadRadius: 1,
                     blurRadius: 18,
                     offset: const Offset(0, 6),
@@ -263,8 +263,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
           width: 170,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            // borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

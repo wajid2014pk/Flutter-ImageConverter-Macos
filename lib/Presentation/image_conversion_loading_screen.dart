@@ -128,45 +128,39 @@ class _ImageConversionLoadingScreenState
                       Row(
                         children: [
                           (isTimerComplete.value)
-                              ? InkWell(
+                              ? GestureDetector(
                                   onTap: () {
                                     conversionController.isError.value = true;
                                     Get.offAll(() => const HomeScreen(
                                           index: 1,
                                         ));
-                                    // if (isTapOnCamera.value == true) {
-                                    //   conversionController.isError.value = true;
-                                    //   Get.offAll(() => const BottomNavBar());
-                                    // } else {
-                                    //   conversionController.isError.value = true;
-                                    //   Get.offAll(() => const BottomNavBar());
-                                    // }
                                   },
                                   child: Container(
+                                    padding: const EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: UiColors.greyColor
-                                            .withOpacity(0.5)),
-                                    padding: EdgeInsets.all(8),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.black,
-                                      ),
+                                        color:
+                                            UiColors.greyColor.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: Image.asset(
+                                      'assets/back_arrow.png',
+                                      height: 20,
+                                      width: 20,
                                     ),
                                   ),
                                 )
-                              : const Padding(
-                                  padding: EdgeInsets.only(left: 12, top: 12),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.transparent,
-                                      )
-                                    ],
+                              : Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      color:
+                                          UiColors.greyColor.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Image.asset(
+                                    'assets/back_arrow.png',
+                                    height: 20,
+                                    width: 20,
                                   ),
                                 ),
+                          sizedBoxWidth,
                           sizedBoxWidth,
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +173,8 @@ class _ImageConversionLoadingScreenState
                                       //     .completed
                                       : "In Progress",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Manrope-Bold',
                                       fontSize: 26),
                                 ),
                               ),
@@ -190,8 +185,10 @@ class _ImageConversionLoadingScreenState
                                       // AppLocalizations.of(Get.context!)!
                                       //     .your_file_is_converted
                                       "Your file is converted"
-                                      : AppLocalizations.of(Get.context!)!
-                                          .your_file_is_converting,
+                                      : "Converting your file",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                             ],
@@ -291,7 +288,7 @@ class _ImageConversionLoadingScreenState
                             Text(
                               // AppLocalizations.of(context)!.converting,
 
-                              "Converting",
+                              "File Converting",
                               // (conversionController.selectedIndex.value ==
                               //             9 ||
                               //         conversionController
@@ -306,21 +303,19 @@ class _ImageConversionLoadingScreenState
                               //             .your_file_is_converted
                               //         : AppLocalizations.of(context)!
                               //             .your_file_is_converting,
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              // AppLocalizations.of(context)!
-                              //     .your_file_will_be_ready_shortly,
-                              "Your File will be ready shortly",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                            // const SizedBox(height: 8),
+                            // Text(
+                            //   // AppLocalizations.of(context)!
+                            //   //     .your_file_will_be_ready_shortly,
+                            //   "Your File will be ready shortly",
+                            //   style: GoogleFonts.poppins(
+                            //     fontSize: 16,
+                            //     fontWeight: FontWeight.w500,
+                            //   ),
+                            // ),
                             const Spacer(),
                             const SizedBox(
                               height: 20,
@@ -411,7 +406,7 @@ class _ImageConversionLoadingScreenState
                             ),
                             Text(
                               // AppLocalizations.of(context)!.converting,
-                              "Converting",
+                              "File Converting",
                               // (conversionController.selectedIndex.value ==
                               //             9 ||
                               //         conversionController
@@ -426,21 +421,19 @@ class _ImageConversionLoadingScreenState
                               //             .your_file_is_converted
                               //         : AppLocalizations.of(context)!
                               //             .your_file_is_converting,
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              // AppLocalizations.of(context)!
-                              //     .your_file_will_be_ready_shortly,
-                              "Your File will be ready shortly",
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                            // const SizedBox(height: 8),
+                            // Text(
+                            //   // AppLocalizations.of(context)!
+                            //   //     .your_file_will_be_ready_shortly,
+                            //   "Your File will be ready shortly",
+                            //   style: GoogleFonts.poppins(
+                            //     fontSize: 16,
+                            //     fontWeight: FontWeight.w500,
+                            //   ),
+                            // ),
                             // Obx(
                             //   () => (conversionController
                             //                   .selectedIndex.value ==

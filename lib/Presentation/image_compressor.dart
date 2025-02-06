@@ -28,7 +28,7 @@ class ImageCompressorScreen extends StatefulWidget {
 }
 
 class _ImageCompressorScreenState extends State<ImageCompressorScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final imageCompressorController = Get.put(ImageCompressorController());
   RxInt qualitySelectedIndex = 0.obs;
   RxInt percentgeSelectedIndex = 0.obs;
@@ -42,8 +42,10 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
   RxDouble percentage = 0.0.obs;
   RxDouble progress = 0.0.obs;
   dio.Response? downloadRes;
-  AnimationController? controller;
-  Animation<double>? progressAnimation;
+  // AnimationController? controller;
+  // Animation<double>? progressAnimation;
+  late AnimationController controller;
+  late Animation<double> progressAnimation;
   getx.RxDouble infiniteProgress = 0.0.obs;
   TextEditingController textfieldController = TextEditingController();
   RxString isKbMb = "KB".obs;
@@ -53,6 +55,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
   void initState() {
     sizeSelectedIndex.value = 10;
     super.initState();
+    selectedQuality = "10%";
     actualFileSize = _getFileSizeInKB(widget.file!); // Convert file size to kB
   }
 
@@ -65,7 +68,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
             ? Container(
                 margin: EdgeInsets.only(bottom: 12),
                 padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.sizeOf(context).width / 2.3),
+                    horizontal: MediaQuery.sizeOf(context).width / 2.25),
                 child: GestureDetector(
                   onTap: () {
                     print("selectedQuality $selectedQuality");
@@ -97,7 +100,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                     height: 50,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: UiColors.blueColor),
+                        color: UiColors.blueColorNew),
                     child: Center(
                       child: Text(
                         "Compress",
@@ -156,7 +159,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                               Get.back();
                             },
                             child: Container(
-                              padding: EdgeInsets.all(8),
+                              padding: EdgeInsets.all(6),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
                                 color: UiColors.lightGreyBackground
@@ -170,10 +173,11 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                             ),
                           ),
                           sizedBoxWidth,
+                          sizedBoxWidth,
                           Text(
                             "Image Compressor",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600),
+                                fontSize: 20, fontWeight: FontWeight.w800),
                           ),
                         ],
                       ),
@@ -219,6 +223,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                   imageCompressorController.heightController
                                       .clear();
                                   sizeSelectedIndex.value = 10;
+                                  selectedSize = "";
                                 },
                                 child: Row(
                                   children: [
@@ -345,6 +350,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                 padding: const EdgeInsets.only(bottom: 10.0),
                                 child: GestureDetector(
                                   onTap: () {
+                                    selectedQuality = "";
                                     // imageCompressorController
                                     //     .selectedResizeType.value = 'Custom';
                                     selectedOption.value = "Size";
@@ -460,13 +466,14 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                 height: 12,
                               ),
                               Container(
+                                height: 42,
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 2,
                                 ),
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: UiColors.lightGreyBackground),
-                                  borderRadius: BorderRadius.circular(22),
+                                  borderRadius: BorderRadius.circular(17),
                                 ),
                                 child: Row(
                                   children: [
@@ -502,16 +509,19 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                             hintText: "Custom Size",
                                             // AppLocalizations.of(context)!
                                             //     .width,
-                                            hintStyle:
-                                                const TextStyle(fontSize: 12),
+                                            hintStyle: TextStyle(
+                                                fontSize: 12,
+                                                color: UiColors.greyColor
+                                                    .withOpacity(0.8)),
                                             border: InputBorder.none,
 
                                             focusedBorder: InputBorder.none,
 
                                             contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 10.0,
-                                                    horizontal: 20.0),
+                                                const EdgeInsets.only(
+                                                    bottom: 12.0,
+                                                    left: 20.0,
+                                                    right: 20.0),
                                           ),
                                         ),
                                       ),
@@ -681,6 +691,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                               .your_file_is_converting
                           : AppLocalizations.of(context)!
                               .your_file_is_converting,
+                      style: TextStyle(fontWeight: FontWeight.w800),
                     ),
                   ),
                   const Spacer(),
@@ -902,7 +913,16 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
 
   @override
   void dispose() {
-    controller!.dispose();
+    // Dispose the AnimationController if it has been initialized
+    if (controller != null) {
+      controller!.dispose();
+    }
+
+    // Dispose other controllers if necessary
+    customQualityController.dispose();
+    textfieldController.dispose();
+
+    // Call super.dispose() at the end
     super.dispose();
   }
 }

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path/path.dart' as p;
@@ -20,8 +21,7 @@ class ConversionPageNew extends StatefulWidget {
       required this.imageFormat,
       required this.originalFilePath,
       required this.convertedFile,
-      required this.toolName
-      });
+      required this.toolName});
 
   @override
   State<ConversionPageNew> createState() => _ConversionPageNewState();
@@ -61,6 +61,7 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: UiColors.whiteColor,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 22, vertical: 22),
           child: Column(
@@ -87,12 +88,14 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                     ),
                   ),
                   sizedBoxWidth,
-                  Text(widget.toolName == "ImageResizer"?
-                    "Image Resizer":
-                    widget.toolName == "ImageCompressor"?
-                    "Image Compressor":""
-                    ,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  sizedBoxWidth,
+                  Text(
+                    widget.toolName == "ImageResizer"
+                        ? "Image Resizer"
+                        : widget.toolName == "ImageCompressor"
+                            ? "Image Compressor"
+                            : "",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                   ),
                 ],
               ),
@@ -103,33 +106,48 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                   Column(
                     children: [
                       Image.asset(
-                        'assets/jpg_icon.png',
-                        height: 52,
-                        width: 52,
+                        // 'assets/jpg_icon.png',
+                        extensionData.value == '.png'
+                            ? 'assets/png_icon.png'
+                            : 'assets/png_icon.png',
+                        height: 62,
+                        width: 62,
+                      ),
+                      SizedBox(
+                        height: 22,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(fileNameData.value),
+                          Text(
+                            fileNameData.value,
+                            style: TextStyle(fontWeight: FontWeight.w800),
+                          ),
                         ],
+                      ),
+                      SizedBox(
+                        height: 12,
                       ),
                       Row(
                         children: [
                           Text(
                             extensionData.value == ".png" ? "PNG" : "PNG",
-                            // aaaaaa
-                            style: TextStyle(fontSize: 10),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                           Text(
                             " | ",
                             style: TextStyle(
-                                fontSize: 10, color: UiColors.greyColor),
+                              color: UiColors.greyColor,
+                            ),
                           ),
                           Text(
                             fileSizeData.value,
                             // "124 KB",
                             style: TextStyle(
-                                fontSize: 10, color: UiColors.greyColor),
+                              color: UiColors.greyColor,
+                            ),
                           ),
                         ],
                       )
@@ -147,7 +165,7 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                     },
                     child: Container(
                         padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                            EdgeInsets.symmetric(vertical: 14, horizontal: 16),
                         decoration: BoxDecoration(
                             color:
                                 UiColors.lightGreyBackground.withOpacity(0.5),
@@ -162,20 +180,7 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                   ),
                   sizedBoxWidth,
                   // Image.asset('assets/copy_icon.png'),
-                  Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      decoration: BoxDecoration(
-                          color: UiColors.lightGreyBackground.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Center(
-                        child: Image.asset(
-                          'assets/copy_icon.png',
-                          height: 22,
-                          width: 22,
-                        ),
-                      )),
-                  sizedBoxWidth,
+
                   GestureDetector(
                     onTap: () async {
                       final bytes = await widget.convertedFile.readAsBytes();
@@ -226,7 +231,6 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                   ),
                 ],
               ),
-            
             ],
           ),
         ),

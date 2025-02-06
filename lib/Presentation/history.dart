@@ -6,10 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:lottie/lottie.dart';
 import 'package:open_file/open_file.dart';
-import 'package:path/path.dart';
+// import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path/path.dart' as path;
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -19,6 +20,9 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  GlobalKey imageConvertorKey = GlobalKey();
+  OverlayEntry? overlayEntry;
+
   List<FileSystemEntity> allfiles = [];
   Directory? directory;
 
@@ -227,7 +231,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ),
             ),
             Expanded(
-              child: SizedBox(
+              child: Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: Get.width * 0.1, vertical: 22),
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   child: _buildGridView(context)),
@@ -262,179 +268,252 @@ class _HistoryScreenState extends State<HistoryScreen> {
       );
     }
 
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3, childAspectRatio: (1.01 / .25)),
-      itemCount: allfiles.length,
-      itemBuilder: (BuildContext context, int index) {
-        String fileName = allfiles[index].uri.pathSegments.last;
-        String displayedFileName =
-            fileName.length > 20 ? fileName.substring(0, 20) : fileName;
-
-        String creationDate = _getCreationDate(allfiles[index]);
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-          child: InkWell(
-            onTap: () {
-              _openFile(allfiles[index]);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: UiColors.backgroundColor,
-                border: Border(
-                  right: BorderSide(
-                      width: 1.0, color: UiColors.blackColor.withOpacity(0.2)),
-                  bottom: BorderSide(
-                      width: 1.0, color: UiColors.blackColor.withOpacity(0.2)),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
-                    child: Container(
-                      height: 65.0,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: _getFileIcon(fileName),
-                    ),
-                  ),
-                  const SizedBox(width: 11.0),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.only(bottom: 22),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  width: 250,
+                  height: 32,
+                  decoration: BoxDecoration(
+                      color: UiColors.whiteColor,
+                      borderRadius: BorderRadius.circular(6)),
+                  child: Row(
                     children: [
-                      SizedBox(
-                        width: MediaQuery.sizeOf(context).width / 7,
-                        child: Text(
-                          displayedFileName,
-                          textAlign: TextAlign.start,
-                          maxLines: 1,
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(fontSize: 14.0),
-                          ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 12),
+                        child: Image.asset(
+                          'assets/search_icon.png',
+                          height: 16,
+                          width: 16,
                         ),
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        creationDate,
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              color: UiColors.blackColor.withOpacity(0.4),
-                              fontSize: 12.0),
+                      Container(
+                        width: 210,
+                        height: 32,
+                        child: TextField(
+                          decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.only(bottom: 22, left: 12),
+                              border: InputBorder.none),
                         ),
                       ),
                     ],
+                  )),
+              GestureDetector(
+                key: imageConvertorKey,
+                onTap: () {
+                  showPopup(imageConvertorKey);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: UiColors.whiteColor,
+                      borderRadius: BorderRadius.circular(4)),
+                  child: Image.asset(
+                    'assets/filter.png',
+                    height: 22,
+                    width: 22,
                   ),
-                  const Spacer(),
-                  PopupMenuButton(
-                    color: Colors.white,
-                    surfaceTintColor: Colors.white,
-                    icon: const Icon(
-                      Icons.more_vert,
-                      size: 25.0,
-                    ),
-                    itemBuilder: (BuildContext context) {
-                      return [
-                        AppLocalizations.of(Get.context!)!.delete,
-                        AppLocalizations.of(Get.context!)!.share,
-                        "Download"
-                      ].map((String choice) {
-                        return PopupMenuItem<String>(
-                          value: choice,
-                          child: Text(
-                            choice,
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w400, fontSize: 16.0),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 1),
+            itemCount: allfiles.length,
+            itemBuilder: (BuildContext context, int index) {
+              String fileName = allfiles[index].uri.pathSegments.last;
+              String displayedFileName =
+                  fileName.length > 20 ? fileName.substring(0, 20) : fileName;
+
+              String creationDate = _getCreationDate(allfiles[index]);
+
+              return Container(
+                decoration: BoxDecoration(
+                    border: Border.all(),
+                    color: UiColors.whiteColor,
+                    borderRadius: BorderRadius.circular(12)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+                child: GestureDetector(
+                  onTap: () {
+                    print(
+                        "path.extension(allfiles[index].path ${path.extension(allfiles[index].path)}");
+                    if ((path.extension(allfiles[index].path) == '.webp') ||
+                        (path.extension(allfiles[index].path) == '.tiff') ||
+                        (path.extension(allfiles[index].path) == '.raw') ||
+                        (path.extension(allfiles[index].path) == '.psd') ||
+                        (path.extension(allfiles[index].path) == '.heic') ||
+                        (path.extension(allfiles[index].path) == '.ppm') ||
+                        (path.extension(allfiles[index].path) == '.tga')) {
+                      Get.snackbar(
+                        colorText: Colors.black,
+                        backgroundColor: Colors.white,
+                        duration: const Duration(seconds: 4),
+                        "Note",
+                        "Cannot preview this file!",
+                      );
+                    } else {
+                      _openFile(allfiles[index]);
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 65.0,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0)),
+                        child: _getFileIcon(fileName),
+                      ),
+                      const SizedBox(width: 11.0),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width / 7,
+                            child: Text(
+                              displayedFileName,
+                              textAlign: TextAlign.start,
+                              maxLines: 1,
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(fontSize: 14.0),
+                              ),
                             ),
                           ),
-                        );
-                      }).toList();
-                    },
-                    onSelected: (value) async {
-                      if (value == AppLocalizations.of(Get.context!)!.delete) {
-                        _deleteFile(allfiles[index]);
-                      } else if (value ==
-                          AppLocalizations.of(Get.context!)!.share) {
-                        _shareFile(allfiles[index]);
-                      } else if (value == "Download") {
-                        File file = File(allfiles[index].path);
-                        print("###file $file");
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            creationDate,
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: UiColors.blackColor.withOpacity(0.4),
+                                  fontSize: 12.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                      // const Spacer(),
+                      // PopupMenuButton(
+                      //   color: Colors.white,
+                      //   surfaceTintColor: Colors.white,
+                      //   icon: const Icon(
+                      //     Icons.more_vert,
+                      //     size: 25.0,
+                      //   ),
+                      //   itemBuilder: (BuildContext context) {
+                      //     return [
+                      //       AppLocalizations.of(Get.context!)!.delete,
+                      //       AppLocalizations.of(Get.context!)!.share,
+                      //       "Download"
+                      //     ].map((String choice) {
+                      //       return PopupMenuItem<String>(
+                      //         value: choice,
+                      //         child: Text(
+                      //           choice,
+                      //           style: GoogleFonts.poppins(
+                      //             textStyle: const TextStyle(
+                      //                 fontWeight: FontWeight.w400, fontSize: 16.0),
+                      //           ),
+                      //         ),
+                      //       );
+                      //     }).toList();
+                      //   },
+                      //   onSelected: (value) async {
+                      //     if (value == AppLocalizations.of(Get.context!)!.delete) {
+                      //       _deleteFile(allfiles[index]);
+                      //     } else if (value ==
+                      //         AppLocalizations.of(Get.context!)!.share) {
+                      //       _shareFile(allfiles[index]);
+                      //     } else if (value == "Download") {
+                      //       File file = File(allfiles[index].path);
+                      //       print("###file $file");
 
-                        // Separate the file name and extension
-                        String fileName = basenameWithoutExtension(file.path);
-                        String fileExtension = extension(file.path)
-                            .replaceFirst('.', ''); // remove the leading dot
-                        print("###fileName $fileName");
-                        print("###fileExtension $fileExtension");
+                      //       // Separate the file name and extension
+                      //       String fileName =
+                      //           path.basenameWithoutExtension(file.path);
+                      //       String fileExtension = path
+                      //           .extension(file.path)
+                      //           .replaceFirst('.', ''); // remove the leading dot
+                      //       print("###fileName $fileName");
+                      //       print("###fileExtension $fileExtension");
 
-                        final bytes = await file.readAsBytes();
+                      //       final bytes = await file.readAsBytes();
 
-                        final result = await FileSaver.instance.saveAs(
-                          name: fileName,
-                          bytes: bytes,
-                          ext: fileExtension == 'jpg'
-                              ? 'jpg'
-                              : fileExtension == 'jpeg'
-                                  ? 'jpeg'
-                                  : fileExtension == 'png'
-                                      ? 'png'
-                                      : fileExtension == 'gif'
-                                          ? 'gif'
-                                          : fileExtension == 'bmp'
-                                              ? 'bmp'
-                                              : fileExtension == 'svg'
-                                                  ? 'svg'
-                                                  : fileExtension == 'webp'
-                                                      ? 'webp'
-                                                      : fileExtension == 'pdf'
-                                                          ? 'pdf'
-                                                          : 'svg',
-                          mimeType: fileExtension == 'jpg'
-                              ? MimeType.jpeg
-                              : fileExtension == 'jpeg'
-                                  ? MimeType.jpeg
-                                  : fileExtension == 'png'
-                                      ? MimeType.png
-                                      : fileExtension == 'gif'
-                                          ? MimeType.gif
-                                          : fileExtension == 'bmp'
-                                              ? MimeType.bmp
-                                              : fileExtension == 'svg'
-                                                  ? MimeType.other
-                                                  : fileExtension == 'webp'
-                                                      ? MimeType.other
-                                                      : fileExtension == 'pdf'
-                                                          ? MimeType.pdf
-                                                          : MimeType.other,
-                        );
+                      //       final result = await FileSaver.instance.saveAs(
+                      //         name: fileName,
+                      //         bytes: bytes,
+                      //         ext: fileExtension == 'jpg'
+                      //             ? 'jpg'
+                      //             : fileExtension == 'jpeg'
+                      //                 ? 'jpeg'
+                      //                 : fileExtension == 'png'
+                      //                     ? 'png'
+                      //                     : fileExtension == 'gif'
+                      //                         ? 'gif'
+                      //                         : fileExtension == 'bmp'
+                      //                             ? 'bmp'
+                      //                             : fileExtension == 'svg'
+                      //                                 ? 'svg'
+                      //                                 : fileExtension == 'webp'
+                      //                                     ? 'webp'
+                      //                                     : fileExtension == 'pdf'
+                      //                                         ? 'pdf'
+                      //                                         : 'svg',
+                      //         mimeType: fileExtension == 'jpg'
+                      //             ? MimeType.jpeg
+                      //             : fileExtension == 'jpeg'
+                      //                 ? MimeType.jpeg
+                      //                 : fileExtension == 'png'
+                      //                     ? MimeType.png
+                      //                     : fileExtension == 'gif'
+                      //                         ? MimeType.gif
+                      //                         : fileExtension == 'bmp'
+                      //                             ? MimeType.bmp
+                      //                             : fileExtension == 'svg'
+                      //                                 ? MimeType.other
+                      //                                 : fileExtension == 'webp'
+                      //                                     ? MimeType.other
+                      //                                     : fileExtension == 'pdf'
+                      //                                         ? MimeType.pdf
+                      //                                         : MimeType.other,
+                      //       );
 
-                        if (result != "") {
-                          ScaffoldMessenger.of(Get.context!).showSnackBar(
-                            const SnackBar(
-                                content: Text(
-                                    'File saved successfully in Downloads Folder!')),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(Get.context!).showSnackBar(
-                            const SnackBar(
-                                content: Text('Failed to save file.')),
-                          );
-                        }
-                      }
-                    },
+                      //       if (result != "") {
+                      //         ScaffoldMessenger.of(Get.context!).showSnackBar(
+                      //           const SnackBar(
+                      //               content: Text(
+                      //                   'File saved successfully in Downloads Folder!')),
+                      //         );
+                      //       } else {
+                      //         ScaffoldMessenger.of(Get.context!).showSnackBar(
+                      //           const SnackBar(
+                      //               content: Text('Failed to save file.')),
+                      //         );
+                      //       }
+                      //     }
+                      //   },
+                      // ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 
@@ -498,7 +577,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     directory = await getApplicationCacheDirectory();
 
     String folderName = 'ImageConverter';
-    String folderPath = join(directory!.path, folderName);
+    String folderPath = path.join(directory!.path, folderName);
 
     if (await Directory(folderPath).exists()) {
       setState(() {
@@ -547,57 +626,112 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   _getFileIcon(String fileName) {
-    if (fileName.toLowerCase().endsWith('.pdf')) {
+    if (fileName.toLowerCase().endsWith('.doc') ||
+        fileName.toLowerCase().endsWith('.docx')) {
       return Image.asset(
-        'assets/PDF.png',
+        'assets/DOC_icon.png',
         height: 40,
         width: 40,
       );
-    } else if (fileName.toLowerCase().endsWith('.png')) {
+    } else if (fileName.toLowerCase().endsWith('.xlsx')) {
       return Image.asset(
-        'assets/PNG.png',
+        'assets/XLS_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.txt')) {
+      return Image.asset(
+        'assets/TXT_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.pdf')) {
+      return Image.asset(
+        'assets/PDF_icon.png',
         height: 40,
         width: 40,
       );
     } else if (fileName.toLowerCase().endsWith('.jpg')) {
       return Image.asset(
-        'assets/JPG.png',
+        'assets/jpg_icon.png',
         height: 40,
         width: 40,
       );
     } else if (fileName.toLowerCase().endsWith('.gif')) {
       return Image.asset(
-        'assets/GIF.png',
+        'assets/gif_icon.png',
         height: 40,
         width: 40,
       );
     } else if (fileName.toLowerCase().endsWith('.jpeg')) {
       return Image.asset(
-        'assets/JPEG.png',
+        'assets/jpeg_icon.png',
         height: 40,
         width: 40,
       );
-    } else if (fileName.toLowerCase().endsWith('.bmp')) {
+    } else if (fileName.toLowerCase().endsWith('.png')) {
       return Image.asset(
-        'assets/BMP.png',
+        'assets/png_icon.png',
         height: 40,
         width: 40,
       );
     } else if (fileName.toLowerCase().endsWith('.svg')) {
       return Image.asset(
-        'assets/SVG.png',
+        'assets/svg_icon.png',
         height: 40,
         width: 40,
       );
     } else if (fileName.toLowerCase().endsWith('.webp')) {
       return Image.asset(
-        'assets/WEBP.png',
+        'assets/webp_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.bmp')) {
+      return Image.asset(
+        'assets/bmp_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.tiff')) {
+      return Image.asset(
+        'assets/tiff_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.raw')) {
+      return Image.asset(
+        'assets/raw_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.psd')) {
+      return Image.asset(
+        'assets/psd_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.dds')) {
+      return Image.asset(
+        'assets/dds_icon.png',
         height: 40,
         width: 40,
       );
     } else if (fileName.toLowerCase().endsWith('.heic')) {
       return Image.asset(
-        'assets/logo.png',
+        'assets/heic_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.ppm')) {
+      return Image.asset(
+        'assets/ppm_icon.png',
+        height: 40,
+        width: 40,
+      );
+    } else if (fileName.toLowerCase().endsWith('.tga')) {
+      return Image.asset(
+        'assets/tga_icon.png',
         height: 40,
         width: 40,
       );
@@ -647,5 +781,199 @@ class _HistoryScreenState extends State<HistoryScreen> {
         AppLocalizations.of(Get.context!)!.no_app_found_to_open,
       );
     }
+  }
+
+  // aaaa() {
+  //   final List<String> filterOptions = [
+  //     "All",
+  //     "JPG",
+  //     "JPEG",
+  //     "SVG",
+  //     "WEBP",
+  //     "BMP",
+  //     "DOC",
+  //     "TXT",
+  //     "PDF",
+  //     "XLS"
+  //   ];
+
+  //   Get.dialog(
+  //     Scaffold(
+  //       body:  Container(
+  //         height: 200,
+  //         width: 200,
+  //         decoration: BoxDecoration(color: UiColors.whiteColor),
+  //         child: Column(
+  //           children: [
+  //             Row(
+  //               children: [Text("Filter by")],
+  //             ),
+  //             Expanded(
+  //               child: GridView.builder(
+  //                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //                   crossAxisCount: 3, // Number of columns in the grid
+  //                   crossAxisSpacing: 10.0, // Spacing between columns
+  //                   mainAxisSpacing: 10.0, // Spacing between rows
+  //                   childAspectRatio: 2.5, // Adjust this for button size
+  //                 ),
+  //                 itemCount: filterOptions.length,
+  //                 shrinkWrap:
+  //                     true, // Prevents unnecessary scrolling inside another scrollable widget
+  //                 physics:
+  //                     const NeverScrollableScrollPhysics(), // Disables GridView's scrolling if inside a ListView
+  //                 itemBuilder: (context, index) {
+  //                   return Container(
+  //                     decoration: BoxDecoration(
+  //                       color: Colors.blue, // Change color as needed
+  //                       borderRadius: BorderRadius.circular(10),
+  //                     ),
+  //                     alignment: Alignment.center,
+  //                     padding: const EdgeInsets.all(8.0),
+  //                     child: Text(
+  //                       filterOptions[index],
+  //                       style: const TextStyle(color: Colors.white, fontSize: 14),
+  //                     ),
+  //                   );
+  //                 },
+  //               ),
+  //             ),
+  //             Text("OOII"),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  void showPopup(GlobalKey key) {
+    // removePopup(); // Remove any existing popup first
+
+    final RenderBox renderBox =
+        key.currentContext!.findRenderObject() as RenderBox;
+    final Offset offset = renderBox.localToGlobal(Offset.zero);
+    final Size size = renderBox.size;
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        left: 22,
+        // popupPositionValue.value, // Centering
+        top: offset.dy + size.height + 10, // Below the button
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              // Center(
+              //   child: CustomPaint(
+              //     size: const Size(30, 20), // Adjust size
+              //     painter: TrianglePainter(),
+              //   ),
+              // ),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              // if (index == 0) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController.handleDriveImage();
+                              // } else if (index == 1) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController
+                              //       .imageResizerFunction();
+                              // } else if (index == 2) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController
+                              //       .imageCompressorFunction();
+                              // }
+                            },
+                            child: Text("IIUUU"),
+                            // customPopupButton(
+                            //     "assets/upload_image.png",
+                            //     // AppLocalizations.of(context)!.file_from_url,
+                            //     "Upload Image",
+                            //     index),
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              // if (index == 0) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController.handleDriveImage();
+                              // } else if (index == 1) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController
+                              //       .imageResizerFunction();
+                              // } else if (index == 2) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController
+                              //       .imageCompressorFunction();
+                              // }
+                            },
+                            child: Text("OOIII"),
+                            // customPopupButton(
+                            //     'assets/drive_image.png', "G-Drive", index
+                            //     // AppLocalizations.of(context)!.choose_from_files,
+                            //     ),
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              // if (index == 0) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController
+                              //       .handleUrlImage(index);
+                              // } else if (index == 1) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController
+                              //       .handleUrlImage(index);
+                              // } else if (index == 2) {
+                              //   toolIndex.value = 10;
+                              //   removePopup();
+                              //   await homeScreenController
+                              //       .handleUrlImage(index);
+                              // }
+                            },
+                            child: Text("OOOOO"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      // ),
+    );
+
+    Overlay.of(context).insert(overlayEntry!);
   }
 }

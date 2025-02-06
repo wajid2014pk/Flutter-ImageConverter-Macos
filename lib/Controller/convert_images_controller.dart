@@ -12,6 +12,7 @@ import 'package:image/image.dart' as im;
 import 'package:excel/excel.dart' as xlsx;
 import 'package:image_converter_macos/Presentation/image_conversion_loading_screen.dart';
 import 'package:image_converter_macos/Presentation/text_tool_preview.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_converter_macos/Constant/ai_config.dart';
 import 'package:image_converter_macos/Constant/api_string.dart';
@@ -408,6 +409,7 @@ class ConvertImagesController extends GetxController {
 
   convertingIntoDiffFormatsMulti(BuildContext context, List<String> filePath,
       List<String> from, String to) async {
+    print("asad data ${filePath}");
     isError.value = false;
 
     List<String> imageFile = [];
@@ -447,32 +449,23 @@ class ConvertImagesController extends GetxController {
         int dateTime = DateTime.now().microsecondsSinceEpoch;
         log("response of $i ${response}");
         Map valueMap = json.decode(response.data);
-        Directory? dir = Platform.isMacOS
-            ? await getApplicationCacheDirectory()
-            : await getExternalStorageDirectory();
-        // imageFile.add(
-        //     "${dir?.path}/ImageConverter/${from[i]}to${to}_$dateTime#${basename(valueMap['d_url'])}");
-        // selectedFile.add(File(
-        //     "${dir?.path}/ImageConverter/${from[i]}to${to}_$dateTime#${basename(valueMap['d_url'])}"));
+        Directory? dir = await getApplicationDocumentsDirectory();
+
         if (valueMap['d_url'] != null) {
           imageFile.add(
-              "${dir?.path}/ImageConverter/${from[i]}to${to}_$dateTime.$to");
+              "${dir.path}/ImageConverter/${from[i]}to${to}_$dateTime.$to");
           selectedFile.add(File(
-              "${dir?.path}/ImageConverter/${from[i]}to${to}_$dateTime.$to"));
+              "${dir.path}/ImageConverter/${from[i]}to${to}_$dateTime.$to"));
           isDownloading.value = true;
           var downloadRes;
           try {
             downloadRes = await dio.download(
               "${valueMap['d_url']}",
-              // path,
               imageFile[i],
               onReceiveProgress: (int recieve, int total) {
                 percentage.value =
                     normalizeValue((recieve / total * 100)).abs();
-
                 progress.value = percentage.value;
-
-                // print('Progress show $progress');
               },
             );
 
@@ -503,6 +496,9 @@ class ConvertImagesController extends GetxController {
     if (isError.value) {
       return;
     } else {
+      print("selectedFile $selectedFile");
+      print("selectedFile[0].path ${selectedFile[0].path}");
+      // OpenFile.open(selectedFile[0].path);
       await Get.to(
         () => ConversionResult(
           imageFormat: ".$to",
@@ -1554,6 +1550,7 @@ class ConvertImagesController extends GetxController {
   //Png Conversion
   convertPngToJPEGMulti(BuildContext context, List<String>? filePath) async {
     List<File> imageFile = [];
+    List<File> compressedImage = [];
     try {
       showLoader.value = true;
 
@@ -1593,21 +1590,21 @@ class ConvertImagesController extends GetxController {
           Directory(targetDirectoryPath).createSync(recursive: true);
 
           // Use flutter_image_compress to encode Image as GIF
-          File compressedImage = File('$path.jpeg')
+          compressedImage.add(File('$path.jpeg')
             ..writeAsBytesSync(
               await FlutterImageCompress.compressWithList(
                 im.encodeJpg(smallerImage),
                 format: CompressFormat.jpeg,
               ),
-            );
+            ));
 
-          print("%%%%compressed Image ${compressedImage.path}");
+          print("%%%%compressed Image ${compressedImage[i].path}");
         }
 
         await Get.to(
           () => ConversionResult(
             imageFormat: ".jpeg",
-            convertedFile: imageFile,
+            convertedFile: compressedImage,
             originalFilePath: imageFile[0].path,
           ),
         );
@@ -1621,6 +1618,7 @@ class ConvertImagesController extends GetxController {
   }
 
   convertPngToGifMulti(context, List<String>? filePath) async {
+    File compressedImage = File("");
     print("filePathbb ${filePath}");
     List<File> imageFile = [];
     try {
@@ -1654,7 +1652,7 @@ class ConvertImagesController extends GetxController {
           Directory(targetDirectoryPath)
               .createSync(recursive: true); // Ensure target directory exists
 
-          File compressedImage = File('$path.gif')
+          compressedImage = File('$path.gif')
             ..writeAsBytesSync(im.encodeGif(smallerImage));
 
           print("%%%%compressed Image ${compressedImage.path}");
@@ -1663,7 +1661,7 @@ class ConvertImagesController extends GetxController {
           () => ConversionResult(
             imageFormat: ".gif",
             convertedFile: imageFile,
-            originalFilePath: imageFile[0].path,
+            originalFilePath: compressedImage.path,
           ),
         );
         showLoader.value = false;
@@ -1960,11 +1958,14 @@ class ConvertImagesController extends GetxController {
                                 ));
                           },
                           child: Container(
-                              padding: const EdgeInsets.all(2),
+                              padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(22),
-                                  color: UiColors.greyColor.withOpacity(0.2)),
-                              child: const Icon(Icons.close))),
+                                  color: UiColors.greyColor.withOpacity(0.1)),
+                              child: Icon(
+                                Icons.close,
+                                size: 16,
+                              ))),
                     ],
                   ),
                 ),
@@ -2396,142 +2397,183 @@ class ConvertImagesController extends GetxController {
   }) {
     return GestureDetector(
       onTap: () async {
+        print("index $index");
+        print("imagePath ${imagePath.length}");
         await AIHandler.checkInternet();
-        if (index == 1) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPG_SELECTION');
-        } else if (index == 2) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_GIF_SELECTION');
-        } else if (index == 3) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPEG_SELECTION');
-        } else if (index == 4) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PNG_SELECTION');
-        } else if (index == 5) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_SVG_SELECTION');
-        } else if (index == 6) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_WEBP_SELECTION');
-        } else if (index == 7) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BMP_SELECTION');
-        } else if (index == 8) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_DOC_SELECTION');
-        } else if (index == 9) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TEXT_SELECTION');
-        } else if (index == 10) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PDF_SELECTION');
-        } else if (index == 11) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_XLS_SELECTION');
-        } else if (index == 12) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TIFF_SELECTION');
-        } else if (index == 13) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_RAW_SELECTION');
-        } else if (index == 14) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PSD_SELECTION');
-        } else if (index == 15) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BDS_SELECTION');
-        } else if (index == 16) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_HEIC_SELECTION');
-        } else if (index == 17) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PPM_SELECTION');
-        } else if (index == 18) {
-          // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TGA_SELECTION');
-        }
-        selectedIndex.value = index;
-        // await getAllLimitValues();
+        if ((index == 8 || index == 11 || index == 9) &&
+            (imagePath.length > 1)) {
+          Get.snackbar(
+              backgroundColor: UiColors.whiteColor,
+              duration: const Duration(seconds: 4),
+              AppLocalizations.of(Get.context!)!.attention,
+              "Only 1 image should be selected");
+          Get.offAll(() => HomeScreen(
+                index: 1,
+              ));
+        } else {
+          if (index == 1) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPG_SELECTION');
+          } else if (index == 2) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_GIF_SELECTION');
+          } else if (index == 3) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPEG_SELECTION');
+          } else if (index == 4) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PNG_SELECTION');
+          } else if (index == 5) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_SVG_SELECTION');
+          } else if (index == 6) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_WEBP_SELECTION');
+          } else if (index == 7) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BMP_SELECTION');
+          } else if (index == 8) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_DOC_SELECTION');
+          } else if (index == 9) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TEXT_SELECTION');
+          } else if (index == 10) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PDF_SELECTION');
+          } else if (index == 11) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_XLS_SELECTION');
+          } else if (index == 12) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TIFF_SELECTION');
+          } else if (index == 13) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_RAW_SELECTION');
+          } else if (index == 14) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PSD_SELECTION');
+          } else if (index == 15) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BDS_SELECTION');
+          } else if (index == 16) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_HEIC_SELECTION');
+          } else if (index == 17) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PPM_SELECTION');
+          } else if (index == 18) {
+            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TGA_SELECTION');
+          }
+          selectedIndex.value = index;
+          // await getAllLimitValues();
 
-        // Get.back();
-        if (selectedIndex.value == 5 ||
-            selectedIndex.value == 6 ||
-            selectedIndex.value == 12 ||
-            selectedIndex.value == 13 ||
-            selectedIndex.value == 14 ||
-            selectedIndex.value == 15 ||
-            selectedIndex.value == 16 ||
-            selectedIndex.value == 17 ||
-            selectedIndex.value == 18) {
-          svgAndBmpApi.value = true;
-        }
-        // simpleLimit = await SharedPref().getToolValue();
-        // int webpValue = await SharedPref().getWEBPValue();
-        // int svgValue = await SharedPref().getSVGValue();
-        if (selectedIndex.value == 1 ||
-            selectedIndex.value == 2 ||
-            selectedIndex.value == 3 ||
-            selectedIndex.value == 4 ||
-            selectedIndex.value == 7) {
-          print("image path 111aaa ${selectedIndex.value}");
-          if (selectedIndex.value == 7) {
-            //  Bmp Limit Check
-            //   if (Platform.isAndroid) {
-            //     if (bmpLimit.value >= 10 && !isPremium.value) {
-            //       // Get.to(() => const PremiumPage());
-            //       limitDialogue(Get.context!);
-            //     } else {
-            //       Get.to(() => ConvertFile(imagePath: imagePath));
-            //     // }
-            //   } else {
-            //     if (isPremium.value) {
-            //       Get.to(() => ConvertFile(imagePath: imagePath));
-            //     } else {
-            //       Get.to(const PremiumPage());
-            //     }
-            //   }
-            // } else {
+          // Get.back();
+          if (selectedIndex.value == 5 ||
+              selectedIndex.value == 6 ||
+              selectedIndex.value == 12 ||
+              selectedIndex.value == 13 ||
+              selectedIndex.value == 14 ||
+              selectedIndex.value == 15 ||
+              selectedIndex.value == 16 ||
+              selectedIndex.value == 17 ||
+              selectedIndex.value == 18) {
+            svgAndBmpApi.value = true;
+          }
+          // simpleLimit = await SharedPref().getToolValue();
+          // int webpValue = await SharedPref().getWEBPValue();
+          // int svgValue = await SharedPref().getSVGValue();
+          if (selectedIndex.value == 1 ||
+              selectedIndex.value == 2 ||
+              selectedIndex.value == 3 ||
+              selectedIndex.value == 4 ||
+              selectedIndex.value == 7) {
+            print("image path 111aaa ${selectedIndex.value}");
+            if (selectedIndex.value == 7) {
+              //  Bmp Limit Check
+              //   if (Platform.isAndroid) {
+              //     if (bmpLimit.value >= 10 && !isPremium.value) {
+              //       // Get.to(() => const PremiumPage());
+              //       limitDialogue(Get.context!);
+              //     } else {
+              //       Get.to(() => ConvertFile(imagePath: imagePath));
+              //     // }
+              //   } else {
+              //     if (isPremium.value) {
+              //       Get.to(() => ConvertFile(imagePath: imagePath));
+              //     } else {
+              //       Get.to(const PremiumPage());
+              //     }
+              //   }
+              // } else {
 
-            Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
-            // }
-          } else {
-            // image to excel tool------------------------
-            if (selectedIndex.value == 11) {
-              if (isInternetConneted.value) {
-                // if (bottomNavBarController.currentScans.value < scanLmit.value) {
-                // log("bottomNavBarController.currentScans ${bottomNavBarController.currentScans}");
+              Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
+              // }
+            } else {
+              // image to excel tool------------------------
+              if (selectedIndex.value == 11) {
+                if (isInternetConneted.value) {
+                  // if (bottomNavBarController.currentScans.value < scanLmit.value) {
+                  // log("bottomNavBarController.currentScans ${bottomNavBarController.currentScans}");
+                  if (imagePath.length > 1) {
+                    Get.snackbar(
+                        backgroundColor: UiColors.whiteColor,
+                        duration: const Duration(seconds: 4),
+                        AppLocalizations.of(Get.context!)!.attention,
+                        // AppLocalizations.of(Get.context!)!
+                        //     .only_1_image_should_be_selected,
+                        "Only 1 image should be selected");
+                    // Get.to(() => ConvertFile(imagePath: [imagePath[0]]));
+                  } else {
+                    Get.to(() =>
+                        ImageConversionLoadingScreen(imagePath: imagePath));
+                  }
+                  // } else {
+                  //   // Get.snackbar("title", "Scan Limit Reached!");
+                  //   limitDialogue(Get.context!);
+                  // }
+                } else {
+                  Get.back();
+                  Get.snackbar(
+                    backgroundColor: UiColors.whiteColor,
+                    duration: const Duration(seconds: 4),
+                    AppLocalizations.of(Get.context!)!.attention,
+                    // AppLocalizations.of(Get.context!)!
+                    //     .please_check_your_internet_connection,
+                    "Please check your internet connection",
+                  );
+                }
+              }
+              // image to excel tool------------------------
+              //--------image to text tool----------------
+              if (selectedIndex.value == 9 || selectedIndex.value == 8) {
                 if (imagePath.length > 1) {
                   Get.snackbar(
-                      backgroundColor: UiColors.whiteColor,
-                      duration: const Duration(seconds: 4),
-                      AppLocalizations.of(Get.context!)!.attention,
-                      // AppLocalizations.of(Get.context!)!
-                      //     .only_1_image_should_be_selected,
-                      "Only 1 image should be selected");
-                  // Get.to(() => ConvertFile(imagePath: [imagePath[0]]));
+                    backgroundColor: UiColors.whiteColor,
+                    duration: const Duration(seconds: 4),
+                    AppLocalizations.of(Get.context!)!.attention,
+                    // AppLocalizations.of(Get.context!)!
+                    //     .only_1_image_should_be_selected,
+                    "Only 1 image should be selected",
+                  );
                 } else {
-                  Get.to(
-                      () => ImageConversionLoadingScreen(imagePath: imagePath));
+                  if (Platform.isAndroid) {
+                    // if (simpleLimit < 10 || isPremium.value) {
+                    Get.to(() =>
+                        ImageConversionLoadingScreen(imagePath: imagePath));
+                    // } else {
+                    //   limitDialogue(Get.context!);
+                    // }
+                  } else {
+                    // if (isPremium.value) {
+                    Get.to(() =>
+                        ImageConversionLoadingScreen(imagePath: imagePath));
+                    // } else {
+                    //   Get.to(const PremiumPage());
+                    // }
+                  }
                 }
-                // } else {
-                //   // Get.snackbar("title", "Scan Limit Reached!");
-                //   limitDialogue(Get.context!);
-                // }
-              } else {
-                Get.back();
-                Get.snackbar(
-                  backgroundColor: UiColors.whiteColor,
-                  duration: const Duration(seconds: 4),
-                  AppLocalizations.of(Get.context!)!.attention,
-                  // AppLocalizations.of(Get.context!)!
-                  //     .please_check_your_internet_connection,
-                  "Please check your internet connection",
-                );
               }
-            }
-            // image to excel tool------------------------
-            //--------image to text tool----------------
-            if (selectedIndex.value == 9 || selectedIndex.value == 8) {
-              if (imagePath.length > 1) {
-                Get.snackbar(
-                  backgroundColor: UiColors.whiteColor,
-                  duration: const Duration(seconds: 4),
-                  AppLocalizations.of(Get.context!)!.attention,
-                  // AppLocalizations.of(Get.context!)!
-                  //     .only_1_image_should_be_selected,
-                  "Only 1 image should be selected",
-                );
-              } else {
+              //---------image to text tool ---------------
+
+              if (selectedIndex.value == 5) {
+                //------------- Svg Tool Limit Check
                 if (Platform.isAndroid) {
-                  // if (simpleLimit < 10 || isPremium.value) {
+                  // if (toolValue < 10 || isPremium.value) {
+                  //   Get.to(() => ConvertFile(imagePath: imagePath));
+                  // } else {
+                  //   // Get.to(() => const PremiumPage());
+                  //   limitDialogue(Get.context!);
+                  // }
+                  // if (svgLimit.value >= 10 && !isPremium.value) {
+                  //   // Get.to(() => const PremiumPage());
+                  //   limitDialogue(Get.context!);
+                  // } else {
                   Get.to(
                       () => ImageConversionLoadingScreen(imagePath: imagePath));
-                  // } else {
-                  //   limitDialogue(Get.context!);
                   // }
                 } else {
                   // if (isPremium.value) {
@@ -2542,79 +2584,54 @@ class ConvertImagesController extends GetxController {
                   // }
                 }
               }
-            }
-            //---------image to text tool ---------------
-
-            if (selectedIndex.value == 5) {
-              //------------- Svg Tool Limit Check
-              if (Platform.isAndroid) {
-                // if (toolValue < 10 || isPremium.value) {
-                //   Get.to(() => ConvertFile(imagePath: imagePath));
-                // } else {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // }
-                // if (svgLimit.value >= 10 && !isPremium.value) {
-                //   // Get.to(() => const PremiumPage());
-                //   limitDialogue(Get.context!);
-                // } else {
-                Get.to(
-                    () => ImageConversionLoadingScreen(imagePath: imagePath));
-                // }
-              } else {
+              if (selectedIndex.value == 12 ||
+                  selectedIndex.value == 13 ||
+                  selectedIndex.value == 14 ||
+                  selectedIndex.value == 15 ||
+                  selectedIndex.value == 16 ||
+                  selectedIndex.value == 17 ||
+                  selectedIndex.value == 18) {
                 // if (isPremium.value) {
+
                 Get.to(
                     () => ImageConversionLoadingScreen(imagePath: imagePath));
                 // } else {
                 //   Get.to(const PremiumPage());
                 // }
               }
-            }
-            if (selectedIndex.value == 12 ||
-                selectedIndex.value == 13 ||
-                selectedIndex.value == 14 ||
-                selectedIndex.value == 15 ||
-                selectedIndex.value == 16 ||
-                selectedIndex.value == 17 ||
-                selectedIndex.value == 18) {
-              // if (isPremium.value) {
-
-              Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
-              // } else {
-              //   Get.to(const PremiumPage());
-              // }
-            }
-            if (selectedIndex.value == 6) {
-              // if (webpLimit.value < 10 || isPremium.value) {
-              Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
-              // } else {
-              //   // Get.to(() => const PremiumPage());
-              //   limitDialogue(Get.context!);
-
-              //   // limitDialogue(Get.context!);
-              // }
-            }
-            if (selectedIndex.value == 10) {
-              log("toolValue $simpleLimit");
-              if (Platform.isAndroid) {
-                // if (simpleLimit < 10 || isPremium.value) {
+              if (selectedIndex.value == 6) {
+                // if (webpLimit.value < 10 || isPremium.value) {
                 Get.to(
                     () => ImageConversionLoadingScreen(imagePath: imagePath));
                 // } else {
                 //   // Get.to(() => const PremiumPage());
                 //   limitDialogue(Get.context!);
+
+                //   // limitDialogue(Get.context!);
                 // }
-              } else {
-                // if (isPremium.value) {
-                Get.to(
-                    () => ImageConversionLoadingScreen(imagePath: imagePath));
-                // } else {
-                //   Get.to(const PremiumPage());
+              }
+              if (selectedIndex.value == 10) {
+                log("toolValue $simpleLimit");
+                if (Platform.isAndroid) {
+                  // if (simpleLimit < 10 || isPremium.value) {
+                  Get.to(
+                      () => ImageConversionLoadingScreen(imagePath: imagePath));
+                  // } else {
+                  //   // Get.to(() => const PremiumPage());
+                  //   limitDialogue(Get.context!);
+                  // }
+                } else {
+                  // if (isPremium.value) {
+                  Get.to(
+                      () => ImageConversionLoadingScreen(imagePath: imagePath));
+                  // } else {
+                  //   Get.to(const PremiumPage());
+                }
               }
             }
           }
+          Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
         }
-        Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
       },
       child: Container(
         width: 70,
@@ -4288,9 +4305,9 @@ class ConvertImagesController extends GetxController {
       // ++toolValue;
       // await SharedPref().setToolValue(toolValue);
       // setToolsValue();
-      if (imagePath!.first.contains('.png') ||
-          imagePath!.first.contains('.jpg') ||
-          imagePath!.first.contains('.jpeg')) {
+      if (imagePath.first.contains('.png') ||
+          imagePath.first.contains('.jpg') ||
+          imagePath.first.contains('.jpeg')) {
         print("CORRECT");
         selectedIndex.value == 12 ||
                 selectedIndex.value == 13 ||
@@ -4301,8 +4318,8 @@ class ConvertImagesController extends GetxController {
                 selectedIndex.value == 18
             ? convertingIntoDiffFormatsMulti(
                 Get.context!,
-                imagePath!,
-                imagePath!
+                imagePath,
+                imagePath
                     .map((filePath) =>
                         path.extension(filePath).replaceFirst('.', ''))
                     .toList(),
@@ -4326,6 +4343,23 @@ class ConvertImagesController extends GetxController {
       } else {
         print("Wrong");
       }
+    }
+  }
+
+  Future<void> _openFile(FileSystemEntity file) async {
+    try {
+      final filePath = file.uri.toFilePath();
+      await OpenFile.open(filePath);
+    } catch (e) {
+      print('Error opening file: $e');
+      Get.snackbar(
+        colorText: Colors.black,
+        backgroundColor: Colors.white,
+        duration: const Duration(seconds: 4),
+        AppLocalizations.of(Get.context!)!.error,
+        // AppLocalizations.of(Get.context!)!.opening_file,
+        "Opening File",
+      );
     }
   }
 }
