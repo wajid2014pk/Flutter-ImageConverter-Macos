@@ -14,6 +14,7 @@ RxList<String> textToolDataList = <String>[].obs;
 RxList<String> textToolImagePathList = <String>[].obs;
 RxString textToolData = "".obs;
 RxString textToolImagePath = "".obs;
+  OverlayEntry? overlayEntry;
 
 //------image to excel tool-------------
 RxList<String> xlsxImageList = <String>[].obs;

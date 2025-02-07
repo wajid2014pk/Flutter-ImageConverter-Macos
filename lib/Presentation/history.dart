@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
+import 'package:image_converter_macos/Constant/global.dart';
 import 'package:lottie/lottie.dart';
 import 'package:open_file/open_file.dart';
 // import 'package:path/path.dart';
@@ -11,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path/path.dart' as path;
+import 'package:text_scroll/text_scroll.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -20,8 +22,26 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  GlobalKey imageConvertorKey = GlobalKey();
-  OverlayEntry? overlayEntry;
+  OverlayEntry? _popupOverlay;
+  // GlobalKey _filterButtonKey = GlobalKey(); // Key for the filter button
+
+  RxList<int> selectedItems = <int>[0].obs; // Tracks selected indices
+  RxList<String> filterDataList = <String>[].obs;
+  final List<String> filterOptions = [
+    "All",
+    "JPG",
+    "GIF",
+    "JPEG",
+    "SVG",
+    "WEBP",
+    "BMP",
+    "DOC",
+    "TXT",
+    "PDF",
+    "XLS"
+  ];
+  RxList<double> fileSize = <double>[].obs;
+  GlobalKey filterKey = GlobalKey();
 
   List<FileSystemEntity> allfiles = [];
   Directory? directory;
@@ -45,203 +65,207 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UiColors.backgroundColor,
-      body: Obx(
-        () => Column(
-          children: [
-            isSearchBarVisible.value
-                ? Container(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width / 1.06,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: Colors.grey.withOpacity(0.1),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 0.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(right: 20, left: 20),
-                              child: TextField(
-                                textAlign: TextAlign.start,
-                                controller: searchController,
-                                focusNode: focusNode,
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inverseSurface),
-                                decoration: InputDecoration(
-                                  hintText: AppLocalizations.of(Get.context!)!
-                                      .search_image,
-                                  hintStyle:
-                                      const TextStyle(color: Colors.grey),
-                                  border: InputBorder.none,
+    return GestureDetector(
+      onTap: _removePopup,
+      child: Scaffold(
+        backgroundColor: UiColors.backgroundColor,
+        body: Obx(
+          () => Column(
+            children: [
+              isSearchBarVisible.value
+                  ? Container(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width / 1.06,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.grey.withOpacity(0.1),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 0.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.only(right: 20, left: 20),
+                                child: TextField(
+                                  textAlign: TextAlign.start,
+                                  controller: searchController,
+                                  focusNode: focusNode,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inverseSurface),
+                                  decoration: InputDecoration(
+                                    hintText: AppLocalizations.of(Get.context!)!
+                                        .search_image,
+                                    hintStyle:
+                                        const TextStyle(color: Colors.grey),
+                                    border: InputBorder.none,
+                                  ),
+                                  onChanged: (value) {
+                                    _runFilter(value);
+                                  },
                                 ),
-                                onChanged: (value) {
-                                  _runFilter(value);
-                                },
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                : const SizedBox(),
-            Container(
-              margin:
-                  const EdgeInsets.only(top: 6, left: 4, right: 4, bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              height: 30,
-              width: MediaQuery.of(context).size.width,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 1;
-                      _selectCategory("All");
-                    },
-                    child: getCategory(
-                        "All",
-                        selectCategory.value == 1
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 1
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 2;
-                      _selectCategory("png");
-                    },
-                    child: getCategory(
-                        "PNG",
-                        selectCategory.value == 2
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 2
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 3;
-                      _selectCategory("jpg");
-                    },
-                    child: getCategory(
-                        "JPG",
-                        selectCategory.value == 3
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 3
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 4;
-                      _selectCategory("pdf");
-                    },
-                    child: getCategory(
-                        "PDF",
-                        selectCategory.value == 4
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 4
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 6;
-                      _selectCategory("bmp");
-                    },
-                    child: getCategory(
-                        "BMP",
-                        selectCategory.value == 6
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 6
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 7;
-                      _selectCategory("gif");
-                    },
-                    child: getCategory(
-                        "Gif",
-                        selectCategory.value == 7
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 7
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 8;
-                      _selectCategory("webp");
-                    },
-                    child: getCategory(
-                        "WEBP",
-                        selectCategory.value == 8
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 8
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 9;
-                      _selectCategory("svg");
-                    },
-                    child: getCategory(
-                        "SVG",
-                        selectCategory.value == 9
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 9
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      selectCategory.value = 10;
-                      _selectCategory("jpeg");
-                    },
-                    child: getCategory(
-                        "JPEG",
-                        selectCategory.value == 10
-                            ? UiColors.blueColor
-                            : UiColors.blackColor.withOpacity(0.1),
-                        selectCategory.value == 10
-                            ? UiColors.whiteColor
-                            : Theme.of(context).hintColor),
-                  ),
-                ],
+                    )
+                  : const SizedBox(),
+              // Container(
+              //   margin:
+              //       const EdgeInsets.only(top: 6, left: 4, right: 4, bottom: 8),
+              //   padding: const EdgeInsets.symmetric(horizontal: 4),
+              //   height: 30,
+              //   width: MediaQuery.of(context).size.width,
+              //   child: ListView(
+              //     scrollDirection: Axis.horizontal,
+              //     children: [
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 1;
+              //           _selectCategory("All");
+              //         },
+              //         child: getCategory(
+              //             "All",
+              //             selectCategory.value == 1
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 1
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 2;
+              //           _selectCategory("png");
+              //         },
+              //         child: getCategory(
+              //             "PNG",
+              //             selectCategory.value == 2
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 2
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 3;
+              //           _selectCategory("jpg");
+              //         },
+              //         child: getCategory(
+              //             "JPG",
+              //             selectCategory.value == 3
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 3
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 4;
+              //           _selectCategory("pdf");
+              //         },
+              //         child: getCategory(
+              //             "PDF",
+              //             selectCategory.value == 4
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 4
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 6;
+              //           _selectCategory("bmp");
+              //         },
+              //         child: getCategory(
+              //             "BMP",
+              //             selectCategory.value == 6
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 6
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 7;
+              //           _selectCategory("gif");
+              //         },
+              //         child: getCategory(
+              //             "Gif",
+              //             selectCategory.value == 7
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 7
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 8;
+              //           _selectCategory("webp");
+              //         },
+              //         child: getCategory(
+              //             "WEBP",
+              //             selectCategory.value == 8
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 8
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 9;
+              //           _selectCategory("svg");
+              //         },
+              //         child: getCategory(
+              //             "SVG",
+              //             selectCategory.value == 9
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 9
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //       GestureDetector(
+              //         onTap: () {
+              //           selectCategory.value = 10;
+              //           _selectCategory("jpeg");
+              //         },
+              //         child: getCategory(
+              //             "JPEG",
+              //             selectCategory.value == 10
+              //                 ? UiColors.blueColor
+              //                 : UiColors.blackColor.withOpacity(0.1),
+              //             selectCategory.value == 10
+              //                 ? UiColors.whiteColor
+              //                 : Theme.of(context).hintColor),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              Expanded(
+                child: Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: Get.width * 0.1, vertical: 22),
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: _buildGridView(context)),
               ),
-            ),
-            Expanded(
-              child: Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.1, vertical: 22),
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: _buildGridView(context)),
-            ),
-          ],
+            ],
+          ),
         ),
+        // ),
       ),
-      // ),
     );
   }
 
@@ -303,22 +327,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       ),
                     ],
                   )),
-              GestureDetector(
-                key: imageConvertorKey,
-                onTap: () {
-                  showPopup(imageConvertorKey);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: UiColors.whiteColor,
-                      borderRadius: BorderRadius.circular(4)),
-                  child: Image.asset(
-                    'assets/filter.png',
-                    height: 22,
-                    width: 22,
+              Row(
+                children: [
+                  Text("IIUU"),
+                  sizedBoxWidth,
+                  GestureDetector(
+                    key: filterKey,
+                    onTap: () {
+                      if (_popupOverlay == null) {
+                        _showPopup(context);
+                      } else {
+                        _removePopup();
+                      }
+                      // showPopup(imageConvertorKey);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: UiColors.whiteColor,
+                          borderRadius: BorderRadius.circular(4)),
+                      child: Image.asset(
+                        'assets/filter.png',
+                        height: 22,
+                        width: 22,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -340,7 +375,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
               return Container(
                 decoration: BoxDecoration(
-                    border: Border.all(),
+                    // border: Border.all(),
                     color: UiColors.whiteColor,
                     borderRadius: BorderRadius.circular(12)),
                 padding:
@@ -367,146 +402,69 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       _openFile(allfiles[index]);
                     }
                   },
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 65.0,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: _getFileIcon(fileName),
-                      ),
-                      const SizedBox(width: 11.0),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.sizeOf(context).width / 7,
-                            child: Text(
-                              displayedFileName,
-                              textAlign: TextAlign.start,
-                              maxLines: 1,
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(fontSize: 14.0),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _getFileIcon(fileName),
+                        const SizedBox(height: 12),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width / 7,
+                              child: TextScroll(
+                                displayedFileName,
+                                textAlign: TextAlign.start,
+
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w500, fontSize: 14),
+                                mode: TextScrollMode.endless,
+                                velocity: const Velocity(
+                                    pixelsPerSecond: Offset(20, 0)),
+                                delayBefore: const Duration(milliseconds: 500),
+                                numberOfReps: 1111,
+                                pauseBetween: const Duration(milliseconds: 500),
+                                // textAlign: TextAlign.right,
+                                selectable: true,
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            creationDate,
-                            textAlign: TextAlign.start,
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  color: UiColors.blackColor.withOpacity(0.4),
-                                  fontSize: 12.0),
+                            const SizedBox(
+                              height: 6,
                             ),
-                          ),
-                        ],
-                      ),
-                      // const Spacer(),
-                      // PopupMenuButton(
-                      //   color: Colors.white,
-                      //   surfaceTintColor: Colors.white,
-                      //   icon: const Icon(
-                      //     Icons.more_vert,
-                      //     size: 25.0,
-                      //   ),
-                      //   itemBuilder: (BuildContext context) {
-                      //     return [
-                      //       AppLocalizations.of(Get.context!)!.delete,
-                      //       AppLocalizations.of(Get.context!)!.share,
-                      //       "Download"
-                      //     ].map((String choice) {
-                      //       return PopupMenuItem<String>(
-                      //         value: choice,
-                      //         child: Text(
-                      //           choice,
-                      //           style: GoogleFonts.poppins(
-                      //             textStyle: const TextStyle(
-                      //                 fontWeight: FontWeight.w400, fontSize: 16.0),
-                      //           ),
-                      //         ),
-                      //       );
-                      //     }).toList();
-                      //   },
-                      //   onSelected: (value) async {
-                      //     if (value == AppLocalizations.of(Get.context!)!.delete) {
-                      //       _deleteFile(allfiles[index]);
-                      //     } else if (value ==
-                      //         AppLocalizations.of(Get.context!)!.share) {
-                      //       _shareFile(allfiles[index]);
-                      //     } else if (value == "Download") {
-                      //       File file = File(allfiles[index].path);
-                      //       print("###file $file");
-
-                      //       // Separate the file name and extension
-                      //       String fileName =
-                      //           path.basenameWithoutExtension(file.path);
-                      //       String fileExtension = path
-                      //           .extension(file.path)
-                      //           .replaceFirst('.', ''); // remove the leading dot
-                      //       print("###fileName $fileName");
-                      //       print("###fileExtension $fileExtension");
-
-                      //       final bytes = await file.readAsBytes();
-
-                      //       final result = await FileSaver.instance.saveAs(
-                      //         name: fileName,
-                      //         bytes: bytes,
-                      //         ext: fileExtension == 'jpg'
-                      //             ? 'jpg'
-                      //             : fileExtension == 'jpeg'
-                      //                 ? 'jpeg'
-                      //                 : fileExtension == 'png'
-                      //                     ? 'png'
-                      //                     : fileExtension == 'gif'
-                      //                         ? 'gif'
-                      //                         : fileExtension == 'bmp'
-                      //                             ? 'bmp'
-                      //                             : fileExtension == 'svg'
-                      //                                 ? 'svg'
-                      //                                 : fileExtension == 'webp'
-                      //                                     ? 'webp'
-                      //                                     : fileExtension == 'pdf'
-                      //                                         ? 'pdf'
-                      //                                         : 'svg',
-                      //         mimeType: fileExtension == 'jpg'
-                      //             ? MimeType.jpeg
-                      //             : fileExtension == 'jpeg'
-                      //                 ? MimeType.jpeg
-                      //                 : fileExtension == 'png'
-                      //                     ? MimeType.png
-                      //                     : fileExtension == 'gif'
-                      //                         ? MimeType.gif
-                      //                         : fileExtension == 'bmp'
-                      //                             ? MimeType.bmp
-                      //                             : fileExtension == 'svg'
-                      //                                 ? MimeType.other
-                      //                                 : fileExtension == 'webp'
-                      //                                     ? MimeType.other
-                      //                                     : fileExtension == 'pdf'
-                      //                                         ? MimeType.pdf
-                      //                                         : MimeType.other,
-                      //       );
-
-                      //       if (result != "") {
-                      //         ScaffoldMessenger.of(Get.context!).showSnackBar(
-                      //           const SnackBar(
-                      //               content: Text(
-                      //                   'File saved successfully in Downloads Folder!')),
-                      //         );
-                      //       } else {
-                      //         ScaffoldMessenger.of(Get.context!).showSnackBar(
-                      //           const SnackBar(
-                      //               content: Text('Failed to save file.')),
-                      //         );
-                      //       }
-                      //     }
-                      //   },
-                      // ),
-                    ],
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  path
+                                      .extension(allfiles[index].path)
+                                      .split('.')[1]
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                Text(
+                                  " | ",
+                                  style: TextStyle(
+                                    color: UiColors.greyColor,
+                                  ),
+                                ),
+                                Text(
+                                  "${fileSize[index].toInt() == 0 ? fileSize[index].toStringAsPrecision(2) : fileSize[index].toInt().toString()} KB",
+                                  style: TextStyle(
+                                    color: UiColors.greyColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -548,9 +506,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  void _selectCategory(String format) {
+  // void _selectCategory(String format) {
+  //   setState(() {
+  //     selectedFormat = format;
+  //     _loadFiles();
+  //   });
+  // }
+  void _selectCategory(List<int> indexes) {
     setState(() {
-      selectedFormat = format;
+      selectedItems.value = indexes;
       _loadFiles();
     });
   }
@@ -575,30 +539,72 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Future<void> _loadFiles() async {
     directory = await getApplicationCacheDirectory();
-
     String folderName = 'ImageConverter';
     String folderPath = path.join(directory!.path, folderName);
 
     if (await Directory(folderPath).exists()) {
       setState(() {
-        allfiles = Directory(folderPath).listSync().where((file) {
-          if (selectedFormat == "All") {
-            return true; // Show all files
-          } else {
-            return file.uri.pathSegments.last
-                .toLowerCase()
-                .endsWith(selectedFormat);
-          }
-        }).toList()
-          ..sort((a, b) =>
-              (b.statSync().modified.compareTo(a.statSync().modified)));
+        // If "All" (index 0) is selected, show all files
+        bool showAll = selectedItems.contains(0);
 
-        print("Files $allfiles");
+        allfiles = Directory(folderPath).listSync().where((file) {
+          String extension =
+              file.uri.pathSegments.last.split('.').last.toLowerCase();
+
+          if (showAll) return true; // Show all files
+
+          // Get selected formats from indexes
+          List<String> selectedFormats = selectedItems
+              .map((index) => filterOptions[index].toLowerCase())
+              .toList();
+
+          return selectedFormats.any((format) => extension == format);
+        }).toList()
+          ..sort(
+              (a, b) => b.statSync().modified.compareTo(a.statSync().modified));
+
+        print("Files: $allfiles");
+
+        fileSize.clear(); // Clear previous data
+        for (var file in allfiles) {
+          fileSize.add(getFileSizeInKB(File(file.path)));
+        }
+        print("fileSize: $fileSize");
       });
     } else {
-      print('!!!!Directory does not exist: $folderPath');
+      print('!!!! Directory does not exist: $folderPath');
     }
   }
+  // Future<void> _loadFiles() async {
+  //   directory = await getApplicationCacheDirectory();
+
+  //   String folderName = 'ImageConverter';
+  //   String folderPath = path.join(directory!.path, folderName);
+
+  //   if (await Directory(folderPath).exists()) {
+  //     setState(() {
+  //       allfiles = Directory(folderPath).listSync().where((file) {
+  //         if (selectedFormat == "All") {
+  //           return true; // Show all files
+  //         } else {
+  //           return file.uri.pathSegments.last
+  //               .toLowerCase()
+  //               .endsWith(selectedFormat);
+  //         }
+  //       }).toList()
+  //         ..sort((a, b) =>
+  //             (b.statSync().modified.compareTo(a.statSync().modified)));
+
+  //       print("Files $allfiles");
+  //       for (int i = 0; i < allfiles.length; i++) {
+  //         fileSize.add(getFileSizeInKB(File(allfiles[i].path)));
+  //         print("fileSize $fileSize");
+  //       }
+  //     });
+  //   } else {
+  //     print('!!!!Directory does not exist: $folderPath');
+  //   }
+  // }
 
   Future<void> _deleteFile(FileSystemEntity file) async {
     try {
@@ -630,110 +636,110 @@ class _HistoryScreenState extends State<HistoryScreen> {
         fileName.toLowerCase().endsWith('.docx')) {
       return Image.asset(
         'assets/DOC_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.xlsx')) {
       return Image.asset(
         'assets/XLS_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.txt')) {
       return Image.asset(
         'assets/TXT_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.pdf')) {
       return Image.asset(
         'assets/PDF_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.jpg')) {
       return Image.asset(
         'assets/jpg_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.gif')) {
       return Image.asset(
         'assets/gif_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.jpeg')) {
       return Image.asset(
         'assets/jpeg_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.png')) {
       return Image.asset(
         'assets/png_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.svg')) {
       return Image.asset(
         'assets/svg_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.webp')) {
       return Image.asset(
         'assets/webp_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.bmp')) {
       return Image.asset(
         'assets/bmp_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.tiff')) {
       return Image.asset(
         'assets/tiff_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.raw')) {
       return Image.asset(
         'assets/raw_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.psd')) {
       return Image.asset(
         'assets/psd_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.dds')) {
       return Image.asset(
         'assets/dds_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.heic')) {
       return Image.asset(
         'assets/heic_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.ppm')) {
       return Image.asset(
         'assets/ppm_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else if (fileName.toLowerCase().endsWith('.tga')) {
       return Image.asset(
         'assets/tga_icon.png',
-        height: 40,
-        width: 40,
+        height: 45,
+        width: 45,
       );
     } else {
       return const SizedBox();
@@ -783,197 +789,189 @@ class _HistoryScreenState extends State<HistoryScreen> {
     }
   }
 
-  // aaaa() {
-  //   final List<String> filterOptions = [
-  //     "All",
-  //     "JPG",
-  //     "JPEG",
-  //     "SVG",
-  //     "WEBP",
-  //     "BMP",
-  //     "DOC",
-  //     "TXT",
-  //     "PDF",
-  //     "XLS"
-  //   ];
+  double getFileSizeInKB(File file) {
+    final bytes = file.lengthSync();
+    double size = bytes / 1024;
 
-  //   Get.dialog(
-  //     Scaffold(
-  //       body:  Container(
-  //         height: 200,
-  //         width: 200,
-  //         decoration: BoxDecoration(color: UiColors.whiteColor),
-  //         child: Column(
-  //           children: [
-  //             Row(
-  //               children: [Text("Filter by")],
-  //             ),
-  //             Expanded(
-  //               child: GridView.builder(
-  //                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //                   crossAxisCount: 3, // Number of columns in the grid
-  //                   crossAxisSpacing: 10.0, // Spacing between columns
-  //                   mainAxisSpacing: 10.0, // Spacing between rows
-  //                   childAspectRatio: 2.5, // Adjust this for button size
-  //                 ),
-  //                 itemCount: filterOptions.length,
-  //                 shrinkWrap:
-  //                     true, // Prevents unnecessary scrolling inside another scrollable widget
-  //                 physics:
-  //                     const NeverScrollableScrollPhysics(), // Disables GridView's scrolling if inside a ListView
-  //                 itemBuilder: (context, index) {
-  //                   return Container(
-  //                     decoration: BoxDecoration(
-  //                       color: Colors.blue, // Change color as needed
-  //                       borderRadius: BorderRadius.circular(10),
-  //                     ),
-  //                     alignment: Alignment.center,
-  //                     padding: const EdgeInsets.all(8.0),
-  //                     child: Text(
-  //                       filterOptions[index],
-  //                       style: const TextStyle(color: Colors.white, fontSize: 14),
-  //                     ),
-  //                   );
-  //                 },
-  //               ),
-  //             ),
-  //             Text("OOII"),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
+    return size;
+  }
+
+  // void toggleSelection(int index, StateSetter setStateOverlay) {
+  //   setStateOverlay(() {
+  //     if (selectedItems.contains(index)) {
+  //       selectedItems.remove(index); // Deselect
+  //     } else {
+  //       selectedItems.add(index); // Select
+  //     }
+  //   });
   // }
+  void toggleSelection(int index, StateSetter setStateOverlay) {
+    setStateOverlay(() {
+      if (index == 0) {
+        // If first button is selected, clear other selections
+        selectedItems.clear();
+        selectedItems.add(0);
+      } else {
+        // If any other button is selected, deselect the first button
+        selectedItems.remove(0);
+        if (selectedItems.contains(index)) {
+          selectedItems.remove(index);
+        } else {
+          selectedItems.add(index);
+        }
+      }
+    });
+  }
 
-  void showPopup(GlobalKey key) {
-    // removePopup(); // Remove any existing popup first
+  void _showPopup(BuildContext context) {
+    _removePopup(); // Remove existing popup if open
 
-    final RenderBox renderBox =
-        key.currentContext!.findRenderObject() as RenderBox;
-    final Offset offset = renderBox.localToGlobal(Offset.zero);
-    final Size size = renderBox.size;
+    OverlayState overlayState = Overlay.of(context);
 
-    overlayEntry = OverlayEntry(
+    _popupOverlay = OverlayEntry(
       builder: (context) => Positioned(
-        left: 22,
-        // popupPositionValue.value, // Centering
-        top: offset.dy + size.height + 10, // Below the button
+        top: 80, // Adjust based on where you want to show the popup
+        right: 130,
         child: Material(
           color: Colors.transparent,
-          child: Column(
-            children: [
-              // Center(
-              //   child: CustomPaint(
-              //     size: const Size(30, 20), // Adjust size
-              //     painter: TrianglePainter(),
-              //   ),
-              // ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+          clipBehavior: Clip.none,
+          child: Container(
+            width: 300,
+            height: 280, // Set a fixed height to avoid layout errors
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8)
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text(
+                  "Filter By",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Expanded(
+                  child: StatefulBuilder(
+                    builder: (context, setStateOverlay) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: GridView.builder(
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 9,
+                            mainAxisExtent: 35,
+                          ),
+                          itemCount: filterOptions.length, // Number of items
+                          itemBuilder: (context, index) {
+                            bool isSelected = selectedItems.contains(index);
+                            return GestureDetector(
+                              onTap: () {
+                                toggleSelection(index, setStateOverlay);
+                                // _selectCategory(selectedItems[]);
+                                _loadFiles();
+                                //  print()
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? Colors.white
+                                      : Colors.grey.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? UiColors.blueColorNew
+                                        : Colors.transparent,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    filterOptions[index],
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                    GestureDetector(
+                      onTap: () {
+                        _removePopup();
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(16)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              // if (index == 0) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController.handleDriveImage();
-                              // } else if (index == 1) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController
-                              //       .imageResizerFunction();
-                              // } else if (index == 2) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController
-                              //       .imageCompressorFunction();
-                              // }
-                            },
-                            child: Text("IIUUU"),
-                            // customPopupButton(
-                            //     "assets/upload_image.png",
-                            //     // AppLocalizations.of(context)!.file_from_url,
-                            //     "Upload Image",
-                            //     index),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(
-                            width: 10.0,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _removePopup();
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 90,
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Apply",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
-                          GestureDetector(
-                            onTap: () async {
-                              // if (index == 0) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController.handleDriveImage();
-                              // } else if (index == 1) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController
-                              //       .imageResizerFunction();
-                              // } else if (index == 2) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController
-                              //       .imageCompressorFunction();
-                              // }
-                            },
-                            child: Text("OOIII"),
-                            // customPopupButton(
-                            //     'assets/drive_image.png', "G-Drive", index
-                            //     // AppLocalizations.of(context)!.choose_from_files,
-                            //     ),
-                          ),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              // if (index == 0) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController
-                              //       .handleUrlImage(index);
-                              // } else if (index == 1) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController
-                              //       .handleUrlImage(index);
-                              // } else if (index == 2) {
-                              //   toolIndex.value = 10;
-                              //   removePopup();
-                              //   await homeScreenController
-                              //       .handleUrlImage(index);
-                              // }
-                            },
-                            child: Text("OOOOO"),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ],
-                ),
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
-      // ),
     );
 
-    Overlay.of(context).insert(overlayEntry!);
+    overlayState.insert(_popupOverlay!);
+  }
+
+  void _removePopup() {
+    _popupOverlay?.remove();
+    _popupOverlay = null;
   }
 }

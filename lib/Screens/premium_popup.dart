@@ -1,7 +1,10 @@
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
+import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,873 +24,317 @@ class PremiumPopUp {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          surfaceTintColor: Colors.white,
+          surfaceTintColor: UiColors.whiteColor,
           contentPadding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
           content: Container(
+            width: Get.width / 1.4,
+            height: Get.height / 1.4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.0),
               image: const DecorationImage(
                 image: AssetImage(
-                  'assets/Premium_MAc.png',
+                  'assets/paywall_background.png',
                 ), // Replace with your image path
                 fit: BoxFit.fill,
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              child: Column(
+                // mainAxisSize: MainAxisSize.min,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Spacer(),
-                      Text(
-                        "${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w500,
-                          color: UiColors.whiteColor,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.only(
-                          left: 15.0,
-                          right: 15.0,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: <Color>[
-                              UiColors.darkblueColor,
-                              UiColors.lightblueColor,
-                            ],
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              // "Pro",
-                              AppLocalizations.of(context)!.pro,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w600,
-                                color: UiColors.whiteColor,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                        child: InkWell(
-                            onTap: () {
-                              Get.back();
-                              payWallController.selectPackage.value = 1;
-                            },
-                            child: Icon(
-                              Icons.close_rounded,
-                              color: UiColors.whiteColor,
-                              // color: UiColors.blackColor.withOpacity(0.5),
-                              size: 30.0,
-                            )),
-                      ),
+                      const SizedBox(),
+                      GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: const Icon(Icons.close))
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: IntrinsicHeight(
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 52),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Expanded(
-                          flex: 6,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 45.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        customRow(
-                                          context,
-                                          AppLocalizations.of(context)!
-                                              .multiple_format_at_once,
-                                          'assets/Multiple_images.png',
-                                        ),
-                                        const SizedBox(
-                                          height: 14.0,
-                                        ),
-                                        customRow(
-                                          context,
-                                          AppLocalizations.of(context)!
-                                              .convert_to_any_format,
-                                          'assets/any_format.png',
-                                        ),
-                                        const SizedBox(
-                                          height: 14.0,
-                                        ),
-                                        customRow(
-                                          context,
-                                          AppLocalizations.of(context)!
-                                              .unlimited_conversions,
-                                          'assets/Unlimited.png',
-                                        ),
-                                        const SizedBox(
-                                          height: 14.0,
-                                        ),
-                                        customRow(
-                                          context,
-                                          AppLocalizations.of(context)!
-                                              .support_upto_20mbs_files,
-                                          'assets/20mb.png',
-                                        ),
-                                        const SizedBox(
-                                          height: 14.0,
-                                        ),
-                                        customRow(
-                                          context,
-                                          AppLocalizations.of(context)!
-                                              .customer_support,
-                                          'assets/Customer_support.png',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        width: 60,
-                                        child: Text(
-                                          AppLocalizations.of(context)!.free,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 22.0,
-                                      ),
-                                      customLockColumn('ic_tick'),
-                                      const SizedBox(
-                                        height: 22.0,
-                                      ),
-                                      customLockColumn('lock'),
-                                      const SizedBox(
-                                        height: 22.0,
-                                      ),
-                                      customLockColumn('lock'),
-                                      const SizedBox(
-                                        height: 22.0,
-                                      ),
-                                      customLockColumn('lock'),
-                                      const SizedBox(
-                                        height: 22.0,
-                                      ),
-                                      customLockColumn('lock'),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 25.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            spreadRadius: 1,
-                                            blurRadius: 18,
-                                            offset: const Offset(0, 3),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.only(
-                                                left: 15.0,
-                                                right: 15.0,
-                                                top: 3.0,
-                                                bottom: 3.0),
-                                            decoration: BoxDecoration(
-                                              // border: Border.all(),
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topLeft,
-                                                end: Alignment.bottomRight,
-                                                colors: <Color>[
-                                                  UiColors.lightblueColor,
-                                                  UiColors.darkblueColor
-                                                ],
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                            ),
-                                            child: Text(
-                                              // "Pro",
-                                              AppLocalizations.of(context)!.pro,
-                                              style: const TextStyle(
-                                                  fontSize: 16.0,
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 18.0,
-                                          ),
-                                          customLockColumn('ic_tick'),
-                                          const SizedBox(
-                                            height: 20.0,
-                                          ),
-                                          customLockColumn('ic_tick'),
-                                          const SizedBox(
-                                            height: 20.0,
-                                          ),
-                                          customLockColumn('ic_tick'),
-                                          const SizedBox(
-                                            height: 20.0,
-                                          ),
-                                          customLockColumn('ic_tick'),
-                                          const SizedBox(
-                                            height: 20.0,
-                                          ),
-                                          customLockColumn('ic_tick'),
-                                          const SizedBox(
-                                            height: 30.0,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              Center(
-                                child: Stack(
+                          // flex: 7,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Image.asset(
-                                      "assets/rating_image.png",
-                                      width: 220,
-                                      height: 100,
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 10.0),
+                                      child: SizedBox(
+                                        width: 190,
+                                        child: Text(
+                                          "Image Converter",
+                                          style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              fontSize: 22,
+                                              fontFamily: 'Manrope-Medium',
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      ),
                                     ),
-                                    Positioned(
-                                        top: 5,
-                                        left: isArabicOrPersianOrHebrew ? 0 : 5,
-                                        right:
-                                            isArabicOrPersianOrHebrew ? 6 : 0,
-                                        child: Column(
-                                          children: [
-                                            Text(
-                                              AppLocalizations.of(context)!
-                                                  .trusted_by,
-                                              style: GoogleFonts.poppins(
+                                    Container(
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 4,
+                                          bottom: 4),
+                                      decoration: BoxDecoration(
+                                        gradient:
+                                            UiColors().linearGradientBlueColor,
+                                        borderRadius: BorderRadius.circular(30),
+                                        // color: UiColors.blueColorNew,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          // SvgPicture.asset(AppAssets.diamond),
+                                          Center(
+                                            child: Text(
+                                              "PRO",
+                                              style: TextStyle(
                                                   fontSize: 18,
-                                                  color: UiColors.whiteColor,
-                                                  fontWeight: FontWeight.w400),
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
                                             ),
-                                            Text(
-                                              AppLocalizations.of(context)!
-                                                  .professionals,
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 22,
-                                                  color: UiColors.whiteColor,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ))
+                                          )
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30.0),
-                          child: VerticalDivider(
-                            thickness: 2.0,
-                            color: Colors.black.withOpacity(0.2),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 6,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 40.0, right: 0),
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const SizedBox(
-                                    height: 40,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      payWallController.offerings != null
-                                          ? payWallController.premiumContainer(
-                                              AppLocalizations.of(context)!
-                                                  .monthly,
-                                              0,
-                                              false,
-                                              context)
-                                          : shimmerContainer(context, 170, 170),
-                                      const SizedBox(
-                                        width: 20,
-                                      ),
-                                      payWallController.offerings != null
-                                          ? payWallController.premiumContainer(
-                                              AppLocalizations.of(context)!
-                                                  .yearly,
-                                              1,
-                                              true,
-                                              context)
-                                          : shimmerContainer(context, 170, 168),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  payWallController.purchaseButton(context),
-                                  const Spacer(),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 15.0),
-                                    child: IntrinsicHeight(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          payWallController
-                                              .hyperLinksOptionsText(
-                                                  AppLocalizations.of(context)!
-                                                      .terms_of_services, () {
-                                            var urlTermsofServices = Uri.parse(
-                                                "https://eclixtech.com/terms-service");
-                                            launchUrl(urlTermsofServices);
-                                          }),
-                                          VerticalDivider(
-                                              thickness: 2,
-                                              color:
-                                                  UiColors.lightGreyBackground
-                                              //  UiColors.blackColor
-                                              // .withOpacity(0.4),
-                                              ),
-                                          payWallController
-                                              .hyperLinksOptionsText(
-                                                  AppLocalizations.of(context)!
-                                                      .privacy_policy, () {
-                                            var urlPrivacyPolicy = Uri.parse(
-                                                "https://eclixtech.com/privacy-policy");
-                                            launchUrl(urlPrivacyPolicy);
-                                          }),
-                                          VerticalDivider(
-                                            thickness: 2,
-                                            color: UiColors.lightGreyBackground,
-                                            // color: UiColors.blackColor
-                                            //     .withOpacity(0.4),
-                                          ),
-                                          payWallController
-                                              .hyperLinksOptionsText(
-                                                  // "Restore Purchase",
-                                                  AppLocalizations.of(context)!
-                                                      .restore_purchase, () {
-                                            payWallController
-                                                .restorePurchase(context);
-                                          }),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 50.0),
+                                  child: CarouselWidget(),
+                                ),
+                              ],
                             ),
                           ),
                         ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  payWallController.selectPackage.value = 0;
+                                },
+                                child: premiumWidget("Weekly", "USD", "12",
+                                    "9.99", "Basic", 0, ''),
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  payWallController.selectPackage.value = 1;
+                                },
+                                child: premiumWidget("Monthly", "USD", "12",
+                                    "9.99", "50 %", 1, 'OFF'),
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  payWallController.selectPackage.value = 2;
+                                },
+                                child: premiumWidget("Yearly", "USD", "12",
+                                    "9.99", "50 %", 2, 'OFF'),
+                              ),
+                              SizedBox(
+                                height: 42,
+                              ),
+                              Container(
+                                height: 42,
+                                width: 200,
+                                padding: EdgeInsets.symmetric(horizontal: 22),
+                                decoration: BoxDecoration(
+                                    gradient:
+                                        UiColors().linearGradientBlueColor,
+                                    // border: Border.all(color: Colors.green),
+                                    color: UiColors.blueColorNew,
+                                    borderRadius: BorderRadius.circular(32)),
+                                child: Center(
+                                  child: Text(
+                                    "Subscribe",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        fontFamily: 'Manrope-Medium',
+                                        color: UiColors.whiteColor),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Privacy Policy",
+                                    style: TextStyle(
+                                      color: UiColors.newGreyColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  sizedBoxWidth,
+                                  Container(
+                                    height: 18,
+                                    width: 1,
+                                    decoration: BoxDecoration(
+                                        color: UiColors.newGreyColor),
+                                  ),
+                                  sizedBoxWidth,
+                                  Text(
+                                    "Restore",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: UiColors.newGreyColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Obx premiumWidget(String text, String currency, String cutPrice,
+      String actualPrice, String offText, int index, String off) {
+    return Obx(
+      () => Container(
+        width: Get.width * 0.27,
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        decoration: BoxDecoration(
+            border: payWallController.selectPackage.value == index
+                ? Border.all(color: UiColors.blueColorNew, width: 2)
+                : null,
+            color: UiColors.whiteColor,
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 12,
+                  color: payWallController.selectPackage.value != index
+                      ? Colors.black.withOpacity(0.2)
+                      : UiColors.blueColorNew.withOpacity(0.2))
+            ],
+            // border: Border.all(),
+            borderRadius: BorderRadius.circular(12)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: TextStyle(
+                    fontSize: 18,
+                    // fontFamily: 'Manrope-Medium',
+                    fontWeight: payWallController.selectPackage.value == index
+                        ? FontWeight.bold
+                        : FontWeight.w400,
+                  ),
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  "$currency $cutPrice",
+                  style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: UiColors.newGreyColor),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "$currency $actualPrice",
+                  style: TextStyle(
+                      color: payWallController.selectPackage.value == index
+                          ? UiColors.blueColorNew
+                          : UiColors.blackColor,
+                      fontFamily: payWallController.selectPackage.value == index
+                          ? 'Manrope-Bold'
+                          : 'Manrope-Medium',
+                      fontWeight: payWallController.selectPackage.value == index
+                          ? FontWeight.w800
+                          : FontWeight.w400,
+                      fontSize: 16),
+                ),
+                sizedBoxWidth,
+                Container(
+                  height: 52,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: payWallController.selectPackage.value == index
+                          ? UiColors.blueColorNew.withOpacity(0.2)
+                          : UiColors.newGreyColor.withOpacity(0.2)),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          offText,
+                          // "Basic",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16),
+                        ),
+                        index != 0
+                            ? Text(
+                                off,
+                                // "Basic",
+                                style: TextStyle(
+                                    fontWeight:
+                                        payWallController.selectPackage.value ==
+                                                index
+                                            ? FontWeight.w400
+                                            : FontWeight.w500,
+                                    fontSize: 14),
+                              )
+                            : SizedBox(),
                       ],
                     ),
                   ),
                 )
               ],
             ),
-
-            // FutureBuilder(
-            //     future: payWallController.getProductsPrice(),
-            //     builder: ((BuildContext buildContext, AsyncSnapshot snapshot) {
-            //       return Column(
-            //         mainAxisSize: MainAxisSize.min,
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Padding(
-            //             padding: const EdgeInsets.only(top: 15.0),
-            //             child: Row(
-            //               mainAxisSize: MainAxisSize.min,
-            //               crossAxisAlignment: CrossAxisAlignment.center,
-            //               children: [
-            //                 const Spacer(),
-            //                 Text(
-            //                   "${AppLocalizations.of(context)!.heic} ${AppLocalizations.of(context)!.converter}",
-            //                   textAlign: TextAlign.center,
-            //                   style: GoogleFonts.poppins(
-            //                     fontSize: 24.0,
-            //                     fontWeight: FontWeight.w500,
-            //                     color: UiColors.whiteColor,
-            //                   ),
-            //                 ),
-            //                 const SizedBox(
-            //                   width: 10.0,
-            //                 ),
-            //                 Container(
-            //                   padding: const EdgeInsets.only(
-            //                     left: 15.0,
-            //                     right: 15.0,
-            //                   ),
-            //                   decoration: BoxDecoration(
-            //                     borderRadius: BorderRadius.circular(8.0),
-            //                     gradient: LinearGradient(
-            //                       begin: Alignment.topLeft,
-            //                       end: Alignment.bottomRight,
-            //                       colors: <Color>[
-            //                         UiColors.darkblueColor,
-            //                         UiColors.lightblueColor,
-            //                       ],
-            //                     ),
-            //                   ),
-            //                   child: Row(
-            //                     children: [
-            //                       Text(
-            //                         // "Pro",
-            //                         AppLocalizations.of(context)!.pro,
-            //                         textAlign: TextAlign.center,
-            //                         style: GoogleFonts.poppins(
-            //                           fontSize: 20.0,
-            //                           fontWeight: FontWeight.w600,
-            //                           color: UiColors.whiteColor,
-            //                         ),
-            //                       )
-            //                     ],
-            //                   ),
-            //                 ),
-            //                 const Spacer(),
-            //                 Padding(
-            //                   padding: const EdgeInsets.only(
-            //                       right: 15.0, left: 15.0),
-            //                   child: InkWell(
-            //                       onTap: () {
-            //                         Get.back();
-            //                         payWallController.selectPackage.value = 1;
-            //                       },
-            //                       child: Icon(
-            //                         Icons.close_rounded,
-            //                         color: UiColors.whiteColor,
-            //                         // color: UiColors.blackColor.withOpacity(0.5),
-            //                         size: 30.0,
-            //                       )),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //           Padding(
-            //             padding: const EdgeInsets.all(40.0),
-            //             child: IntrinsicHeight(
-            //               child: Row(
-            //                 mainAxisSize: MainAxisSize.min,
-            //                 children: [
-            //                   Expanded(
-            //                     flex: 6,
-            //                     child: Column(
-            //                       mainAxisAlignment: MainAxisAlignment.start,
-            //                       crossAxisAlignment: CrossAxisAlignment.start,
-            //                       children: [
-            //                         Row(
-            //                           mainAxisSize: MainAxisSize.min,
-            //                           children: [
-            //                             Padding(
-            //                               padding:
-            //                                   const EdgeInsets.only(top: 45.0),
-            //                               child: Column(
-            //                                 mainAxisAlignment:
-            //                                     MainAxisAlignment.start,
-            //                                 crossAxisAlignment:
-            //                                     CrossAxisAlignment.start,
-            //                                 children: [
-            //                                   customRow(
-            //                                     context,
-            //                                     AppLocalizations.of(context)!
-            //                                         .multiple_format_at_once,
-            //                                     'assets/Multiple_images.png',
-            //                                   ),
-            //                                   const SizedBox(
-            //                                     height: 14.0,
-            //                                   ),
-            //                                   customRow(
-            //                                     context,
-            //                                     AppLocalizations.of(context)!
-            //                                         .convert_to_any_format,
-            //                                     'assets/any_format.png',
-            //                                   ),
-            //                                   const SizedBox(
-            //                                     height: 14.0,
-            //                                   ),
-            //                                   customRow(
-            //                                     context,
-            //                                     AppLocalizations.of(context)!
-            //                                         .unlimited_conversions,
-            //                                     'assets/Unlimited.png',
-            //                                   ),
-            //                                   const SizedBox(
-            //                                     height: 14.0,
-            //                                   ),
-            //                                   customRow(
-            //                                     context,
-            //                                     AppLocalizations.of(context)!
-            //                                         .support_upto_20mbs_files,
-            //                                     'assets/20mb.png',
-            //                                   ),
-            //                                   const SizedBox(
-            //                                     height: 14.0,
-            //                                   ),
-            //                                   customRow(
-            //                                     context,
-            //                                     AppLocalizations.of(context)!
-            //                                         .customer_support,
-            //                                     'assets/Customer_support.png',
-            //                                   ),
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                             Column(
-            //                               children: [
-            //                                 SizedBox(
-            //                                   width: 60,
-            //                                   child: Text(
-            //                                     AppLocalizations.of(context)!
-            //                                         .free,
-            //                                     maxLines: 1,
-            //                                     overflow: TextOverflow.ellipsis,
-            //                                     textAlign: TextAlign.center,
-            //                                     style: const TextStyle(
-            //                                         fontSize: 16,
-            //                                         color: Colors.white,
-            //                                         fontWeight:
-            //                                             FontWeight.bold),
-            //                                   ),
-            //                                 ),
-            //                                 const SizedBox(
-            //                                   height: 22.0,
-            //                                 ),
-            //                                 customLockColumn('ic_tick'),
-            //                                 const SizedBox(
-            //                                   height: 22.0,
-            //                                 ),
-            //                                 customLockColumn('lock'),
-            //                                 const SizedBox(
-            //                                   height: 22.0,
-            //                                 ),
-            //                                 customLockColumn('lock'),
-            //                                 const SizedBox(
-            //                                   height: 22.0,
-            //                                 ),
-            //                                 customLockColumn('lock'),
-            //                                 const SizedBox(
-            //                                   height: 22.0,
-            //                                 ),
-            //                                 customLockColumn('lock'),
-            //                               ],
-            //                             ),
-            //                             const SizedBox(
-            //                               width: 20,
-            //                             ),
-            //                             Padding(
-            //                               padding:
-            //                                   const EdgeInsets.only(top: 25.0),
-            //                               child: Container(
-            //                                 decoration: BoxDecoration(
-            //                                   borderRadius:
-            //                                       BorderRadius.circular(8),
-            //                                   color: Colors.white,
-            //                                   boxShadow: [
-            //                                     BoxShadow(
-            //                                       color: Colors.grey
-            //                                           .withOpacity(0.2),
-            //                                       spreadRadius: 1,
-            //                                       blurRadius: 18,
-            //                                       offset: const Offset(0, 3),
-            //                                     ),
-            //                                   ],
-            //                                 ),
-            //                                 child: Column(
-            //                                   children: [
-            //                                     Container(
-            //                                       padding:
-            //                                           const EdgeInsets.only(
-            //                                               left: 15.0,
-            //                                               right: 15.0,
-            //                                               top: 3.0,
-            //                                               bottom: 3.0),
-            //                                       decoration: BoxDecoration(
-            //                                         // border: Border.all(),
-            //                                         gradient: LinearGradient(
-            //                                           begin: Alignment.topLeft,
-            //                                           end:
-            //                                               Alignment.bottomRight,
-            //                                           colors: <Color>[
-            //                                             UiColors.lightblueColor,
-            //                                             UiColors.darkblueColor
-            //                                           ],
-            //                                         ),
-            //                                         borderRadius:
-            //                                             BorderRadius.circular(
-            //                                                 5),
-            //                                       ),
-            //                                       child: Text(
-            //                                         // "Pro",
-            //                                         AppLocalizations.of(
-            //                                                 context)!
-            //                                             .pro,
-            //                                         style: const TextStyle(
-            //                                             fontSize: 16.0,
-            //                                             color: Colors.white),
-            //                                       ),
-            //                                     ),
-            //                                     const SizedBox(
-            //                                       height: 18.0,
-            //                                     ),
-            //                                     customLockColumn('ic_tick'),
-            //                                     const SizedBox(
-            //                                       height: 20.0,
-            //                                     ),
-            //                                     customLockColumn('ic_tick'),
-            //                                     const SizedBox(
-            //                                       height: 20.0,
-            //                                     ),
-            //                                     customLockColumn('ic_tick'),
-            //                                     const SizedBox(
-            //                                       height: 20.0,
-            //                                     ),
-            //                                     customLockColumn('ic_tick'),
-            //                                     const SizedBox(
-            //                                       height: 20.0,
-            //                                     ),
-            //                                     customLockColumn('ic_tick'),
-            //                                     const SizedBox(
-            //                                       height: 30.0,
-            //                                     ),
-            //                                   ],
-            //                                 ),
-            //                               ),
-            //                             )
-            //                           ],
-            //                         ),
-            //                         const SizedBox(
-            //                           height: 25,
-            //                         ),
-            //                         Center(
-            //                           child: Stack(
-            //                             children: [
-            //                               Image.asset(
-            //                                 "assets/rating_image.png",
-            //                                 width: 220,
-            //                                 height: 100,
-            //                               ),
-            //                               Positioned(
-            //                                   top: 5,
-            //                                   left: isArabicOrPersianOrHebrew
-            //                                       ? 0
-            //                                       : 5,
-            //                                   right: isArabicOrPersianOrHebrew
-            //                                       ? 6
-            //                                       : 0,
-            //                                   child: Column(
-            //                                     children: [
-            //                                       Text(
-            //                                         AppLocalizations.of(
-            //                                                 context)!
-            //                                             .trusted_by,
-            //                                         style: GoogleFonts.poppins(
-            //                                             fontSize: 18,
-            //                                             color:
-            //                                                 UiColors.whiteColor,
-            //                                             fontWeight:
-            //                                                 FontWeight.w400),
-            //                                       ),
-            //                                       Text(
-            //                                         AppLocalizations.of(
-            //                                                 context)!
-            //                                             .professionals,
-            //                                         style: GoogleFonts.poppins(
-            //                                             fontSize: 22,
-            //                                             color:
-            //                                                 UiColors.whiteColor,
-            //                                             fontWeight:
-            //                                                 FontWeight.w500),
-            //                                       ),
-            //                                     ],
-            //                                   ))
-            //                             ],
-            //                           ),
-            //                         )
-            //                       ],
-            //                     ),
-            //                   ),
-            //                   Padding(
-            //                     padding: const EdgeInsets.only(left: 30.0),
-            //                     child: VerticalDivider(
-            //                       thickness: 2.0,
-            //                       color: Colors.black.withOpacity(0.2),
-            //                     ),
-            //                   ),
-            //                   Expanded(
-            //                     flex: 6,
-            //                     child: Padding(
-            //                       padding: const EdgeInsets.only(
-            //                           left: 40.0, right: 0),
-            //                       child: Center(
-            //                         child: Column(
-            //                           mainAxisSize: MainAxisSize.min,
-            //                           children: [
-            //                             const SizedBox(
-            //                               height: 40,
-            //                             ),
-            //                             Row(
-            //                               mainAxisAlignment:
-            //                                   MainAxisAlignment.center,
-            //                               children: [
-            //                                 snapshot.data != null
-            //                                     ? payWallController
-            //                                         .premiumContainer(
-            //                                             AppLocalizations.of(
-            //                                                     context)!
-            //                                                 .monthly,
-            //                                             0,
-            //                                             false,
-            //                                             context)
-            //                                     : shimmerContainer(
-            //                                         context, 170, 170),
-            //                                 const SizedBox(
-            //                                   width: 20,
-            //                                 ),
-            //                                 snapshot.data != null
-            //                                     ? payWallController
-            //                                         .premiumContainer(
-            //                                             AppLocalizations.of(
-            //                                                     context)!
-            //                                                 .yearly,
-            //                                             1,
-            //                                             true,
-            //                                             context)
-            //                                     : shimmerContainer(
-            //                                         context, 170, 170),
-            //                               ],
-            //                             ),
-            //                             const Spacer(),
-            //                             const SizedBox(
-            //                               height: 10,
-            //                             ),
-            //                             payWallController
-            //                                 .purchaseButton(context),
-            //                             const Spacer(),
-            //                             Padding(
-            //                               padding:
-            //                                   const EdgeInsets.only(top: 15.0),
-            //                               child: IntrinsicHeight(
-            //                                 child: Row(
-            //                                   mainAxisAlignment:
-            //                                       MainAxisAlignment.center,
-            //                                   children: [
-            //                                     payWallController
-            //                                         .hyperLinksOptionsText(
-            //                                             AppLocalizations.of(
-            //                                                     context)!
-            //                                                 .terms_of_services,
-            //                                             () {
-            //                                       var urlTermsofServices =
-            //                                           Uri.parse(
-            //                                               "https://eclixtech.com/terms-service");
-            //                                       launchUrl(urlTermsofServices);
-            //                                     }),
-            //                                     VerticalDivider(
-            //                                         thickness: 2,
-            //                                         color: UiColors
-            //                                             .lightGreyBackground
-            //                                         //  UiColors.blackColor
-            //                                         // .withOpacity(0.4),
-            //                                         ),
-            //                                     payWallController
-            //                                         .hyperLinksOptionsText(
-            //                                             AppLocalizations.of(
-            //                                                     context)!
-            //                                                 .privacy_policy,
-            //                                             () {
-            //                                       var urlPrivacyPolicy = Uri.parse(
-            //                                           "https://eclixtech.com/privacy-policy");
-            //                                       launchUrl(urlPrivacyPolicy);
-            //                                     }),
-            //                                     VerticalDivider(
-            //                                       thickness: 2,
-            //                                       color: UiColors
-            //                                           .lightGreyBackground,
-            //                                       // color: UiColors.blackColor
-            //                                       //     .withOpacity(0.4),
-            //                                     ),
-            //                                     payWallController
-            //                                         .hyperLinksOptionsText(
-            //                                             // "Restore Purchase",
-            //                                             AppLocalizations.of(
-            //                                                     context)!
-            //                                                 .restore_purchase,
-            //                                             () {
-            //                                       payWallController
-            //                                           .restorePurchase(context);
-            //                                     }),
-            //                                   ],
-            //                                 ),
-            //                               ),
-            //                             ),
-            //                           ],
-            //                         ),
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           )
-            //         ],
-            //       );
-            //     })),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
@@ -922,45 +369,150 @@ class PremiumPopUp {
           ),
         ));
   }
+}
 
-  Widget customRow(
-    BuildContext context,
-    String title,
-    String image,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? const Color.fromARGB(255, 25, 24, 24)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(10)),
-      child: Row(children: [
-        SizedBox(
-          width: 20,
-          height: 20,
-          child: Image.asset(
-            image,
-            // color: applyColor == true ? UiColors.lightblueColor : null,
+class CarouselWidget extends StatefulWidget {
+  const CarouselWidget({super.key});
+
+  @override
+  // ignore:
+  CarouselWidgetState createState() => CarouselWidgetState();
+}
+
+class CarouselWidgetState extends State<CarouselWidget> {
+  final CarouselSliderController carouselController =
+      CarouselSliderController();
+  int _currentIndex = 0;
+
+  final List<String> _images = [
+    'assets/premium_1.png',
+    'assets/premium_2.png',
+    'assets/premium_3.png',
+    'assets/premium_4.png',
+    'assets/premium_5.png',
+    'assets/premium_6.png',
+    'assets/premium_7.png',
+    'assets/premium_8.png',
+    'assets/premium_9.png',
+  ];
+
+  final List<String> _texts = [
+    'Unlimited Conversions',
+    '',
+    'Access to All Formats',
+    'Batch Conversion',
+    '',
+    'Ad-Free Experience',
+    '',
+    'Priority Customer Support',
+    'Regular Updates',
+    // AppLocalizations.of(Get.context!)!.unlimited_questions,
+    // // 'Step-by-Step Solutions',
+    // AppLocalizations.of(Get.context!)!.step_by_step_solutions,
+    // AppLocalizations.of(Get.context!)!.fast_processing,
+    // AppLocalizations.of(Get.context!)!.unlock_advance_topics,
+    // AppLocalizations.of(Get.context!)!.priority_customer_support,
+  ];
+  final List<String> subText = [
+    'Convert images without any restrictions on the number of conversions you can perform.',
+    '',
+    'Convert to and from a wide variety of formats including PDF, DOC, EXCEL, WEBP, and more.',
+    'Convert multiple images at once to save time and increase productivity.',
+    '',
+    'Enjoy a seamless and distraction-free experience without any advertisements.',
+    '',
+    'Receive top-priority support from our dedicated team to resolve any issues quickly.',
+    'Stay updated with the latest features, improvements, and new formats with regular updates.',
+
+    // AppLocalizations.of(Get.context!)!.detailed_explanations_for_solving,
+    // AppLocalizations.of(Get.context!)!.lightning_fast_solutions_for_multiple,
+    // AppLocalizations.of(Get.context!)!
+    //     .support_for_higher_level_math_like_calculas,
+    // AppLocalizations.of(Get.context!)!.faster_customer_support_for_premium,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 240,
+      width: 300,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CarouselSlider.builder(
+            carouselController: carouselController,
+            itemCount: _images.length,
+            itemBuilder: (context, index, realIndex) {
+              return Column(
+                children: [
+                  Image.asset(
+                    _images[index],
+                    // "assets/images/123.png",
+                    fit: BoxFit.cover,
+                    // color: Colors.red,
+                    height: 100,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    _texts[index],
+                    style: const TextStyle(
+                        // color: Colors.red,
+                        fontSize: 18,
+                        fontFamily: 'Manrope-Medium',
+                        fontWeight: FontWeight.w800),
+                  ),
+                  SizedBox(
+                    width: 300,
+                    child: Center(
+                      child: Text(
+                        subText[index],
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          // color: Colors.red,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+            options: CarouselOptions(
+              height: 200,
+              viewportFraction: 1,
+
+              // enlargeCenterPage: true,
+              autoPlay: true,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
           ),
-        ),
-        const SizedBox(
-          width: 15,
-        ),
-        SizedBox(
-          width: 260,
-          child: Text(
-            title,
-            textAlign: TextAlign.start,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(
-                fontSize: 16,
-                textStyle: TextStyle(
-                  color: UiColors.whiteColor,
-                )),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _images.asMap().entries.map((entry) {
+              return GestureDetector(
+                onTap: () => carouselController.animateToPage(entry.key),
+                child: Container(
+                  width: 12,
+                  height: 4,
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(22),
+                    color: _currentIndex == entry.key
+                        ? UiColors.blueColorNew
+                        : Colors.grey,
+                  ),
+                ),
+              );
+            }).toList(),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }

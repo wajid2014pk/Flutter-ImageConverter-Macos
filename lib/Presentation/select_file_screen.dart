@@ -7,6 +7,7 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Controller/HomeScreenController/home_screen_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Presentation/convert_file.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -19,6 +20,8 @@ class SelectFileScreen extends StatefulWidget {
 
 class _SelectFileScreenState extends State<SelectFileScreen>
     with WindowListener {
+  GlobalKey? lastTappedKey; // Store the last tapped key
+  final payWallController = Get.put(PayWallController());
   void initState() {
     detectScreenSize(); // Initial screen size detection
 
@@ -122,77 +125,102 @@ class _SelectFileScreenState extends State<SelectFileScreen>
               ],
             ),
             const Spacer(),
-            Container(
-                height: Get.width * 0.085,
-                width: Get.width / 2.5,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                  image: const DecorationImage(
-                      image: AssetImage(
-                        'assets/pro_banner_container.png',
-                      ),
-                      fit: BoxFit.cover),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Column(
+            Obx(
+              () => payWallController.isPro.value == false
+                  ? GestureDetector(
+                      onTap: () {
+                        payWallController.offerings == null
+                            ? payWallController.getProductsPrice()
+                            : null;
+                        payWallController.selectPackage.value = 1;
+                        payWallController.offerings == null
+                            ? Get.snackbar(
+                                backgroundColor: Colors.white,
+                                "Failed",
+                                "No Internet Connecion")
+                            : payWallController.makePurchase();
+                      },
+                      child: Container(
+                          height: Get.width * 0.085,
+                          width: Get.width / 2.5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(22),
+                            image: const DecorationImage(
+                                image: AssetImage(
+                                  'assets/pro_banner_container.png',
+                                ),
+                                fit: BoxFit.cover),
+                          ),
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Unlimited Conversion’s",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 18),
-                              ),
-                              SizedBox(
-                                width: Get.width * 0.25,
-                                child: Text(
-                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: UiColors.proBannerGreyColor,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 12),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Unlimited Conversion’s",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
+                                        ),
+                                        SizedBox(
+                                          width: Get.width * 0.25,
+                                          child: Text(
+                                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color:
+                                                    UiColors.proBannerGreyColor,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 22, vertical: 12),
+                                      decoration: BoxDecoration(
+                                        color: UiColors.blueColorNew,
+                                        borderRadius: BorderRadius.circular(22),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
+                                            spreadRadius: 2,
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Text(
+                                        "Upgrade Now",
+                                        style: TextStyle(
+                                            color: UiColors.whiteColor,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 22, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: UiColors.blueColorNew,
-                              borderRadius: BorderRadius.circular(22),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  spreadRadius: 2,
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Text(
-                              "Upgrade Now",
-                              style: TextStyle(
-                                  color: UiColors.whiteColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )),
+                          )),
+                    )
+                  : SizedBox(),
+            ),
             const SizedBox(
               height: 22,
             ),
@@ -288,6 +316,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
   }
 
   //------------overlay----------------
+
   void showPopup(GlobalKey key, int index) {
     removePopup(); // Remove any existing popup first
 

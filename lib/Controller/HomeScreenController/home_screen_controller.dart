@@ -98,9 +98,10 @@ class HomeScreenController extends GetxController {
         sideBarSelectedIndex.value = index;
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        margin: EdgeInsets.only(bottom: 4),
         decoration: BoxDecoration(
-            border: Border.all(),
+            // border: Border.all(),
             color: sideBarSelectedIndex.value == index
                 ? UiColors.blueColorNew
                 : null,
@@ -109,7 +110,10 @@ class HomeScreenController extends GetxController {
           children: [
             Image.asset(
               assetName,
-              height: 28,
+              height: 20,
+              color: sideBarSelectedIndex.value == index
+                  ? UiColors.whiteColor
+                  : UiColors.blackColor,
             ),
             const SizedBox(
               width: 15,
@@ -120,9 +124,12 @@ class HomeScreenController extends GetxController {
                 sideBarItem,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: UiColors.blackColor,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w300,
+                  color: sideBarSelectedIndex.value == index
+                      ? UiColors.whiteColor
+                      : UiColors.blackColor,
                   // fontWeight: FontWeight.w500,
                 ),
               ),

@@ -49,37 +49,49 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: UiColors.whiteColor,
-        image: const DecorationImage(
-          image: AssetImage(
-            'assets/splah_Background.png',
-          ),
-          fit: BoxFit.fill,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AnimatedBuilder(
-            animation: _logoAnimation,
-            builder: (BuildContext context, Widget? child) {
-              return Opacity(
-                opacity: _logoAnimation.value,
-                child: child,
-              );
-            },
-            child: Image.asset(
-              'assets/logo.png',
-              fit: BoxFit.fill,
-              height: 100.0,
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: UiColors.whiteColor,
+          image: const DecorationImage(
+            image: AssetImage(
+              'assets/splash_background_screen.png',
             ),
+            fit: BoxFit.fill,
           ),
-        ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AnimatedBuilder(
+              animation: _logoAnimation,
+              builder: (BuildContext context, Widget? child) {
+                return Opacity(
+                  opacity: _logoAnimation.value,
+                  child: child,
+                );
+              },
+              child: Image.asset(
+                'assets/logo_icon.png',
+                fit: BoxFit.fill,
+                height: 100.0,
+              ),
+            ),
+            SizedBox(
+              height: 22,
+            ),
+            Text(
+              "Image Converter",
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  fontFamily: 'Manrope-Medium'),
+            ),
+          ],
+        ),
       ),
     );
   }
