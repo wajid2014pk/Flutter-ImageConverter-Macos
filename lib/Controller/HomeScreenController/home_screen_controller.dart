@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart' as di;
 import 'package:path/path.dart' as path;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HomeScreenController extends GetxController {
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -94,14 +95,13 @@ class HomeScreenController extends GetxController {
   sideBarItem(
       String assetName, String sideBarItem, int index, BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         sideBarSelectedIndex.value = index;
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        margin: EdgeInsets.only(bottom: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        margin: const EdgeInsets.only(bottom: 4),
         decoration: BoxDecoration(
-            // border: Border.all(),
             color: sideBarSelectedIndex.value == index
                 ? UiColors.blueColorNew
                 : null,
@@ -125,7 +125,8 @@ class HomeScreenController extends GetxController {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
+                  fontFamily: 'Manrope-Regular',
                   fontWeight: FontWeight.w300,
                   color: sideBarSelectedIndex.value == index
                       ? UiColors.whiteColor
@@ -135,12 +136,6 @@ class HomeScreenController extends GetxController {
               ),
             ),
             const Spacer(),
-            // sideBarSelectedIndex.value == index
-            //     ? Image.asset(
-            //         'assets/selection_bar.png',
-            //         height: 40,
-            //       )
-            //     : const SizedBox()
           ],
         ),
       ),

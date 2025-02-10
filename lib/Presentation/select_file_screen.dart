@@ -38,6 +38,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
   @override
   void dispose() {
     windowManager.removeListener(this);
+    removePopup();
     super.dispose();
   }
 
@@ -53,178 +54,185 @@ class _SelectFileScreenState extends State<SelectFileScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UiColors.backgroundColor,
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: Get.width * 0.07,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          key: imageConvertorKey,
-                          onTap: () {
-                            toolIndex.value = 0;
-                            print("toolIndex${toolIndex.value}");
-                            showPopup(imageConvertorKey, 0);
-                          },
-                          child: imagePickupOptions(
-                              "assets/image_convertor.png",
-                              "Image Converter",
-                              0),
-                        ),
-                        GestureDetector(
-                          key: imageResizerKey,
-                          onTap: () {
-                            toolIndex.value = 1;
-                            print("toolIndex${toolIndex.value}");
-                            showPopup(imageResizerKey, 1);
-                          },
-                          child: imagePickupOptions(
-                              "assets/image_resizer.png", "Image Resizer", 1),
-                        ),
-                        GestureDetector(
-                          key: imageCompressorKey,
-                          onTap: () {
-                            toolIndex.value = 2;
-                            print("toolIndex${toolIndex.value}");
-                            showPopup(imageCompressorKey, 2);
-                          },
-                          child: imagePickupOptions(
-                              "assets/image_compressor.png",
-                              "Image Compressor",
-                              2),
-                        ),
-                        GestureDetector(
-                          key: imageEnhancerKey,
-                          onTap: () {
-                            toolIndex.value = 3;
-                            print("toolIndex${toolIndex.value}");
-                            showPopup(imageEnhancerKey, 3);
-                          },
-                          child: imagePickupOptions(
-                              "assets/image_enhancer.png",
-                              // AppLocalizations.of(context)!.imageResizer,
-                              "Image Enhancer",
-                              3),
-                        ),
-                      ],
-                    )),
-              ],
-            ),
-            const Spacer(),
-            Obx(
-              () => payWallController.isPro.value == false
-                  ? GestureDetector(
-                      onTap: () {
-                        payWallController.offerings == null
-                            ? payWallController.getProductsPrice()
-                            : null;
-                        payWallController.selectPackage.value = 1;
-                        payWallController.offerings == null
-                            ? Get.snackbar(
-                                backgroundColor: Colors.white,
-                                "Failed",
-                                "No Internet Connecion")
-                            : payWallController.makePurchase();
-                      },
-                      child: Container(
-                          height: Get.width * 0.085,
-                          width: Get.width / 2.5,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(22),
-                            image: const DecorationImage(
-                                image: AssetImage(
-                                  'assets/pro_banner_container.png',
-                                ),
-                                fit: BoxFit.cover),
+    return GestureDetector(
+      onTap: () {
+        removePopup();
+      },
+      child: Scaffold(
+        backgroundColor: UiColors.backgroundColor,
+        body: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: Get.width * 0.07,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            key: imageConvertorKey,
+                            onTap: () {
+                              toolIndex.value = 0;
+                              print("toolIndex${toolIndex.value}");
+                              showPopup(imageConvertorKey, 0);
+                            },
+                            child: imagePickupOptions(
+                                "assets/image_convertor.png",
+                                "Image Converter",
+                                0),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Unlimited Conversion’s",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 18),
-                                        ),
-                                        SizedBox(
-                                          width: Get.width * 0.25,
-                                          child: Text(
-                                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
+                          GestureDetector(
+                            key: imageResizerKey,
+                            onTap: () {
+                              toolIndex.value = 1;
+                              print("toolIndex${toolIndex.value}");
+                              showPopup(imageResizerKey, 1);
+                            },
+                            child: imagePickupOptions(
+                                "assets/image_resizer.png", "Image Resizer", 1),
+                          ),
+                          GestureDetector(
+                            key: imageCompressorKey,
+                            onTap: () {
+                              toolIndex.value = 2;
+                              print("toolIndex${toolIndex.value}");
+                              showPopup(imageCompressorKey, 2);
+                            },
+                            child: imagePickupOptions(
+                                "assets/image_compressor.png",
+                                "Image Compressor",
+                                2),
+                          ),
+                          GestureDetector(
+                            key: imageEnhancerKey,
+                            onTap: () {
+                              toolIndex.value = 3;
+                              print("toolIndex${toolIndex.value}");
+                              showPopup(imageEnhancerKey, 3);
+                            },
+                            child: imagePickupOptions(
+                                "assets/image_enhancer.png",
+                                // AppLocalizations.of(context)!.imageResizer,
+                                "Image Enhancer",
+                                3),
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+              const Spacer(),
+              Obx(
+                () => payWallController.isPro.value == false
+                    ? GestureDetector(
+                        onTap: () {
+                          payWallController.offerings == null
+                              ? payWallController.getProductsPrice()
+                              : null;
+                          payWallController.selectPackage.value = 1;
+                          payWallController.offerings == null
+                              ? Get.snackbar(
+                                  backgroundColor: Colors.white,
+                                  "Failed",
+                                  "No Internet Connecion")
+                              : payWallController.makePurchase();
+                        },
+                        child: Container(
+                            height: Get.width * 0.085,
+                            width: Get.width / 2.5,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(22),
+                              image: const DecorationImage(
+                                  image: AssetImage(
+                                    'assets/pro_banner_container.png',
+                                  ),
+                                  fit: BoxFit.cover),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Unlimited Conversion’s",
                                             style: TextStyle(
-                                                color:
-                                                    UiColors.proBannerGreyColor,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 12),
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 22, vertical: 12),
-                                      decoration: BoxDecoration(
-                                        color: UiColors.blueColorNew,
-                                        borderRadius: BorderRadius.circular(22),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                            spreadRadius: 2,
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 4),
+                                          SizedBox(
+                                            width: Get.width * 0.25,
+                                            child: Text(
+                                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: UiColors
+                                                      .proBannerGreyColor,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 12),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      child: Text(
-                                        "Upgrade Now",
-                                        style: TextStyle(
-                                            color: UiColors.whiteColor,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w700),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 22, vertical: 12),
+                                        decoration: BoxDecoration(
+                                          color: UiColors.blueColorNew,
+                                          borderRadius:
+                                              BorderRadius.circular(22),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Text(
+                                          "Upgrade Now",
+                                          style: TextStyle(
+                                              color: UiColors.whiteColor,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w700),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          )),
-                    )
-                  : SizedBox(),
-            ),
-            const SizedBox(
-              height: 22,
-            ),
-          ],
+                              ],
+                            )),
+                      )
+                    : SizedBox(),
+              ),
+              const SizedBox(
+                height: 22,
+              ),
+            ],
+          ),
         ),
       ),
     );

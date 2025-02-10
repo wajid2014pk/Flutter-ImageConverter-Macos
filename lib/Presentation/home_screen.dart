@@ -12,6 +12,8 @@ import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:image_converter_macos/Screens/privacy_policy.dart';
 import 'package:image_converter_macos/Screens/rate_us_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:image_converter_macos/Screens/share_us.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class HomeScreen extends StatefulWidget {
   final int? index;
@@ -28,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   late AnimationController _controller;
   late Animation<double> animation;
+  RxString packageName = "".obs;
 
   @override
   void initState() {
@@ -47,6 +50,10 @@ class _HomeScreenState extends State<HomeScreen>
     ).animate(_controller);
 
     _controller.repeat(reverse: true);
+    Future.delayed(Duration(milliseconds: 100), () async {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      packageName.value = packageInfo.version;
+    });
   }
 
   @override
@@ -106,15 +113,9 @@ class _HomeScreenState extends State<HomeScreen>
                                       fontFamily: 'Manrope-Bold',
                                       fontSize: 18),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    PremiumPopUp()
-                                        .premiumScreenPopUp(Get.context!);
-                                  },
-                                  child: Text(
-                                    "Version 11111",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
+                                Text(
+                                  "Version $packageName",
+                                  style: TextStyle(fontSize: 14),
                                 ),
                               ],
                             ),
@@ -133,21 +134,24 @@ class _HomeScreenState extends State<HomeScreen>
                         // homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/recent_file_new_icon.png",
-                          AppLocalizations.of(Get.context!)!.history,
+                          // AppLocalizations.of(Get.context!)!.history,
+                          "Recent Files",
                           2,
                           context,
                         ),
                         // homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/share_us_new_icon.png",
-                          AppLocalizations.of(Get.context!)!.rate_us,
+                          // AppLocalizations.of(Get.context!)!.rate_us,
+                          "Share Us",
                           3,
                           context,
                         ),
                         // homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/rate_us_new_icon.png",
-                          AppLocalizations.of(Get.context!)!.feedback,
+                          // AppLocalizations.of(Get.context!)!.feedback,
+                          AppLocalizations.of(Get.context!)!.rate_us,
                           4,
                           context,
                         ),
@@ -155,27 +159,40 @@ class _HomeScreenState extends State<HomeScreen>
                         homeScreenController.sideBarItem(
                           "assets/privacy_policy_new_icon.png",
                           AppLocalizations.of(Get.context!)!.privacy_policy,
+                          // "About Image Converter",
                           5,
                           context,
                         ),
                         homeScreenController.sideBarItem(
                           "assets/about_image_new_icon.png",
-                          AppLocalizations.of(Get.context!)!.privacy_policy,
-                          5,
+                          // AppLocalizations.of(Get.context!)!.privacy_policy,
+                          // AppLocalizations.of(Get.context!)!.feedback,
+                          "About Image Converter",
+                          6,
                           context,
                         ),
                         homeScreenController.sideBarItem(
                           "assets/feedback_new_icon.png",
-                          AppLocalizations.of(Get.context!)!.privacy_policy,
-                          5,
+                          // AppLocalizations.of(Get.context!)!.privacy_policy,
+                          // "More Apps",
+                          AppLocalizations.of(Get.context!)!.feedback,
+                          7,
                           context,
                         ),
                         homeScreenController.sideBarItem(
                           "assets/more_apps_new_icon.png",
-                          AppLocalizations.of(Get.context!)!.privacy_policy,
-                          5,
+                          // AppLocalizations.of(Get.context!)!.privacy_policy,
+                          "More Apps",
+                          8,
                           context,
                         ),
+                        //   homeScreenController.sideBarItem(
+                        //   "assets/more_apps_new_icon.png",
+                        //   // AppLocalizations.of(Get.context!)!.privacy_policy,
+                        //   "More Apps",
+                        //   8,
+                        //   context,
+                        // ),
                       ],
                     ),
                   ),
@@ -330,10 +347,11 @@ class _HomeScreenState extends State<HomeScreen>
                     : homeScreenController.sideBarSelectedIndex.value == 2
                         ? const HistoryScreen()
                         : homeScreenController.sideBarSelectedIndex.value == 3
-                            ? const RateUs()
+                            ? const ShareUs()
                             : homeScreenController.sideBarSelectedIndex.value ==
                                     4
-                                ? const FeedBack()
+                                ? const RateUs()
+                                // const FeedBack()
                                 : homeScreenController
                                             .sideBarSelectedIndex.value ==
                                         5

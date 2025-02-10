@@ -146,9 +146,9 @@ class _ConversionResultState extends State<ConversionResult> {
                 ],
               ),
 
-              widget.convertedFile.length == 1
-                  ? const Spacer()
-                  : const SizedBox(),
+              // widget.convertedFile.length == 1
+              //     ? const Spacer()
+              //     : const SizedBox(),
               SizedBox(
                 height: Get.width * 0.05,
               ),
@@ -349,134 +349,139 @@ class _ConversionResultState extends State<ConversionResult> {
                         ),
                       ),
                     )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            // if (widget.imageFormat == ".txt") {
-                            //   print(
-                            //       "textToolData.value ${widget.originalFilePath}");
-                            //   // print(
-                            //   //     "textToolData.value11 ${textToolImagePath.value}");
-                            //   Get.to(() => TextToolPreviewPage(
-                            //       text: widget.originalFilePath,
-                            //       imagePath: widget.convertedFile[0].path));
-                            // }
-                            // else if (widget.imageFormat == ".xlsx") {
-                            //   print("eexx ${widget.convertedFile[0]}");
-                            //   print("eexx22 ${widget.originalFilePath[0]}");
-                            //   Get.to(() => ExcelToolPreviewPage(
-                            //       excelFile: widget.convertedFile[0],
-                            //       imagePath: widget.originalFilePath));
-                            // }
-                          },
-                          child: Image.asset(
-                            widget.imageFormat == '.jpg'
-                                ? 'assets/jpg_icon.png'
-                                : widget.imageFormat == '.gif'
-                                    ? 'assets/gif_icon.png'
-                                    : widget.imageFormat == '.jpeg'
-                                        ? 'assets/jpeg_icon.png'
-                                        : widget.imageFormat == '.png'
-                                            ? 'assets/png_icon.png'
-                                            : widget.imageFormat == '.svg'
-                                                ? 'assets/svg_icon.png'
-                                                : widget.imageFormat == '.webp'
-                                                    ? 'assets/webp_icon.png'
-                                                    : widget.imageFormat ==
-                                                            '.bmp'
-                                                        ? 'assets/bmp_icon.png'
-                                                        : widget.imageFormat ==
-                                                                '.tiff'
-                                                            ? 'assets/tiff_icon.png'
-                                                            : widget.imageFormat ==
-                                                                    '.doc'
-                                                                ? 'assets/DOC_icon.png'
-                                                                : widget.imageFormat ==
-                                                                        '.raw'
-                                                                    ? 'assets/raw_icon.png'
-                                                                    : widget.imageFormat ==
-                                                                            '.psd'
-                                                                        ? 'assets/psd_icon.png'
-                                                                        : widget.imageFormat ==
-                                                                                '.dds'
-                                                                            ? 'assets/dds_icon.png'
-                                                                            : widget.imageFormat == '.heic'
-                                                                                ? 'assets/heic_icon.png'
-                                                                                : widget.imageFormat == '.ppm'
-                                                                                    ? 'assets/ppm_icon.png'
-                                                                                    : widget.imageFormat == '.tga'
-                                                                                        ? 'assets/tga_icon.png'
-                                                                                        : widget.imageFormat == '.pdf'
-                                                                                            ? 'assets/pdf_icon.png'
-                                                                                            : widget.imageFormat == '.txt'
-                                                                                                ? 'assets/TXT_icon.png'
-                                                                                                : widget.imageFormat == '.xlsx'
-                                                                                                    ? 'assets/XLS_icon.png'
-                                                                                                    : 'assets/jpg_icon.png',
-                            height: 62,
-                            width: 62,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 28,
-                        ),
-                        SizedBox(
-                          width: 150,
-                          child: Center(
-                            child: TextScroll(
-                              // child: Text(
-                              "${fileName[0]} ${fileName[0].contains('.') ? "" : ".${widget.imageFormat.split('.')[1]}"}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w800,
-                              ),
-                              // ),
-                              mode: TextScrollMode.endless,
-                              velocity: const Velocity(
-                                  pixelsPerSecond: Offset(20, 0)),
-                              delayBefore: const Duration(milliseconds: 500),
-                              numberOfReps: 1111,
-                              pauseBetween: const Duration(milliseconds: 500),
-                              textAlign: TextAlign.right,
-                              selectable: true,
+                  : Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Spacer(),
+                          // widget.convertedFile.length == 1
+                          //     ? const Spacer()
+                          //     : const SizedBox(),
+                          GestureDetector(
+                            onTap: () {
+                              // if (widget.imageFormat == ".txt") {
+                              //   print(
+                              //       "textToolData.value ${widget.originalFilePath}");
+                              //   // print(
+                              //   //     "textToolData.value11 ${textToolImagePath.value}");
+                              //   Get.to(() => TextToolPreviewPage(
+                              //       text: widget.originalFilePath,
+                              //       imagePath: widget.convertedFile[0].path));
+                              // }
+                              // else if (widget.imageFormat == ".xlsx") {
+                              //   print("eexx ${widget.convertedFile[0]}");
+                              //   print("eexx22 ${widget.originalFilePath[0]}");
+                              //   Get.to(() => ExcelToolPreviewPage(
+                              //       excelFile: widget.convertedFile[0],
+                              //       imagePath: widget.originalFilePath));
+                              // }
+                            },
+                            child: Image.asset(
+                              widget.imageFormat == '.jpg'
+                                  ? 'assets/jpg_icon.png'
+                                  : widget.imageFormat == '.gif'
+                                      ? 'assets/gif_icon.png'
+                                      : widget.imageFormat == '.jpeg'
+                                          ? 'assets/jpeg_icon.png'
+                                          : widget.imageFormat == '.png'
+                                              ? 'assets/png_icon.png'
+                                              : widget.imageFormat == '.svg'
+                                                  ? 'assets/svg_icon.png'
+                                                  : widget.imageFormat ==
+                                                          '.webp'
+                                                      ? 'assets/webp_icon.png'
+                                                      : widget.imageFormat ==
+                                                              '.bmp'
+                                                          ? 'assets/bmp_icon.png'
+                                                          : widget.imageFormat ==
+                                                                  '.tiff'
+                                                              ? 'assets/tiff_icon.png'
+                                                              : widget.imageFormat ==
+                                                                      '.doc'
+                                                                  ? 'assets/DOC_icon.png'
+                                                                  : widget.imageFormat ==
+                                                                          '.raw'
+                                                                      ? 'assets/raw_icon.png'
+                                                                      : widget.imageFormat ==
+                                                                              '.psd'
+                                                                          ? 'assets/psd_icon.png'
+                                                                          : widget.imageFormat == '.dds'
+                                                                              ? 'assets/dds_icon.png'
+                                                                              : widget.imageFormat == '.heic'
+                                                                                  ? 'assets/heic_icon.png'
+                                                                                  : widget.imageFormat == '.ppm'
+                                                                                      ? 'assets/ppm_icon.png'
+                                                                                      : widget.imageFormat == '.tga'
+                                                                                          ? 'assets/tga_icon.png'
+                                                                                          : widget.imageFormat == '.pdf'
+                                                                                              ? 'assets/pdf_icon.png'
+                                                                                              : widget.imageFormat == '.txt'
+                                                                                                  ? 'assets/TXT_icon.png'
+                                                                                                  : widget.imageFormat == '.xlsx'
+                                                                                                      ? 'assets/XLS_icon.png'
+                                                                                                      : 'assets/jpg_icon.png',
+                              height: 62,
+                              width: 62,
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              widget.imageFormat.split('.')[1].toUpperCase(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w800,
+                          const SizedBox(
+                            height: 28,
+                          ),
+                          SizedBox(
+                            width: 150,
+                            child: Center(
+                              child: TextScroll(
+                                // child: Text(
+                                "${fileName[0]} ${fileName[0].contains('.') ? "" : ".${widget.imageFormat.split('.')[1]}"}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                                // ),
+                                mode: TextScrollMode.endless,
+                                velocity: const Velocity(
+                                    pixelsPerSecond: Offset(20, 0)),
+                                delayBefore: const Duration(milliseconds: 500),
+                                numberOfReps: 1111,
+                                pauseBetween: const Duration(milliseconds: 500),
+                                textAlign: TextAlign.right,
+                                selectable: true,
                               ),
                             ),
-                            Text(
-                              " | ",
-                              style: TextStyle(
-                                color: UiColors.greyColor,
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                widget.imageFormat.split('.')[1].toUpperCase(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "${fileSize[0].toInt() == 0 ? fileSize[0].toStringAsPrecision(2) : fileSize[0].toInt().toString()} KB",
-                              style: TextStyle(
-                                color: UiColors.greyColor,
+                              Text(
+                                " | ",
+                                style: TextStyle(
+                                  color: UiColors.greyColor,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                              Text(
+                                "${fileSize[0].toInt() == 0 ? fileSize[0].toStringAsPrecision(2) : fileSize[0].toInt().toString()} KB",
+                                style: TextStyle(
+                                  color: UiColors.greyColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
               // ),
-              widget.convertedFile.length == 1
-                  ? const Spacer()
-                  : const SizedBox(),
+              // widget.convertedFile.length == 1
+              //     ? const Spacer()
+              //     : const SizedBox(),
               const SizedBox(
                 height: 28,
               ),
@@ -498,20 +503,7 @@ class _ConversionResultState extends State<ConversionResult> {
                         await createZip(true, widget.convertedFile);
                       }
                     },
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 16),
-                        decoration: BoxDecoration(
-                            color:
-                                UiColors.lightGreyBackground.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Center(
-                          child: Image.asset(
-                            'assets/share_icon.png',
-                            height: 22,
-                            width: 22,
-                          ),
-                        )),
+                    child: customShareButton('assets/share_icon.png'),
                   ),
                   widget.convertedFile.length == 1
                       ? sizedBoxWidth
@@ -562,20 +554,7 @@ class _ConversionResultState extends State<ConversionResult> {
                                   context, widget.convertedFile[0].path);
                             }
                           },
-                          child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 14, horizontal: 16),
-                              decoration: BoxDecoration(
-                                  color: UiColors.lightGreyBackground
-                                      .withOpacity(0.5),
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Center(
-                                child: Image.asset(
-                                  'assets/ic_preview.png',
-                                  height: 22,
-                                  width: 22,
-                                ),
-                              )),
+                          child: customShareButton('assets/ic_preview.png'),
                         )
                       : const SizedBox(),
                   sizedBoxWidth,
@@ -623,33 +602,11 @@ class _ConversionResultState extends State<ConversionResult> {
                         await createZip(false, widget.convertedFile);
                       }
                     },
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          gradient: UiColors().linearGradientBlueColor,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/download_icon.png',
-                              height: 22,
-                              width: 22,
-                            ),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            Text(
-                              widget.convertedFile.length == 1
-                                  ? "Download"
-                                  : "Download zip",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            )
-                          ],
-                        )),
+                    child: downloadButton(
+                        imagePath: 'assets/download_icon.png',
+                        index: widget.convertedFile.length,
+                        buttonWidth:
+                            widget.convertedFile.length == 1 ? 280 : 160),
                   ),
                 ],
               ),
@@ -705,9 +662,11 @@ class _ConversionResultState extends State<ConversionResult> {
               //   ]),
               // ),
 
-              const SizedBox(
-                height: 22,
-              ),
+              widget.convertedFile.length == 1
+                  ? Spacer()
+                  : SizedBox(
+                      height: 22,
+                    ),
             ],
           ),
         ),
