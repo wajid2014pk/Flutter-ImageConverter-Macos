@@ -74,18 +74,7 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                             index: 1,
                           ));
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: UiColors.lightGreyBackground.withOpacity(0.5),
-                      ),
-                      child: Image.asset(
-                        'assets/back_arrow.png',
-                        height: 22,
-                        width: 22,
-                      ),
-                    ),
+                    child: customBackButton(),
                   ),
                   sizedBoxWidth,
                   sizedBoxWidth,
@@ -160,75 +149,64 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      shareFile(widget.convertedFile);
-                    },
-                    child: Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                        decoration: BoxDecoration(
-                            color:
-                                UiColors.lightGreyBackground.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Center(
-                          child: Image.asset(
-                            'assets/share_icon.png',
-                            height: 22,
-                            width: 22,
-                          ),
-                        )),
-                  ),
+                      onTap: () {
+                        shareFile(widget.convertedFile);
+                      },
+                      child: customShareButton("assets/share_icon.png")),
                   sizedBoxWidth,
                   // Image.asset('assets/copy_icon.png'),
 
                   GestureDetector(
-                    onTap: () async {
-                      final bytes = await widget.convertedFile.readAsBytes();
+                      onTap: () async {
+                        final bytes = await widget.convertedFile.readAsBytes();
 
-                      final result = await FileSaver.instance.saveAs(
-                          name: fileNameData.value,
-                          bytes: bytes,
-                          ext: 'png',
-                          mimeType: MimeType.png);
+                        final result = await FileSaver.instance.saveAs(
+                            name: fileNameData.value,
+                            bytes: bytes,
+                            ext: 'png',
+                            mimeType: MimeType.png);
 
-                      if (result != "") {
-                        ScaffoldMessenger.of(Get.context!).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'File saved successfully in Downloads Folder!')),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(Get.context!).showSnackBar(
-                          const SnackBar(content: Text('Failed to save file.')),
-                        );
-                      }
-                    },
-                    child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          gradient: UiColors().linearGradientBlueColor,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/download_icon.png',
-                              height: 22,
-                              width: 22,
-                            ),
-                            SizedBox(
-                              width: 12,
-                            ),
-                            Text(
-                              "Download",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 14),
-                            )
-                          ],
-                        )),
-                  ),
+                        if (result != "") {
+                          ScaffoldMessenger.of(Get.context!).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'File saved successfully in Downloads Folder!')),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(Get.context!).showSnackBar(
+                            const SnackBar(
+                                content: Text('Failed to save file.')),
+                          );
+                        }
+                      },
+                      child:
+                          downloadButton(imagePath: "assets/download_icon.png")
+                      // Container(
+                      //     padding:
+                      //         EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(12),
+                      //       gradient: UiColors().linearGradientBlueColor,
+                      //     ),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Image.asset(
+                      //           'assets/download_icon.png',
+                      //           height: 22,
+                      //           width: 22,
+                      //         ),
+                      //         SizedBox(
+                      //           width: 12,
+                      //         ),
+                      //         Text(
+                      //           "Download",
+                      //           style:
+                      //               TextStyle(color: Colors.white, fontSize: 14),
+                      //         )
+                      //       ],
+                      //     )),
+                      ),
                 ],
               ),
             ],

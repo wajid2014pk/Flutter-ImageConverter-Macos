@@ -62,6 +62,10 @@ class _ConversionResultState extends State<ConversionResult> {
       fileName.add(getName(widget.convertedFile[i].path));
     }
     print("fileName $fileName");
+    Future.delayed(Duration(milliseconds: 100), () async {
+      print("selectedIndex ${conversionController.selectedIndex.value} ");
+      await setToolsValue(conversionController.selectedIndex.value);
+    });
   }
 
   double getFileSizeInKB(File file) {
@@ -102,17 +106,7 @@ class _ConversionResultState extends State<ConversionResult> {
                     onTap: () => Get.offAll(() => const HomeScreen(
                           index: 1,
                         )),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          color: UiColors.greyColor.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Image.asset(
-                        'assets/back_arrow.png',
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
+                    child: customBackButton(),
                   ),
                   sizedBoxWidth,
                   sizedBoxWidth,

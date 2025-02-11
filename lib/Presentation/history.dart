@@ -36,9 +36,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
     "JPG",
     "GIF",
     "JPEG",
+    "PNG",
     "SVG",
     "WEBP",
     "BMP",
+    "TIFF",
+    "RAW",
+    "PSD",
+    "DDS",
+    "HEIC",
+    "PPM",
+    "TGA",
     "DOC",
     "TXT",
     "PDF",
@@ -176,7 +184,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           child: const Text("Filter by:")),
                       sizedBoxWidth,
                       Container(
-                        height: 26,
+                        height: 22,
                         constraints: BoxConstraints(maxWidth: Get.width * 0.2),
                         child: StatefulBuilder(
                             builder: (context, setStateOverlay) {
@@ -186,64 +194,73 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: filterSelectedItems.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    margin: const EdgeInsets.only(left: 8),
-                                    padding: const EdgeInsets.only(
-                                        left: 6, right: 6),
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 2,
-                                            color:
-                                                Colors.black.withOpacity(0.1)),
-                                      ],
-                                      borderRadius: BorderRadius.circular(32),
-                                      color: UiColors.whiteColor,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Text(filterSelectedItems[index]),
-                                        const SizedBox(
-                                          width: 2,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            for (int i = 0;
-                                                i < filterOptions.length;
-                                                i++) {
-                                              if (filterOptions[i] ==
-                                                  filterSelectedItems[index]) {
-                                                toggleSelection(
-                                                    i, setStateOverlay);
-                                              }
-                                            }
-                                            filterSelectedItems.removeAt(index);
-                                            Future.delayed(
-                                                const Duration(
-                                                    milliseconds: 100),
-                                                () async {
-                                              await _loadFiles();
-                                              filteredListTextField.value =
-                                                  allfiles;
-                                            });
-                                          },
-                                          child: Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                  color: UiColors.blackColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          32)),
-                                              child: Image.asset(
-                                                'assets/close_icon.png',
-                                                height: 6,
+                                  return filterSelectedItems[index] == "All"
+                                      ? SizedBox()
+                                      : Container(
+                                          margin:
+                                              const EdgeInsets.only(left: 8),
+                                          padding: const EdgeInsets.only(
+                                              left: 6, right: 6),
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  blurRadius: 2,
+                                                  color: Colors.black
+                                                      .withOpacity(0.1)),
+                                            ],
+                                            borderRadius:
+                                                BorderRadius.circular(32),
+                                            color: UiColors.whiteColor,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(filterSelectedItems[index]),
+                                              const SizedBox(
                                                 width: 6,
-                                                color: UiColors.whiteColor,
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  for (int i = 0;
+                                                      i < filterOptions.length;
+                                                      i++) {
+                                                    if (filterOptions[i] ==
+                                                        filterSelectedItems[
+                                                            index]) {
+                                                      toggleSelection(
+                                                          i, setStateOverlay);
+                                                    }
+                                                  }
+                                                  filterSelectedItems
+                                                      .removeAt(index);
+                                                  Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 100),
+                                                      () async {
+                                                    await _loadFiles();
+                                                    filteredListTextField
+                                                        .value = allfiles;
+                                                  });
+                                                },
+                                                child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            UiColors.blackColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(32)),
+                                                    child: Image.asset(
+                                                      'assets/close_icon.png',
+                                                      height: 6,
+                                                      width: 6,
+                                                      color:
+                                                          UiColors.whiteColor,
+                                                    )),
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                 }),
                           );
                         }),
@@ -543,6 +560,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Future<void> _deleteFile(FileSystemEntity file) async {
+    // for (int i = 0; i < file.length; i++) {
+    //   try {
+    //     await file[i].delete();
+    //     showOnTapOptions.value = false;
+
+    //     // Future.delayed(const Duration(milliseconds: 300), () {
+    //     //   _loadFiles();
+    //     // });
+    //     // Reload files after deletion
+    //   } catch (e) {
+    //     print('Error deleting file: $e');
+    //   }
+    // }
+    // Future.delayed(const Duration(milliseconds: 300), () {
+    //   _loadFiles();
+    // });
+
     try {
       await file.delete();
       showOnTapOptions.value = false;
@@ -793,7 +827,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: GridView.builder(
                           padding: const EdgeInsets.symmetric(vertical: 15),
-                          physics: const NeverScrollableScrollPhysics(),
+                          // physics: const NeverScrollableScrollPhysics(),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,

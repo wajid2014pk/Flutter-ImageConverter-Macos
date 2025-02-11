@@ -12,6 +12,7 @@ import 'package:image/image.dart' as im;
 import 'package:excel/excel.dart' as xlsx;
 import 'package:image_converter_macos/Presentation/image_conversion_loading_screen.dart';
 import 'package:image_converter_macos/Presentation/text_tool_preview.dart';
+import 'package:image_converter_macos/utils/shared_pref.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_converter_macos/Constant/ai_config.dart';
@@ -471,7 +472,7 @@ class ConvertImagesController extends GetxController {
 
             loadingState.value = false;
             isDownloading.value = false;
-            setToolsValue();
+            // setToolsValue();
           } catch (e) {
             log("message e $e");
           }
@@ -507,95 +508,6 @@ class ConvertImagesController extends GetxController {
           originalFilePath: selectedFile[0].path,
         ),
       );
-    }
-  }
-
-  Future setToolsValue() async {
-    switch (selectedIndex.value) {
-      case 5:
-        // int limit = await SharedPref().getSVGValue();
-
-        // ++limit;
-        // log(" case 5 before========================> $limit ");
-        // await SharedPref().setSVGValue(limit);
-
-        break;
-      case 6:
-        // int limit = await SharedPref().getWEBPValue();
-        // log(" case 6 before========================> $limit ");
-
-        // limit++;
-        // log(" setting case  6 ========================> $limit ");
-
-        // await SharedPref().setWEBPValue(limit);
-
-        break;
-      case 7:
-        // int limit = await SharedPref().getBmpLimit();
-
-        // ++limit;
-
-        // log(" setting case  7========================> $limit ");
-        // await SharedPref().setBmpLimit(limit);
-
-        break;
-      case 12:
-        // int limit = await SharedPref().getTiffLimit();
-        // log(" before tiff========================> $limit ");
-
-        // limit++;
-        // log(" case 6 after ====>  $limit ");
-        // await SharedPref().setTiffLimit(limit);
-
-        break;
-      case 13:
-        // int limit = await SharedPref().getRawLimit();
-
-        // limit++;
-        // log(" setting case  13  $limit ");
-        // await SharedPref().setRawLimit(limit);
-
-        break;
-      case 14:
-        // int limit = await SharedPref().getPsdLimit();
-        // log(" setting case  14 $limit ");
-
-        // limit++;
-        // await SharedPref().setPsdLimit(limit);
-
-        break;
-      case 15:
-        // int limit = await SharedPref().getDdsLimit();
-        // log(" setting case  15   $limit ");
-
-        // limit++;
-        // await SharedPref().setDdsLimit(limit);
-
-        break;
-      case 16:
-        // int limit = await SharedPref().getHeicLimit();
-        // log(" setting case  16$limit ");
-
-        // limit++;
-        // await SharedPref().setHeicLimit(limit);
-
-        break;
-      case 17:
-        // int limit = await SharedPref().getPpmLimit();
-
-        // limit++;
-        // log(" ssetting case  17  $limit ");
-        // await SharedPref().setPpmLimit(limit);
-
-        break;
-      case 18:
-        // int limit = await SharedPref().getTgaLimit();
-        // log(" setting case  18 $limit ");
-
-        // limit++;
-        // await SharedPref().setTgaLimit(limit);
-
-        break;
     }
   }
 
@@ -2411,156 +2323,8 @@ class ConvertImagesController extends GetxController {
                 index: 1,
               ));
         } else {
-          if (index == 1) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPG_SELECTION');
-          } else if (index == 2) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_GIF_SELECTION');
-          } else if (index == 3) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_JPEG_SELECTION');
-          } else if (index == 4) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PNG_SELECTION');
-          } else if (index == 5) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_SVG_SELECTION');
-          } else if (index == 6) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_WEBP_SELECTION');
-          } else if (index == 7) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BMP_SELECTION');
-          } else if (index == 8) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_DOC_SELECTION');
-          } else if (index == 9) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TEXT_SELECTION');
-          } else if (index == 10) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PDF_SELECTION');
-          } else if (index == 11) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_XLS_SELECTION');
-          } else if (index == 12) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TIFF_SELECTION');
-          } else if (index == 13) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_RAW_SELECTION');
-          } else if (index == 14) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PSD_SELECTION');
-          } else if (index == 15) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_BDS_SELECTION');
-          } else if (index == 16) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_HEIC_SELECTION');
-          } else if (index == 17) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_PPM_SELECTION');
-          } else if (index == 18) {
-            // CustomEvent.firebaseCustom('OUPUT_FORMAT_SCREEN_TGA_SELECTION');
-          }
           selectedIndex.value = index;
           // await getAllLimitValues();
-
-          // Get.back();
-          if (selectedIndex.value == 5 ||
-              selectedIndex.value == 6 ||
-              selectedIndex.value == 12 ||
-              selectedIndex.value == 13 ||
-              selectedIndex.value == 14 ||
-              selectedIndex.value == 15 ||
-              selectedIndex.value == 16 ||
-              selectedIndex.value == 17 ||
-              selectedIndex.value == 18) {
-            svgAndBmpApi.value = true;
-          }
-
-          if (selectedIndex.value == 1 ||
-              selectedIndex.value == 2 ||
-              selectedIndex.value == 3 ||
-              selectedIndex.value == 4 ||
-              selectedIndex.value == 7) {
-            if (selectedIndex.value == 7) {
-              Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
-              // }
-            } else {
-              // image to excel tool------------------------
-              if (selectedIndex.value == 11) {
-                if (payWallController.isPro.value == true) {
-                  if (isInternetConneted.value) {
-                    if (imagePath.length > 1) {
-                      Get.snackbar(
-                          backgroundColor: UiColors.whiteColor,
-                          duration: const Duration(seconds: 4),
-                          AppLocalizations.of(Get.context!)!.attention,
-                          // AppLocalizations.of(Get.context!)!
-                          //     .only_1_image_should_be_selected,
-                          "Only 1 image should be selected");
-                      // Get.to(() => ConvertFile(imagePath: [imagePath[0]]));
-                    } else {
-                      Get.to(() =>
-                          ImageConversionLoadingScreen(imagePath: imagePath));
-                    }
-                  } else {
-                    Get.back();
-                    Get.snackbar(
-                      backgroundColor: UiColors.whiteColor,
-                      duration: const Duration(seconds: 4),
-                      AppLocalizations.of(Get.context!)!.attention,
-                      // AppLocalizations.of(Get.context!)!
-                      //     .please_check_your_internet_connection,
-                      "Please check your internet connection",
-                    );
-                  }
-                } else {
-                  PremiumPopUp().premiumScreenPopUp(Get.context!);
-                }
-              }
-              // image to excel tool------------------------
-              //--------image to text tool----------------
-              if (selectedIndex.value == 9 || selectedIndex.value == 8) {
-                if (payWallController.isPro.value == true) {
-                  if (imagePath.length > 1) {
-                    Get.snackbar(
-                      backgroundColor: UiColors.whiteColor,
-                      duration: const Duration(seconds: 4),
-                      AppLocalizations.of(Get.context!)!.attention,
-                      "Only 1 image should be selected",
-                    );
-                  } else {
-                    print("Enter Premium");
-                    Get.to(() =>
-                        ImageConversionLoadingScreen(imagePath: imagePath));
-                  }
-                } else {
-                  PremiumPopUp().premiumScreenPopUp(Get.context!);
-                }
-              }
-              //---------image to text tool ---------------
-
-              if (selectedIndex.value == 5) {
-                //------------- Svg Tool Limit Check
-                if (Platform.isAndroid) {
-                  Get.to(
-                      () => ImageConversionLoadingScreen(imagePath: imagePath));
-                } else {
-                  Get.to(
-                      () => ImageConversionLoadingScreen(imagePath: imagePath));
-                }
-              }
-              if (selectedIndex.value == 12 ||
-                  selectedIndex.value == 13 ||
-                  selectedIndex.value == 14 ||
-                  selectedIndex.value == 15 ||
-                  selectedIndex.value == 16 ||
-                  selectedIndex.value == 17 ||
-                  selectedIndex.value == 18) {
-                Get.to(
-                    () => ImageConversionLoadingScreen(imagePath: imagePath));
-              }
-              if (selectedIndex.value == 6) {
-                Get.to(
-                    () => ImageConversionLoadingScreen(imagePath: imagePath));
-              }
-              if (selectedIndex.value == 10) {
-                if (payWallController.isPro.value == true) {
-                  Get.to(
-                      () => ImageConversionLoadingScreen(imagePath: imagePath));
-                } else {
-                  PremiumPopUp().premiumScreenPopUp(Get.context!);
-                }
-              }
-            }
-          }
           if ((selectedIndex.value == 8 ||
                   selectedIndex.value == 9 ||
                   selectedIndex.value == 10 ||
@@ -2568,8 +2332,221 @@ class ConvertImagesController extends GetxController {
               (payWallController.isPro.value == false)) {
             PremiumPopUp().premiumScreenPopUp(Get.context!);
           } else {
-            Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
+            // svg
+            if (selectedIndex.value == 5) {
+              if (svgLimit.value <= 10 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // webp
+            if (selectedIndex.value == 6) {
+              if (webpLimit.value <= 10 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            //bmp
+            else if (selectedIndex.value == 7) {
+              print("bmp value ....${bmpLimit.value}");
+              if (bmpLimit.value <= 10 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // tiff
+            else if (selectedIndex.value == 12) {
+              if (tiffLimit.value <= 5 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // raw
+            else if (selectedIndex.value == 13) {
+              if (rawLimit.value <= 5 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // psd
+            else if (selectedIndex.value == 14) {
+              if (psdLimit.value <= 5 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // dds
+            else if (selectedIndex.value == 15) {
+              if (ddsLimit.value <= 5 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // heic
+            else if (selectedIndex.value == 16) {
+              print("heicLimit.value ${heicLimit.value}");
+              if (heicLimit.value <= 5 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // ppm
+            else if (selectedIndex.value == 17) {
+              print("ppmLimit ${ppmLimit.value}");
+              if (ppmLimit.value <= 5 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // tga
+            else if (selectedIndex.value == 18) {
+              if (tgaLimit.value <= 5 || payWallController.isPro.value) {
+                Get.to(
+                    () => ImageConversionLoadingScreen(imagePath: imagePath));
+              } else {
+                PremiumPopUp().premiumScreenPopUp(Get.context!);
+              }
+            }
+            // free tools
+            else {
+              Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
+            }
           }
+
+          // Get.back();
+          // if (selectedIndex.value == 5 ||
+          //     selectedIndex.value == 6 ||
+          //     selectedIndex.value == 12 ||
+          //     selectedIndex.value == 13 ||
+          //     selectedIndex.value == 14 ||
+          //     selectedIndex.value == 15 ||
+          //     selectedIndex.value == 16 ||
+          //     selectedIndex.value == 17 ||
+          //     selectedIndex.value == 18) {
+          //   svgAndBmpApi.value = true;
+          // }
+
+          // if (selectedIndex.value == 1 ||
+          //     selectedIndex.value == 2 ||
+          //     selectedIndex.value == 3 ||
+          //     selectedIndex.value == 4 ||
+          //     selectedIndex.value == 7) {
+          //   if (selectedIndex.value == 7) {
+          //     Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
+          //     // }
+          //   } else {
+          //     // image to excel tool------------------------
+          //     if (selectedIndex.value == 11) {
+          //       if (payWallController.isPro.value == true) {
+          //         if (isInternetConneted.value) {
+          //           if (imagePath.length > 1) {
+          //             Get.snackbar(
+          //                 backgroundColor: UiColors.whiteColor,
+          //                 duration: const Duration(seconds: 4),
+          //                 AppLocalizations.of(Get.context!)!.attention,
+          //                 // AppLocalizations.of(Get.context!)!
+          //                 //     .only_1_image_should_be_selected,
+          //                 "Only 1 image should be selected");
+          //             // Get.to(() => ConvertFile(imagePath: [imagePath[0]]));
+          //           } else {
+          //             Get.to(() =>
+          //                 ImageConversionLoadingScreen(imagePath: imagePath));
+          //           }
+          //         } else {
+          //           Get.back();
+          //           Get.snackbar(
+          //             backgroundColor: UiColors.whiteColor,
+          //             duration: const Duration(seconds: 4),
+          //             AppLocalizations.of(Get.context!)!.attention,
+          //             // AppLocalizations.of(Get.context!)!
+          //             //     .please_check_your_internet_connection,
+          //             "Please check your internet connection",
+          //           );
+          //         }
+          //       } else {
+          //         PremiumPopUp().premiumScreenPopUp(Get.context!);
+          //       }
+          //     }
+          //     // image to excel tool------------------------
+          //     //--------image to text tool----------------
+          //     if (selectedIndex.value == 9 || selectedIndex.value == 8) {
+          //       if (payWallController.isPro.value == true) {
+          //         if (imagePath.length > 1) {
+          //           Get.snackbar(
+          //             backgroundColor: UiColors.whiteColor,
+          //             duration: const Duration(seconds: 4),
+          //             AppLocalizations.of(Get.context!)!.attention,
+          //             "Only 1 image should be selected",
+          //           );
+          //         } else {
+          //           print("Enter Premium");
+          //           Get.to(() =>
+          //               ImageConversionLoadingScreen(imagePath: imagePath));
+          //         }
+          //       } else {
+          //         PremiumPopUp().premiumScreenPopUp(Get.context!);
+          //       }
+          //     }
+          //     //---------image to text tool ---------------
+
+          //     if (selectedIndex.value == 5) {
+          //       //------------- Svg Tool Limit Check
+
+          //         Get.to(
+          //             () => ImageConversionLoadingScreen(imagePath: imagePath));
+
+          //     }
+          //     if (selectedIndex.value == 12 ||
+          //         selectedIndex.value == 13 ||
+          //         selectedIndex.value == 14 ||
+          //         selectedIndex.value == 15 ||
+          //         selectedIndex.value == 16 ||
+          //         selectedIndex.value == 17 ||
+          //         selectedIndex.value == 18) {
+          //       Get.to(
+          //           () => ImageConversionLoadingScreen(imagePath: imagePath));
+          //     }
+          //     if (selectedIndex.value == 6) {
+          //       Get.to(
+          //           () => ImageConversionLoadingScreen(imagePath: imagePath));
+          //     }
+          //     if (selectedIndex.value == 10) {
+          //       if (payWallController.isPro.value == true) {
+          //         Get.to(
+          //             () => ImageConversionLoadingScreen(imagePath: imagePath));
+          //       } else {
+          //         PremiumPopUp().premiumScreenPopUp(Get.context!);
+          //       }
+          //     }
+          //   }
+          // }
+          // if ((selectedIndex.value == 8 ||
+          //         selectedIndex.value == 9 ||
+          //         selectedIndex.value == 10 ||
+          //         selectedIndex.value == 11) &&
+          //     (payWallController.isPro.value == false)) {
+          //   PremiumPopUp().premiumScreenPopUp(Get.context!);
+          // } else {
+          //   Get.to(() => ImageConversionLoadingScreen(imagePath: imagePath));
+          // }
         }
       },
       child: Container(
@@ -2582,10 +2559,50 @@ class ConvertImagesController extends GetxController {
             Stack(
               children: [
                 Image.asset(
-                  // extensionImage,
                   'assets/$extensionImage.png',
                   height: 62,
                   width: 62,
+                ),
+
+                Obx(
+                  () => payWallController.isPro.value == false
+                      ? (
+                              // limit is >10
+                              (index == 5 && svgLimit.value > 10) ||
+                                  (index == 6 && webpLimit.value > 10) ||
+                                  (index == 7 && bmpLimit.value > 10)
+                                  // limit is >5
+                                  ||
+                                  (index == 12 && tiffLimit.value > 5) ||
+                                  (index == 13 && rawLimit.value > 5) ||
+                                  (index == 14 && psdLimit.value > 5) ||
+                                  (index == 15 && ddsLimit.value > 5) ||
+                                  (index == 16 && heicLimit.value > 5) ||
+                                  (index == 17 && ppmLimit.value > 5) ||
+                                  (index == 18 && tgaLimit.value > 5))
+                          ? Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/premium_container.png')),
+                                  ),
+                                  height: 62,
+                                  width: 62,
+                                ),
+                                Positioned(
+                                  left: 8,
+                                  top: 6,
+                                  child: Image.asset(
+                                      'assets/diamond_new_icon.png',
+                                      height: 15,
+                                      width: 15),
+                                ),
+                              ],
+                            )
+                          : SizedBox()
+                      : SizedBox(),
                 ),
                 Obx(
                   () => payWallController.isPro.value == false

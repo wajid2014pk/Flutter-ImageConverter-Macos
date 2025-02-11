@@ -83,13 +83,13 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                 10), // Adjust the speed of progress animation
                       );
                       progressAnimation = Tween<double>(begin: 0.0, end: 1.0)
-                          .animate(controller!)
+                          .animate(controller)
                         ..addListener(() {
-                          infiniteProgress.value = progressAnimation!.value;
+                          infiniteProgress.value = progressAnimation.value;
                           setState(() {});
                         });
 
-                      controller!.repeat(reverse: false);
+                      controller.repeat(reverse: false);
                       uploadFile(context);
                     } else {
                       getx.Get.snackbar(
@@ -810,6 +810,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
       }
 
       print("Calculated QUALITY: $qualityInput");
+      print("widget.file!.path ${widget.file!.path}");
       dio.FormData formdata = dio.FormData.fromMap({
         "file": await dio.MultipartFile.fromFile(widget.file!.path,
             filename: widget.file!.path
@@ -836,9 +837,8 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
 
       DateTime dateTime = DateTime.now();
       Map valueMap = json.decode(response.data);
-      Directory? dir = Platform.isMacOS
-          ? await getApplicationCacheDirectory()
-          : await getExternalStorageDirectory();
+      Directory? dir = await getApplicationCacheDirectory();
+
       var path =
           "${dir!.path}/ImageConverter/ImageCompression___$dateTime#${basename(valueMap['d_url'])}";
       downloadRes = await dioObject.download("${valueMap['d_url']}", path,
@@ -869,7 +869,10 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
       );
       print("Response Download ${downloadRes!.data}");
       loadingState.value = false;
-      controller!.dispose();
+      if (controller != null) {
+        controller.dispose();
+      }
+
       if (response.statusCode == 200) {
         print(response.toString());
       } else {
@@ -915,7 +918,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
   void dispose() {
     // Dispose the AnimationController if it has been initialized
     if (controller != null) {
-      controller!.dispose();
+      controller.dispose();
     }
 
     // Dispose other controllers if necessary

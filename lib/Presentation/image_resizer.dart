@@ -81,19 +81,9 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                       onTap: () {
                         Get.back();
                       },
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: UiColors.lightGreyBackground.withOpacity(0.5),
-                        ),
-                        child: Image.asset(
-                          'assets/back_arrow.png',
-                          height: 22,
-                          width: 22,
-                        ),
-                      ),
+                      child: customBackButton(),
                     ),
+                    sizedBoxWidth,
                     sizedBoxWidth,
                     const Text(
                       "Image Resizer",

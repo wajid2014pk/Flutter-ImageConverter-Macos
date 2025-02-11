@@ -51,17 +51,7 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
                   onTap: () {
                     Get.back();
                   },
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        color: UiColors.greyColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Image.asset(
-                      'assets/back_arrow.png',
-                      height: 20,
-                      width: 20,
-                    ),
-                  ),
+                  child: customBackButton(),
                 ),
                 const SizedBox(
                   width: 18,
@@ -151,49 +141,16 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
                   onTap: () async {
                     await Share.shareXFiles([XFile(widget.excelFile.path)]);
                   },
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
-                      decoration: BoxDecoration(
-                          color: UiColors.lightGreyBackground.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Center(
-                        child: Image.asset(
-                          'assets/share_icon.png',
-                          height: 22,
-                          width: 22,
-                        ),
-                      )),
+                  child: customShareButton("assets/share_icon.png"),
                 ),
                 sizedBoxWidth,
                 GestureDetector(
                   onTap: () async {
                     await downloadExcelFileMacOS(widget.excelFile);
                   },
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 14),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        gradient: UiColors().linearGradientBlueColor,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/download_icon.png',
-                            height: 22,
-                            width: 22,
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          const Text(
-                            "Download",
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          )
-                        ],
-                      )),
+                  child: downloadButton(
+                      imagePath: 'assets/download_icon.png', index: 1),
+              
                 ),
               ],
             ),

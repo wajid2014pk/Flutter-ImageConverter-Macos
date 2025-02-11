@@ -42,172 +42,191 @@ class PayWallController extends GetxController {
     }
   }
 
-  premiumContainer(String subscriptionDuration, int index, bool showTrailText,
-      BuildContext context) {
-    return SizedBox(
-      width: 150,
-      child: Stack(
-        children: [
-          Obx(
-            () => Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  hoverColor: Colors.transparent,
-                  onTap: () => {selectPackage.value = index},
-                  child: Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: selectPackage.value == index
-                              ? UiColors.lightblueColor
-                              : Colors.white,
-                          style: BorderStyle.solid,
-                          width: 1.5),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(
-                        10,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 0, bottom: 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                color: selectPackage.value == index
-                                    ? UiColors.lightblueColor
-                                    : Colors.white,
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(8),
-                                  topLeft: Radius.circular(8),
-                                )),
-                            child: SizedBox(
-                              width: 10,
-                              child: Center(
-                                child: Text(
-                                  subscriptionDuration,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.poppins(
-                                    color: selectPackage.value == index
-                                        ? UiColors.whiteColor
-                                        : UiColors.blackColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              width: MediaQuery.sizeOf(context).width,
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(12),
-                                  bottomRight: Radius.circular(12),
-                                ),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    index == 0
-                                        ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[4].storeProduct.price, 30)}"
-                                        : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[3].storeProduct.price, 60)}",
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                        color: Colors.black.withOpacity(0.5),
-                                        decoration: TextDecoration.lineThrough),
-                                  ),
-                                  const SizedBox(
-                                    height: 2.0,
-                                  ),
-                                  Text(
-                                    index == 0 ? "30% OFF" : "60% OFF",
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 10.0, right: 10.0),
-                                    child: Divider(),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        index == 0
-                                            ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} "
-                                            : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                          color: selectPackage.value == index
-                                              ? UiColors.lightblueColor
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      Text(
-                                        index == 0
-                                            ? offerings!
-                                                .current!
-                                                .availablePackages[4]
-                                                .storeProduct
-                                                .price
-                                                .toStringAsFixed(2)
-                                            : offerings!
-                                                .current!
-                                                .availablePackages[3]
-                                                .storeProduct
-                                                .price
-                                                .toStringAsFixed(2),
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 22,
-                                          color: selectPackage.value == index
-                                              ? UiColors.lightblueColor
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+  // premiumContainer(String subscriptionDuration, int index, bool showTrailText,
+  //     BuildContext context) {
+  //   return SizedBox(
+  //     width: 150,
+  //     child: Stack(
+  //       children: [
+  //         Obx(
+  //           () => Column(
+  //             crossAxisAlignment: CrossAxisAlignment.center,
+  //             children: [
+  //               InkWell(
+  //                 hoverColor: Colors.transparent,
+  //                 onTap: () => {selectPackage.value = index},
+  //                 child: Container(
+  //                   height: 150,
+  //                   decoration: BoxDecoration(
+  //                     border: Border.all(
+  //                         color: selectPackage.value == index
+  //                             ? UiColors.lightblueColor
+  //                             : Colors.white,
+  //                         style: BorderStyle.solid,
+  //                         width: 1.5),
+  //                     color: Colors.white,
+  //                     borderRadius: BorderRadius.circular(
+  //                       10,
+  //                     ),
+  //                   ),
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.only(top: 0, bottom: 0),
+  //                     child: Column(
+  //                       mainAxisAlignment: MainAxisAlignment.start,
+  //                       children: [
+  //                         Container(
+  //                           width: double.infinity,
+  //                           height: 30,
+  //                           decoration: BoxDecoration(
+  //                               color: selectPackage.value == index
+  //                                   ? UiColors.lightblueColor
+  //                                   : Colors.white,
+  //                               borderRadius: const BorderRadius.only(
+  //                                 topRight: Radius.circular(8),
+  //                                 topLeft: Radius.circular(8),
+  //                               )),
+  //                           child: SizedBox(
+  //                             width: 10,
+  //                             child: Center(
+  //                               child: Text(
+  //                                 subscriptionDuration,
+  //                                 maxLines: 1,
+  //                                 overflow: TextOverflow.ellipsis,
+  //                                 style: GoogleFonts.poppins(
+  //                                   color: selectPackage.value == index
+  //                                       ? UiColors.whiteColor
+  //                                       : UiColors.blackColor,
+  //                                   fontSize: 18,
+  //                                   fontWeight: FontWeight.w500,
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Expanded(
+  //                           child: Container(
+  //                             width: MediaQuery.sizeOf(context).width,
+  //                             decoration: const BoxDecoration(
+  //                               color: Colors.white,
+  //                               borderRadius: BorderRadius.only(
+  //                                 bottomLeft: Radius.circular(12),
+  //                                 bottomRight: Radius.circular(12),
+  //                               ),
+  //                             ),
+  //                             child: Column(
+  //                               mainAxisAlignment: MainAxisAlignment.center,
+  //                               crossAxisAlignment: CrossAxisAlignment.center,
+  //                               children: [
+  //                                 Text(
+  //                                   index == 0
+  //                                       ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[4].storeProduct.price, 30)}"
+  //                                       : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[3].storeProduct.price, 60)}",
+  //                                   style: GoogleFonts.poppins(
+  //                                       fontWeight: FontWeight.w400,
+  //                                       fontSize: 18,
+  //                                       color: Colors.black.withOpacity(0.5),
+  //                                       decoration: TextDecoration.lineThrough),
+  //                                 ),
+  //                                 const SizedBox(
+  //                                   height: 2.0,
+  //                                 ),
+  //                                 Text(
+  //                                   index == 0 ? "30% OFF" : "60% OFF",
+  //                                   style: GoogleFonts.poppins(
+  //                                     fontWeight: FontWeight.w500,
+  //                                     fontSize: 16,
+  //                                     color: Colors.red,
+  //                                   ),
+  //                                 ),
+  //                                 const Padding(
+  //                                   padding: EdgeInsets.only(
+  //                                       left: 10.0, right: 10.0),
+  //                                   child: Divider(),
+  //                                 ),
+  //                                 Row(
+  //                                   mainAxisAlignment: MainAxisAlignment.center,
+  //                                   crossAxisAlignment:
+  //                                       CrossAxisAlignment.start,
+  //                                   children: [
+  //                                     Text(
+  //                                       index == 0
+  //                                           ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} "
+  //                                           : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ",
+  //                                       textAlign: TextAlign.center,
+  //                                       style: GoogleFonts.poppins(
+  //                                         fontWeight: FontWeight.w600,
+  //                                         fontSize: 16,
+  //                                         color: selectPackage.value == index
+  //                                             ? UiColors.lightblueColor
+  //                                             : Colors.black,
+  //                                       ),
+  //                                     ),
+  //                                     Text(
+  //                                       index == 0
+  //                                           ? offerings!
+  //                                               .current!
+  //                                               .availablePackages[4]
+  //                                               .storeProduct
+  //                                               .price
+  //                                               .toStringAsFixed(2)
+  //                                           : offerings!
+  //                                               .current!
+  //                                               .availablePackages[3]
+  //                                               .storeProduct
+  //                                               .price
+  //                                               .toStringAsFixed(2),
+  //                                       textAlign: TextAlign.center,
+  //                                       style: GoogleFonts.poppins(
+  //                                         fontWeight: FontWeight.w600,
+  //                                         fontSize: 22,
+  //                                         color: selectPackage.value == index
+  //                                             ? UiColors.lightblueColor
+  //                                             : Colors.black,
+  //                                       ),
+  //                                     ),
+  //                                   ],
+  //                                 )
+  //                               ],
+  //                             ),
+  //                           ),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // getActualPrice(double salePrice, double disRate) {
+  //   disRate = disRate / 100;
+  //   double disRatePer = 1 - disRate;
+  //   double aPrice = salePrice / disRatePer;
+  //   return aPrice.toStringAsFixed(1);
+  // }
+  getActualPrice(double salePrice, double disRate) {
+    if (salePrice != null) {
+      disRate = disRate / 100;
+      double disRatePer = 1 - disRate;
+      double aPrice = salePrice / disRatePer;
+      return formatPrice(aPrice);
+    } else {
+      return formatPrice(12.00);
+    }
   }
 
-  getActualPrice(double salePrice, double disRate) {
-    disRate = disRate / 100;
-    double disRatePer = 1 - disRate;
-    double aPrice = salePrice / disRatePer;
-    return aPrice.toStringAsFixed(1);
+  String formatPrice(double price) {
+    // Check if the number is whole
+    if (price == price.toInt()) {
+      return price.toInt().toString(); // Return as an integer
+    } else {
+      return price.toStringAsFixed(2); // Return with two decimal places
+    }
   }
 
   showLoading(context) {
@@ -241,8 +260,9 @@ class PayWallController extends GetxController {
     try {
       showLoading(Get.context!);
       bool isPro = false;
-      Package? monthlyPackage = offerings!.current!.availablePackages[4];
-      Package? yearlyPackage = offerings!.current!.availablePackages[3];
+      Package? monthlyPackage = offerings!.current!.monthly!;
+      Package? yearlyPackage = offerings!.current!.annual!;
+      Package? lifetimePackage = offerings!.current!.lifetime!;
 
       if (selectPackage.value == 0) {
         CustomerInfo purchaserInfo =
@@ -252,6 +272,10 @@ class PayWallController extends GetxController {
         CustomerInfo purchaserInfo =
             await Purchases.purchasePackage(yearlyPackage);
         isPro = purchaserInfo.entitlements.all["yearlyPremium"]!.isActive;
+      } else if (selectPackage.value == 2) {
+        CustomerInfo purchaserInfo =
+            await Purchases.purchasePackage(lifetimePackage);
+        isPro = purchaserInfo.entitlements.all["lifetime_purchase"]!.isActive;
       }
       if (isPro) {
         await initRevenuePlatform();

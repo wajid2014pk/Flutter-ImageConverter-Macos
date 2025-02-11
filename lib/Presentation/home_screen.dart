@@ -113,9 +113,15 @@ class _HomeScreenState extends State<HomeScreen>
                                       fontFamily: 'Manrope-Bold',
                                       fontSize: 18),
                                 ),
-                                Text(
-                                  "Version $packageName",
-                                  style: TextStyle(fontSize: 14),
+                                GestureDetector(
+                                  onTap: () {
+                                    PremiumPopUp()
+                                        .premiumScreenPopUp(Get.context!);
+                                  },
+                                  child: Text(
+                                    "Version $packageName",
+                                    style: TextStyle(fontSize: 14),
+                                  ),
                                 ),
                               ],
                             ),

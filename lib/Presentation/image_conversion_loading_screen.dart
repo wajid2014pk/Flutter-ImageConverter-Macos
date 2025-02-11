@@ -10,6 +10,9 @@ import 'package:image_converter_macos/Constant/color.dart';
 
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:image_converter_macos/Screens/premium_popup.dart';
+import 'package:image_converter_macos/main.dart';
+import 'package:image_converter_macos/utils/shared_pref.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -135,31 +138,9 @@ class _ImageConversionLoadingScreenState
                                           index: 1,
                                         ));
                                   },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                        color:
-                                            UiColors.greyColor.withOpacity(0.2),
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: Image.asset(
-                                      'assets/back_arrow.png',
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                  ),
+                                  child: customBackButton(),
                                 )
-                              : Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      color:
-                                          UiColors.greyColor.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Image.asset(
-                                    'assets/back_arrow.png',
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                ),
+                              : customBackButton(),
                           sizedBoxWidth,
                           sizedBoxWidth,
                           Column(
@@ -800,12 +781,13 @@ class _ImageConversionLoadingScreenState
       //   Get.to(() => const PremiumPage());
       // }
     } else if (conversionController.selectedIndex.value == 6) {
-      // int webp = await SharedPref().getWEBPValue();
+      // webpLimit.value = await SharedPref().getWEBPValue();
 
-      // ++webp;
-      // await SharedPref().setWEBPValue(webp);
-      // await SharedPref().setToolValue(toolValue);
-      // if (webpValue <= 10 || isPremium.value) {
+      // ++webpLimit.value;
+      // await SharedPref().setWEBPValue(webpLimit.value);
+
+      // print("webp... ${webpLimit.value}");
+      // if (webpLimit.value <= 10 || payWallController.isPro.value) {
       try {
         if (conversionController.selectedIndex.value == 0) {
           Get.snackbar(
@@ -1117,9 +1099,18 @@ class _ImageConversionLoadingScreenState
         );
       }
       // } else {
-      //   Get.to(() => const PremiumPage());
+      //   Get.offAll(() => HomeScreen(
+      //         index: 1,
+      //       ));
+      //   PremiumPopUp().premiumScreenPopUp(Get.context!);
       // }
     } else if (conversionController.selectedIndex.value == 5) {
+      //   svgLimit.value = await SharedPref().getSVGValue();
+
+      // ++svgLimit.value;
+      // await SharedPref().setSVGValue(svgLimit.value);
+
+      // print("svg... ${svgLimit.value}");
       // ++toolValue;
       // await SharedPref().setToolValue(toolValue);
       // int svgLimit = await SharedPref().getSVGValue();

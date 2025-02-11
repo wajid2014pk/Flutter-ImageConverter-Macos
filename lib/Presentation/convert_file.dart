@@ -9,6 +9,7 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
+import 'package:image_converter_macos/utils/shared_pref.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -50,6 +51,22 @@ class _ConvertFileState extends State<ConvertFile> {
         conversionController.conversionOptionList(context, widget.imagePath);
       });
     });
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      await getAllLimitValue();
+    });
+  }
+
+  getAllLimitValue() async {
+    webpLimit.value = await SharedPref().getWEBPValue();
+    svgLimit.value = await SharedPref().getSVGValue();
+    bmpLimit.value = await SharedPref().getBmpLimit();
+    tiffLimit.value = await SharedPref().getTiffLimit();
+    rawLimit.value = await SharedPref().getRawLimit();
+    psdLimit.value = await SharedPref().getPsdLimit();
+    ddsLimit.value = await SharedPref().getDdsLimit();
+    heicLimit.value = await SharedPref().getHeicLimit();
+    ppmLimit.value = await SharedPref().getPpmLimit();
+    tgaLimit.value = await SharedPref().getTgaLimit();
   }
 
   double getFileSizeInKB(File file) {
@@ -135,8 +152,8 @@ class _ConvertFileState extends State<ConvertFile> {
                   children: [
                     Expanded(
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 22, vertical: 22),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 22, vertical: 22),
                         child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
@@ -1026,1385 +1043,1385 @@ class _ConvertFileState extends State<ConvertFile> {
     launchUrl(params);
   }
 
-  conversionMethod() async {
-    // int toolValue = await SharedPref().getToolValue();
+  // conversionMethod() async {
+  //   // int toolValue = await SharedPref().getToolValue();
 
-    // int webpValue = await SharedPref().getWEBPValue();
-    // int svgValue = await SharedPref().getSVGValue();
-    // CustomEvent.firebaseCustom('OUTPUT_FORMAT_SCREEN_CONVERT_FILES_BTN');
-    print("RERETTTTT ${conversionController.selectedIndex.value}");
-    if (conversionController.selectedIndex.value == 10) {
-      // ++toolValue;
-      // await SharedPref().setToolValue(toolValue);
-      // if (pdfValue <= 10 || isPremium.value) {
-      try {
-        if (conversionController.selectedIndex.value == 0) {
-          Get.snackbar(
-            backgroundColor: UiColors.whiteColor,
-            duration: const Duration(seconds: 4),
-            AppLocalizations.of(Get.context!)!.attention,
-            "Please Select an option in which you want to convert!",
-            // AppLocalizations.of(Get.context!)!
-            //     .please_select_an_option_in_which_you_want_to_convert,
-          );
-          // conversionController.conversionOptionList(
-          //     Get.context!, widget.imagePath!);
-        }
+  //   // int webpValue = await SharedPref().getWEBPValue();
+  //   // int svgValue = await SharedPref().getSVGValue();
+  //   // CustomEvent.firebaseCustom('OUTPUT_FORMAT_SCREEN_CONVERT_FILES_BTN');
+  //   print("RERETTTTT ${conversionController.selectedIndex.value}");
+  //   if (conversionController.selectedIndex.value == 10) {
+  //     // ++toolValue;
+  //     // await SharedPref().setToolValue(toolValue);
+  //     // if (pdfValue <= 10 || isPremium.value) {
+  //     try {
+  //       if (conversionController.selectedIndex.value == 0) {
+  //         Get.snackbar(
+  //           backgroundColor: UiColors.whiteColor,
+  //           duration: const Duration(seconds: 4),
+  //           AppLocalizations.of(Get.context!)!.attention,
+  //           "Please Select an option in which you want to convert!",
+  //           // AppLocalizations.of(Get.context!)!
+  //           //     .please_select_an_option_in_which_you_want_to_convert,
+  //         );
+  //         // conversionController.conversionOptionList(
+  //         //     Get.context!, widget.imagePath!);
+  //       }
 
-        // await loopFunction();
-        if (widget.imagePath[0].toLowerCase().endsWith('.jpg') ||
-            widget.imagePath[0].toLowerCase().endsWith('.jpeg')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertJpgToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertJpgToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertJpgToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath,
-                              widget.imagePath
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertJpgToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertJpgToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertJpgToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath[0].toLowerCase().endsWith('.png')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertPngToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertPngToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertPngToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertPngToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertPngToJPEGMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertPngToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.gif')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertGifToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertGifToPdfMulti(
-                      Get.context!, widget.imagePath!)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertGifToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertGifToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertGifToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertGifToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.bmp')) {
-          print("@@@@BMP");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertBmpToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertBmpToPdfMulti(
-                      Get.context!, widget.imagePath!)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertBmpToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertBmpToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertBmpToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertBmpToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
-            widget.imagePath![0].toLowerCase().endsWith('.tif')) {
-          print("@@@@tif");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertTifToJpg(
-                  Get.context!, widget.imagePath![0])
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertTifToPdf(
-                      Get.context!, widget.imagePath![0])
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertTifToPng(
-                          Get.context!, widget.imagePath![0])
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertTiffToGif(
-                                  Get.context!, widget.imagePath[0])
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertTiffToJpeg(
-                                      Get.context!, widget.imagePath[0])
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController.convertTiffToBmp(
-                                          Get.context!, widget.imagePath[0])
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath[0].toLowerCase().endsWith('.heic')) {
-          print("@@@@heic");
+  //       // await loopFunction();
+  //       if (widget.imagePath[0].toLowerCase().endsWith('.jpg') ||
+  //           widget.imagePath[0].toLowerCase().endsWith('.jpeg')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertJpgToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertJpgToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertJpgToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath,
+  //                             widget.imagePath
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertJpgToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertJpgToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertJpgToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath[0].toLowerCase().endsWith('.png')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertPngToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertPngToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertPngToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertPngToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertPngToJPEGMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertPngToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.gif')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertGifToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertGifToPdfMulti(
+  //                     Get.context!, widget.imagePath!)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertGifToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertGifToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertGifToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertGifToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.bmp')) {
+  //         print("@@@@BMP");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertBmpToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertBmpToPdfMulti(
+  //                     Get.context!, widget.imagePath!)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertBmpToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertBmpToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertBmpToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertBmpToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
+  //           widget.imagePath![0].toLowerCase().endsWith('.tif')) {
+  //         print("@@@@tif");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertTifToJpg(
+  //                 Get.context!, widget.imagePath![0])
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertTifToPdf(
+  //                     Get.context!, widget.imagePath![0])
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertTifToPng(
+  //                         Get.context!, widget.imagePath![0])
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertTiffToGif(
+  //                                 Get.context!, widget.imagePath[0])
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertTiffToJpeg(
+  //                                     Get.context!, widget.imagePath[0])
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController.convertTiffToBmp(
+  //                                         Get.context!, widget.imagePath[0])
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath[0].toLowerCase().endsWith('.heic')) {
+  //         print("@@@@heic");
 
-          conversionController.convertingIntoDiffFormatsMulti(
-            Get.context!,
-            widget.imagePath,
-            widget.imagePath
-                .map((filePath) =>
-                    path.extension(filePath).replaceFirst('.', ''))
-                .toList(),
-            conversionController.selectedIndex.value == 1
-                ? 'jpg'
-                : conversionController.selectedIndex.value == 2
-                    ? 'gif'
-                    : conversionController.selectedIndex.value == 3
-                        ? 'jpeg'
-                        : conversionController.selectedIndex.value == 4
-                            ? 'png'
-                            : conversionController.selectedIndex.value == 5
-                                ? 'svg'
-                                : conversionController.selectedIndex.value == 6
-                                    ? 'webp'
-                                    : conversionController
-                                                .selectedIndex.value ==
-                                            7
-                                        ? 'bmp'
-                                        : conversionController
-                                                    .selectedIndex.value ==
-                                                8
-                                            ? 'doc'
-                                            : conversionController
-                                                        .selectedIndex.value ==
-                                                    9
-                                                ? 'txt'
-                                                : conversionController
-                                                            .selectedIndex
-                                                            .value ==
-                                                        10
-                                                    ? 'pdf'
-                                                    : conversionController
-                                                                .selectedIndex
-                                                                .value ==
-                                                            11
-                                                        ? 'xls'
-                                                        : 'heic',
-          );
-        }
-      } catch (e) {
-        Get.snackbar(
-            backgroundColor: UiColors.whiteColor,
-            duration: const Duration(seconds: 4),
-            AppLocalizations.of(Get.context!)!.attention,
-            // AppLocalizations.of(Get.context!)!
-            //     .please_try_again_after_some_time
-            "Please try again after some time");
-      }
-      // }
-      // else {
-      //   Get.to(() => const PremiumPage());
-      // }
-    } else if (conversionController.selectedIndex.value == 6) {
-      // int webp = await SharedPref().getWEBPValue();
+  //         conversionController.convertingIntoDiffFormatsMulti(
+  //           Get.context!,
+  //           widget.imagePath,
+  //           widget.imagePath
+  //               .map((filePath) =>
+  //                   path.extension(filePath).replaceFirst('.', ''))
+  //               .toList(),
+  //           conversionController.selectedIndex.value == 1
+  //               ? 'jpg'
+  //               : conversionController.selectedIndex.value == 2
+  //                   ? 'gif'
+  //                   : conversionController.selectedIndex.value == 3
+  //                       ? 'jpeg'
+  //                       : conversionController.selectedIndex.value == 4
+  //                           ? 'png'
+  //                           : conversionController.selectedIndex.value == 5
+  //                               ? 'svg'
+  //                               : conversionController.selectedIndex.value == 6
+  //                                   ? 'webp'
+  //                                   : conversionController
+  //                                               .selectedIndex.value ==
+  //                                           7
+  //                                       ? 'bmp'
+  //                                       : conversionController
+  //                                                   .selectedIndex.value ==
+  //                                               8
+  //                                           ? 'doc'
+  //                                           : conversionController
+  //                                                       .selectedIndex.value ==
+  //                                                   9
+  //                                               ? 'txt'
+  //                                               : conversionController
+  //                                                           .selectedIndex
+  //                                                           .value ==
+  //                                                       10
+  //                                                   ? 'pdf'
+  //                                                   : conversionController
+  //                                                               .selectedIndex
+  //                                                               .value ==
+  //                                                           11
+  //                                                       ? 'xls'
+  //                                                       : 'heic',
+  //         );
+  //       }
+  //     } catch (e) {
+  //       Get.snackbar(
+  //           backgroundColor: UiColors.whiteColor,
+  //           duration: const Duration(seconds: 4),
+  //           AppLocalizations.of(Get.context!)!.attention,
+  //           // AppLocalizations.of(Get.context!)!
+  //           //     .please_try_again_after_some_time
+  //           "Please try again after some time");
+  //     }
+  //     // }
+  //     // else {
+  //     //   Get.to(() => const PremiumPage());
+  //     // }
+  //   } else if (conversionController.selectedIndex.value == 6) {
+  //     // int webp = await SharedPref().getWEBPValue();
 
-      // ++webp;
-      // await SharedPref().setWEBPValue(webp);
-      // await SharedPref().setToolValue(toolValue);
-      // if (webpValue <= 10 || isPremium.value) {
-      try {
-        if (conversionController.selectedIndex.value == 0) {
-          Get.snackbar(
-              backgroundColor: UiColors.whiteColor,
-              duration: const Duration(seconds: 4),
-              AppLocalizations.of(Get.context!)!.attention,
-              "Please select an option in which you want to convert"
-              // AppLocalizations.of(Get.context!)!
-              //     .please_select_an_option_in_which_you_want_to_convert,
-              );
-          conversionController.conversionOptionList(
-              Get.context!, widget.imagePath);
-        }
+  //     // ++webp;
+  //     // await SharedPref().setWEBPValue(webp);
+  //     // await SharedPref().setToolValue(toolValue);
+  //     // if (webpValue <= 10 || isPremium.value) {
+  //     try {
+  //       if (conversionController.selectedIndex.value == 0) {
+  //         Get.snackbar(
+  //             backgroundColor: UiColors.whiteColor,
+  //             duration: const Duration(seconds: 4),
+  //             AppLocalizations.of(Get.context!)!.attention,
+  //             "Please select an option in which you want to convert"
+  //             // AppLocalizations.of(Get.context!)!
+  //             //     .please_select_an_option_in_which_you_want_to_convert,
+  //             );
+  //         conversionController.conversionOptionList(
+  //             Get.context!, widget.imagePath);
+  //       }
 
-        // await loopFunction();
-        if (widget.imagePath[0].toLowerCase().endsWith('.jpg') ||
-            widget.imagePath[0].toLowerCase().endsWith('.jpeg')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertJpgToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertJpgToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertJpgToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath,
-                              widget.imagePath
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertJpgToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertJpgToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertJpgToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.png')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertPngToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertPngToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertPngToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath,
-                              widget.imagePath
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertPngToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertPngToJPEGMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertPngToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath,
-                                              widget.imagePath
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath[0].toLowerCase().endsWith('.gif')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertGifToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertGifToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertGifToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath,
-                              widget.imagePath
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertGifToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertGifToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertGifToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath[0].toLowerCase().endsWith('.bmp')) {
-          print("@@@@BMP");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertBmpToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertBmpToPdfMulti(
-                      Get.context!, widget.imagePath!)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertBmpToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath,
-                              widget.imagePath
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertBmpToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertBmpToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertBmpToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
-            widget.imagePath![0].toLowerCase().endsWith('.tif')) {
-          print("@@@@tif");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertTifToJpg(
-                  Get.context!, widget.imagePath![0])
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertTifToPdf(
-                      Get.context!, widget.imagePath![0])
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertTifToPng(
-                          Get.context!, widget.imagePath![0])
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertTiffToGif(
-                                  Get.context!, widget.imagePath![0])
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertTiffToJpeg(
-                                      Get.context!, widget.imagePath![0])
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController.convertTiffToBmp(
-                                          Get.context!, widget.imagePath![0])
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.heic')) {
-          print("@@@@heic");
+  //       // await loopFunction();
+  //       if (widget.imagePath[0].toLowerCase().endsWith('.jpg') ||
+  //           widget.imagePath[0].toLowerCase().endsWith('.jpeg')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertJpgToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertJpgToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertJpgToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath,
+  //                             widget.imagePath
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertJpgToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertJpgToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertJpgToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.png')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertPngToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertPngToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertPngToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath,
+  //                             widget.imagePath
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertPngToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertPngToJPEGMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertPngToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath,
+  //                                             widget.imagePath
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath[0].toLowerCase().endsWith('.gif')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertGifToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertGifToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertGifToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath,
+  //                             widget.imagePath
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertGifToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertGifToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertGifToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath[0].toLowerCase().endsWith('.bmp')) {
+  //         print("@@@@BMP");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertBmpToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertBmpToPdfMulti(
+  //                     Get.context!, widget.imagePath!)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertBmpToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath,
+  //                             widget.imagePath
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertBmpToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertBmpToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertBmpToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
+  //           widget.imagePath![0].toLowerCase().endsWith('.tif')) {
+  //         print("@@@@tif");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertTifToJpg(
+  //                 Get.context!, widget.imagePath![0])
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertTifToPdf(
+  //                     Get.context!, widget.imagePath![0])
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertTifToPng(
+  //                         Get.context!, widget.imagePath![0])
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertTiffToGif(
+  //                                 Get.context!, widget.imagePath![0])
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertTiffToJpeg(
+  //                                     Get.context!, widget.imagePath![0])
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController.convertTiffToBmp(
+  //                                         Get.context!, widget.imagePath![0])
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.heic')) {
+  //         print("@@@@heic");
 
-          conversionController.convertingIntoDiffFormatsMulti(
-            Get.context!,
-            widget.imagePath!,
-            widget.imagePath!
-                .map((filePath) =>
-                    path.extension(filePath).replaceFirst('.', ''))
-                .toList(),
-            conversionController.selectedIndex.value == 1
-                ? 'jpg'
-                : conversionController.selectedIndex.value == 2
-                    ? 'gif'
-                    : conversionController.selectedIndex.value == 3
-                        ? 'jpeg'
-                        : conversionController.selectedIndex.value == 4
-                            ? 'png'
-                            : conversionController.selectedIndex.value == 5
-                                ? 'svg'
-                                : conversionController.selectedIndex.value == 6
-                                    ? 'webp'
-                                    : conversionController
-                                                .selectedIndex.value ==
-                                            7
-                                        ? 'bmp'
-                                        : conversionController
-                                                    .selectedIndex.value ==
-                                                8
-                                            ? 'doc'
-                                            : conversionController
-                                                        .selectedIndex.value ==
-                                                    9
-                                                ? 'txt'
-                                                : conversionController
-                                                            .selectedIndex
-                                                            .value ==
-                                                        10
-                                                    ? 'pdf'
-                                                    : conversionController
-                                                                .selectedIndex
-                                                                .value ==
-                                                            11
-                                                        ? 'xls'
-                                                        : 'heic',
-          );
-        }
-      } catch (e) {
-        Get.snackbar(
-            backgroundColor: UiColors.whiteColor,
-            duration: const Duration(seconds: 4),
-            AppLocalizations.of(Get.context!)!.attention,
-            "Please try agin after some time"
-            // AppLocalizations.of(Get.context!)!
-            //     .please_try_again_after_some_time
-            );
-      }
-      // } else {
-      //   Get.to(() => const PremiumPage());
-      // }
-    } else if (conversionController.selectedIndex.value == 5) {
-      // ++toolValue;
-      // await SharedPref().setToolValue(toolValue);
-      // int svgLimit = await SharedPref().getSVGValue();
+  //         conversionController.convertingIntoDiffFormatsMulti(
+  //           Get.context!,
+  //           widget.imagePath!,
+  //           widget.imagePath!
+  //               .map((filePath) =>
+  //                   path.extension(filePath).replaceFirst('.', ''))
+  //               .toList(),
+  //           conversionController.selectedIndex.value == 1
+  //               ? 'jpg'
+  //               : conversionController.selectedIndex.value == 2
+  //                   ? 'gif'
+  //                   : conversionController.selectedIndex.value == 3
+  //                       ? 'jpeg'
+  //                       : conversionController.selectedIndex.value == 4
+  //                           ? 'png'
+  //                           : conversionController.selectedIndex.value == 5
+  //                               ? 'svg'
+  //                               : conversionController.selectedIndex.value == 6
+  //                                   ? 'webp'
+  //                                   : conversionController
+  //                                               .selectedIndex.value ==
+  //                                           7
+  //                                       ? 'bmp'
+  //                                       : conversionController
+  //                                                   .selectedIndex.value ==
+  //                                               8
+  //                                           ? 'doc'
+  //                                           : conversionController
+  //                                                       .selectedIndex.value ==
+  //                                                   9
+  //                                               ? 'txt'
+  //                                               : conversionController
+  //                                                           .selectedIndex
+  //                                                           .value ==
+  //                                                       10
+  //                                                   ? 'pdf'
+  //                                                   : conversionController
+  //                                                               .selectedIndex
+  //                                                               .value ==
+  //                                                           11
+  //                                                       ? 'xls'
+  //                                                       : 'heic',
+  //         );
+  //       }
+  //     } catch (e) {
+  //       Get.snackbar(
+  //           backgroundColor: UiColors.whiteColor,
+  //           duration: const Duration(seconds: 4),
+  //           AppLocalizations.of(Get.context!)!.attention,
+  //           "Please try agin after some time"
+  //           // AppLocalizations.of(Get.context!)!
+  //           //     .please_try_again_after_some_time
+  //           );
+  //     }
+  //     // } else {
+  //     //   Get.to(() => const PremiumPage());
+  //     // }
+  //   } else if (conversionController.selectedIndex.value == 5) {
+  //     // ++toolValue;
+  //     // await SharedPref().setToolValue(toolValue);
+  //     // int svgLimit = await SharedPref().getSVGValue();
 
-      // ++svgLimit;
-      // await SharedPref().setSVGValue(svgLimit);
-      // if (svgValue <= 10 || isPremium.value) {
-      try {
-        if (conversionController.selectedIndex.value == 0) {
-          Get.snackbar(
-              backgroundColor: UiColors.whiteColor,
-              duration: const Duration(seconds: 4),
-              AppLocalizations.of(Get.context!)!.attention,
-              "Please select an option in which you want to convert"
-              // AppLocalizations.of(Get.context!)!
-              //     .please_select_an_option_in_which_you_want_to_convert,
-              );
-          conversionController.conversionOptionList(
-              Get.context!, widget.imagePath);
-        }
+  //     // ++svgLimit;
+  //     // await SharedPref().setSVGValue(svgLimit);
+  //     // if (svgValue <= 10 || isPremium.value) {
+  //     try {
+  //       if (conversionController.selectedIndex.value == 0) {
+  //         Get.snackbar(
+  //             backgroundColor: UiColors.whiteColor,
+  //             duration: const Duration(seconds: 4),
+  //             AppLocalizations.of(Get.context!)!.attention,
+  //             "Please select an option in which you want to convert"
+  //             // AppLocalizations.of(Get.context!)!
+  //             //     .please_select_an_option_in_which_you_want_to_convert,
+  //             );
+  //         conversionController.conversionOptionList(
+  //             Get.context!, widget.imagePath);
+  //       }
 
-        // await loopFunction();
-        if (widget.imagePath![0].toLowerCase().endsWith('.jpg') ||
-            widget.imagePath![0].toLowerCase().endsWith('.jpeg')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertJpgToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertJpgToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertJpgToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath,
-                              widget.imagePath
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertJpgToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertJpgToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertJpgToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath,
-                                              widget.imagePath
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath[0].toLowerCase().endsWith('.png')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertPngToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertPngToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertPngToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertPngToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertPngToJPEGMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertPngToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.gif')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertGifToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertGifToPdfMulti(
-                      Get.context!, widget.imagePath!)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertGifToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertGifToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertGifToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertGifToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.bmp')) {
-          print("@@@@BMP");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertBmpToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertBmpToPdfMulti(
-                      Get.context!, widget.imagePath!)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertBmpToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertBmpToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertBmpToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertBmpToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
-            widget.imagePath![0].toLowerCase().endsWith('.tif')) {
-          print("@@@@tif");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertTifToJpg(
-                  Get.context!, widget.imagePath![0])
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertTifToPdf(
-                      Get.context!, widget.imagePath![0])
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertTifToPng(
-                          Get.context!, widget.imagePath![0])
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertTiffToGif(
-                                  Get.context!, widget.imagePath![0])
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertTiffToJpeg(
-                                      Get.context!, widget.imagePath![0])
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController.convertTiffToBmp(
-                                          Get.context!, widget.imagePath![0])
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.heic')) {
-          print("@@@@heic");
+  //       // await loopFunction();
+  //       if (widget.imagePath![0].toLowerCase().endsWith('.jpg') ||
+  //           widget.imagePath![0].toLowerCase().endsWith('.jpeg')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertJpgToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertJpgToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertJpgToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath,
+  //                             widget.imagePath
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertJpgToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertJpgToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertJpgToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath,
+  //                                             widget.imagePath
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath[0].toLowerCase().endsWith('.png')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertPngToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertPngToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertPngToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertPngToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertPngToJPEGMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertPngToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.gif')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertGifToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertGifToPdfMulti(
+  //                     Get.context!, widget.imagePath!)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertGifToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertGifToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertGifToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertGifToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.bmp')) {
+  //         print("@@@@BMP");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertBmpToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertBmpToPdfMulti(
+  //                     Get.context!, widget.imagePath!)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertBmpToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertBmpToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertBmpToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertBmpToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
+  //           widget.imagePath![0].toLowerCase().endsWith('.tif')) {
+  //         print("@@@@tif");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertTifToJpg(
+  //                 Get.context!, widget.imagePath![0])
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertTifToPdf(
+  //                     Get.context!, widget.imagePath![0])
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertTifToPng(
+  //                         Get.context!, widget.imagePath![0])
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertTiffToGif(
+  //                                 Get.context!, widget.imagePath![0])
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertTiffToJpeg(
+  //                                     Get.context!, widget.imagePath![0])
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController.convertTiffToBmp(
+  //                                         Get.context!, widget.imagePath![0])
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.heic')) {
+  //         print("@@@@heic");
 
-          conversionController.convertingIntoDiffFormatsMulti(
-            Get.context!,
-            widget.imagePath!,
-            widget.imagePath!
-                .map((filePath) =>
-                    path.extension(filePath).replaceFirst('.', ''))
-                .toList(),
-            conversionController.selectedIndex.value == 1
-                ? 'jpg'
-                : conversionController.selectedIndex.value == 2
-                    ? 'gif'
-                    : conversionController.selectedIndex.value == 3
-                        ? 'jpeg'
-                        : conversionController.selectedIndex.value == 4
-                            ? 'png'
-                            : conversionController.selectedIndex.value == 5
-                                ? 'svg'
-                                : conversionController.selectedIndex.value == 6
-                                    ? 'webp'
-                                    : conversionController
-                                                .selectedIndex.value ==
-                                            7
-                                        ? 'bmp'
-                                        : conversionController
-                                                    .selectedIndex.value ==
-                                                8
-                                            ? 'doc'
-                                            : conversionController
-                                                        .selectedIndex.value ==
-                                                    9
-                                                ? 'txt'
-                                                : conversionController
-                                                            .selectedIndex
-                                                            .value ==
-                                                        10
-                                                    ? 'pdf'
-                                                    : conversionController
-                                                                .selectedIndex
-                                                                .value ==
-                                                            11
-                                                        ? 'xls'
-                                                        : 'heic',
-          );
-        }
-      } catch (e) {
-        Get.snackbar(
-            backgroundColor: UiColors.whiteColor,
-            duration: const Duration(seconds: 4),
-            AppLocalizations.of(Get.context!)!.attention,
-            "Please try again after some time"
-            // AppLocalizations.of(Get.context!)!
-            //     .please_try_again_after_some_time
-            );
-      }
-      // } else {
-      //   Get.to(() => const PremiumPage());
-      // }
-    } else if (conversionController.selectedIndex.value == 1 ||
-        conversionController.selectedIndex.value == 4 ||
-        conversionController.selectedIndex.value == 2 ||
-        conversionController.selectedIndex.value == 3 ||
-        conversionController.selectedIndex.value == 7) {
-      try {
-        if (conversionController.selectedIndex.value == 0) {
-          Get.snackbar(
-            backgroundColor: UiColors.whiteColor,
-            duration: const Duration(seconds: 4),
-            AppLocalizations.of(Get.context!)!.attention,
-            // AppLocalizations.of(Get.context!)!
-            //     .please_select_an_option_in_which_you_want_to_convert,
-            "Please select an option in which you want to convert",
-          );
-          conversionController.conversionOptionList(
-              Get.context!, widget.imagePath);
-        }
+  //         conversionController.convertingIntoDiffFormatsMulti(
+  //           Get.context!,
+  //           widget.imagePath!,
+  //           widget.imagePath!
+  //               .map((filePath) =>
+  //                   path.extension(filePath).replaceFirst('.', ''))
+  //               .toList(),
+  //           conversionController.selectedIndex.value == 1
+  //               ? 'jpg'
+  //               : conversionController.selectedIndex.value == 2
+  //                   ? 'gif'
+  //                   : conversionController.selectedIndex.value == 3
+  //                       ? 'jpeg'
+  //                       : conversionController.selectedIndex.value == 4
+  //                           ? 'png'
+  //                           : conversionController.selectedIndex.value == 5
+  //                               ? 'svg'
+  //                               : conversionController.selectedIndex.value == 6
+  //                                   ? 'webp'
+  //                                   : conversionController
+  //                                               .selectedIndex.value ==
+  //                                           7
+  //                                       ? 'bmp'
+  //                                       : conversionController
+  //                                                   .selectedIndex.value ==
+  //                                               8
+  //                                           ? 'doc'
+  //                                           : conversionController
+  //                                                       .selectedIndex.value ==
+  //                                                   9
+  //                                               ? 'txt'
+  //                                               : conversionController
+  //                                                           .selectedIndex
+  //                                                           .value ==
+  //                                                       10
+  //                                                   ? 'pdf'
+  //                                                   : conversionController
+  //                                                               .selectedIndex
+  //                                                               .value ==
+  //                                                           11
+  //                                                       ? 'xls'
+  //                                                       : 'heic',
+  //         );
+  //       }
+  //     } catch (e) {
+  //       Get.snackbar(
+  //           backgroundColor: UiColors.whiteColor,
+  //           duration: const Duration(seconds: 4),
+  //           AppLocalizations.of(Get.context!)!.attention,
+  //           "Please try again after some time"
+  //           // AppLocalizations.of(Get.context!)!
+  //           //     .please_try_again_after_some_time
+  //           );
+  //     }
+  //     // } else {
+  //     //   Get.to(() => const PremiumPage());
+  //     // }
+  //   } else if (conversionController.selectedIndex.value == 1 ||
+  //       conversionController.selectedIndex.value == 4 ||
+  //       conversionController.selectedIndex.value == 2 ||
+  //       conversionController.selectedIndex.value == 3 ||
+  //       conversionController.selectedIndex.value == 7) {
+  //     try {
+  //       if (conversionController.selectedIndex.value == 0) {
+  //         Get.snackbar(
+  //           backgroundColor: UiColors.whiteColor,
+  //           duration: const Duration(seconds: 4),
+  //           AppLocalizations.of(Get.context!)!.attention,
+  //           // AppLocalizations.of(Get.context!)!
+  //           //     .please_select_an_option_in_which_you_want_to_convert,
+  //           "Please select an option in which you want to convert",
+  //         );
+  //         conversionController.conversionOptionList(
+  //             Get.context!, widget.imagePath);
+  //       }
 
-        // await loopFunction();
-        if (widget.imagePath![0].toLowerCase().endsWith('.jpg') ||
-            widget.imagePath![0].toLowerCase().endsWith('.jpeg')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertJpgToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertJpgToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertJpgToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertJpgToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertJpgToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertJpgToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.png')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertPngToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertPngToPdfMulti(
-                      Get.context!, widget.imagePath)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertPngToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertPngToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertPngToJPEGMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertPngToBMPMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.gif')) {
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertGifToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertGifToPdfMulti(
-                      Get.context!, widget.imagePath!)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertGifToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertGifToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertGifToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertGifToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.bmp')) {
-          print("@@@@BMP");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertBmpToJpgMulti(
-                  Get.context!, widget.imagePath)
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertBmpToPdfMulti(
-                      Get.context!, widget.imagePath!)
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertBmpToPngMulti(
-                          Get.context!, widget.imagePath)
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertBmpToGifMulti(
-                                  Get.context!, widget.imagePath)
-                              : conversionController.selectedIndex.value == 3
-                                  ? conversionController.convertBmpToJpegMulti(
-                                      Get.context!, widget.imagePath)
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController
-                                          .convertBmpToBmpMulti(
-                                              Get.context!, widget.imagePath)
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
-            widget.imagePath![0].toLowerCase().endsWith('.tif')) {
-          print("@@@@tif");
-          conversionController.selectedIndex.value == 1
-              ? conversionController.convertTifToJpg(
-                  Get.context!, widget.imagePath![0])
-              : conversionController.selectedIndex.value == 10
-                  ? conversionController.convertTifToPdf(
-                      Get.context!, widget.imagePath![0])
-                  : conversionController.selectedIndex.value == 4
-                      ? conversionController.convertTifToPng(
-                          Get.context!, widget.imagePath![0])
-                      : conversionController.selectedIndex.value == 6
-                          ? conversionController.convertingIntoDiffFormatsMulti(
-                              Get.context!,
-                              widget.imagePath!,
-                              widget.imagePath!
-                                  .map((filePath) => path
-                                      .extension(filePath)
-                                      .replaceFirst('.', ''))
-                                  .toList(),
-                              'webp',
-                            )
-                          : conversionController.selectedIndex.value == 2
-                              ? conversionController.convertTiffToGif(
-                                  Get.context!, widget.imagePath![0])
-                              : conversionController.selectedIndex.value == 2
-                                  ? conversionController.convertTiffToJpeg(
-                                      Get.context!, widget.imagePath![0])
-                                  : conversionController.selectedIndex.value ==
-                                          7
-                                      ? conversionController.convertTiffToBmp(
-                                          Get.context!, widget.imagePath![0])
-                                      : conversionController
-                                                  .selectedIndex.value ==
-                                              5
-                                          ? conversionController
-                                              .convertingIntoDiffFormatsMulti(
-                                              Get.context!,
-                                              widget.imagePath!,
-                                              widget.imagePath!
-                                                  .map((filePath) => path
-                                                      .extension(filePath)
-                                                      .replaceFirst('.', ''))
-                                                  .toList(),
-                                              'svg',
-                                            )
-                                          : const SizedBox();
-        } else if (widget.imagePath![0].toLowerCase().endsWith('.heic')) {
-          print("@@@@heic");
+  //       // await loopFunction();
+  //       if (widget.imagePath![0].toLowerCase().endsWith('.jpg') ||
+  //           widget.imagePath![0].toLowerCase().endsWith('.jpeg')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertJpgToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertJpgToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertJpgToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertJpgToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertJpgToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertJpgToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.png')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertPngToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertPngToPdfMulti(
+  //                     Get.context!, widget.imagePath)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertPngToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertPngToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertPngToJPEGMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertPngToBMPMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.gif')) {
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertGifToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertGifToPdfMulti(
+  //                     Get.context!, widget.imagePath!)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertGifToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertGifToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertGifToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertGifToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.bmp')) {
+  //         print("@@@@BMP");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertBmpToJpgMulti(
+  //                 Get.context!, widget.imagePath)
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertBmpToPdfMulti(
+  //                     Get.context!, widget.imagePath!)
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertBmpToPngMulti(
+  //                         Get.context!, widget.imagePath)
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertBmpToGifMulti(
+  //                                 Get.context!, widget.imagePath)
+  //                             : conversionController.selectedIndex.value == 3
+  //                                 ? conversionController.convertBmpToJpegMulti(
+  //                                     Get.context!, widget.imagePath)
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController
+  //                                         .convertBmpToBmpMulti(
+  //                                             Get.context!, widget.imagePath)
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.tiff') ||
+  //           widget.imagePath![0].toLowerCase().endsWith('.tif')) {
+  //         print("@@@@tif");
+  //         conversionController.selectedIndex.value == 1
+  //             ? conversionController.convertTifToJpg(
+  //                 Get.context!, widget.imagePath![0])
+  //             : conversionController.selectedIndex.value == 10
+  //                 ? conversionController.convertTifToPdf(
+  //                     Get.context!, widget.imagePath![0])
+  //                 : conversionController.selectedIndex.value == 4
+  //                     ? conversionController.convertTifToPng(
+  //                         Get.context!, widget.imagePath![0])
+  //                     : conversionController.selectedIndex.value == 6
+  //                         ? conversionController.convertingIntoDiffFormatsMulti(
+  //                             Get.context!,
+  //                             widget.imagePath!,
+  //                             widget.imagePath!
+  //                                 .map((filePath) => path
+  //                                     .extension(filePath)
+  //                                     .replaceFirst('.', ''))
+  //                                 .toList(),
+  //                             'webp',
+  //                           )
+  //                         : conversionController.selectedIndex.value == 2
+  //                             ? conversionController.convertTiffToGif(
+  //                                 Get.context!, widget.imagePath![0])
+  //                             : conversionController.selectedIndex.value == 2
+  //                                 ? conversionController.convertTiffToJpeg(
+  //                                     Get.context!, widget.imagePath![0])
+  //                                 : conversionController.selectedIndex.value ==
+  //                                         7
+  //                                     ? conversionController.convertTiffToBmp(
+  //                                         Get.context!, widget.imagePath![0])
+  //                                     : conversionController
+  //                                                 .selectedIndex.value ==
+  //                                             5
+  //                                         ? conversionController
+  //                                             .convertingIntoDiffFormatsMulti(
+  //                                             Get.context!,
+  //                                             widget.imagePath!,
+  //                                             widget.imagePath!
+  //                                                 .map((filePath) => path
+  //                                                     .extension(filePath)
+  //                                                     .replaceFirst('.', ''))
+  //                                                 .toList(),
+  //                                             'svg',
+  //                                           )
+  //                                         : const SizedBox();
+  //       } else if (widget.imagePath![0].toLowerCase().endsWith('.heic')) {
+  //         print("@@@@heic");
 
-          conversionController.convertingIntoDiffFormatsMulti(
-            Get.context!,
-            widget.imagePath!,
-            widget.imagePath!
-                .map((filePath) =>
-                    path.extension(filePath).replaceFirst('.', ''))
-                .toList(),
-            conversionController.selectedIndex.value == 1
-                ? 'jpg'
-                : conversionController.selectedIndex.value == 2
-                    ? 'gif'
-                    : conversionController.selectedIndex.value == 3
-                        ? 'jpeg'
-                        : conversionController.selectedIndex.value == 4
-                            ? 'png'
-                            : conversionController.selectedIndex.value == 5
-                                ? 'svg'
-                                : conversionController.selectedIndex.value == 6
-                                    ? 'webp'
-                                    : conversionController
-                                                .selectedIndex.value ==
-                                            7
-                                        ? 'bmp'
-                                        : conversionController
-                                                    .selectedIndex.value ==
-                                                8
-                                            ? 'doc'
-                                            : conversionController
-                                                        .selectedIndex.value ==
-                                                    9
-                                                ? 'txt'
-                                                : conversionController
-                                                            .selectedIndex
-                                                            .value ==
-                                                        10
-                                                    ? 'pdf'
-                                                    : conversionController
-                                                                .selectedIndex
-                                                                .value ==
-                                                            11
-                                                        ? 'xls'
-                                                        : 'heic',
-          );
-        }
-      } catch (e) {
-        Get.snackbar(
-          backgroundColor: UiColors.whiteColor,
-          duration: const Duration(seconds: 4),
-          AppLocalizations.of(Get.context!)!.attention,
-          // AppLocalizations.of(Get.context!)!
-          //     .please_try_again_after_some_time
-          "Please try again after some time",
-        );
-        Get.back();
-      }
-    } else if (conversionController.selectedIndex.value == 9) {
-      // ++toolValue;
-      // await SharedPref().setToolValue(toolValue);
-      print("Image to Text New Tool");
-      conversionController.imageToTextTool(
-        Get.context!,
-        widget.imagePath!,
-        widget.imagePath!
-            .map((filePath) => path.extension(filePath).replaceFirst('.', ''))
-            .toList(),
-        'txt',
-      );
-    } else if (conversionController.selectedIndex.value == 8) {
-      // ++toolValue;
-      // await SharedPref().setToolValue(toolValue);
-      await conversionController.imageToDocTool(
-          Get.context!, widget.imagePath!, 'doc');
-    } else if (conversionController.selectedIndex.value == 11) {
-      if (widget.imagePath!.first.contains('.BMP') ||
-          widget.imagePath!.first.contains('.bmp')) {
-        log("I am triggered");
-        List<String> tempList = [];
-        Directory? dir = await getTemporaryDirectory();
-        print("%%%%directory $dir");
+  //         conversionController.convertingIntoDiffFormatsMulti(
+  //           Get.context!,
+  //           widget.imagePath!,
+  //           widget.imagePath!
+  //               .map((filePath) =>
+  //                   path.extension(filePath).replaceFirst('.', ''))
+  //               .toList(),
+  //           conversionController.selectedIndex.value == 1
+  //               ? 'jpg'
+  //               : conversionController.selectedIndex.value == 2
+  //                   ? 'gif'
+  //                   : conversionController.selectedIndex.value == 3
+  //                       ? 'jpeg'
+  //                       : conversionController.selectedIndex.value == 4
+  //                           ? 'png'
+  //                           : conversionController.selectedIndex.value == 5
+  //                               ? 'svg'
+  //                               : conversionController.selectedIndex.value == 6
+  //                                   ? 'webp'
+  //                                   : conversionController
+  //                                               .selectedIndex.value ==
+  //                                           7
+  //                                       ? 'bmp'
+  //                                       : conversionController
+  //                                                   .selectedIndex.value ==
+  //                                               8
+  //                                           ? 'doc'
+  //                                           : conversionController
+  //                                                       .selectedIndex.value ==
+  //                                                   9
+  //                                               ? 'txt'
+  //                                               : conversionController
+  //                                                           .selectedIndex
+  //                                                           .value ==
+  //                                                       10
+  //                                                   ? 'pdf'
+  //                                                   : conversionController
+  //                                                               .selectedIndex
+  //                                                               .value ==
+  //                                                           11
+  //                                                       ? 'xls'
+  //                                                       : 'heic',
+  //         );
+  //       }
+  //     } catch (e) {
+  //       Get.snackbar(
+  //         backgroundColor: UiColors.whiteColor,
+  //         duration: const Duration(seconds: 4),
+  //         AppLocalizations.of(Get.context!)!.attention,
+  //         // AppLocalizations.of(Get.context!)!
+  //         //     .please_try_again_after_some_time
+  //         "Please try again after some time",
+  //       );
+  //       Get.back();
+  //     }
+  //   } else if (conversionController.selectedIndex.value == 9) {
+  //     // ++toolValue;
+  //     // await SharedPref().setToolValue(toolValue);
+  //     print("Image to Text New Tool");
+  //     conversionController.imageToTextTool(
+  //       Get.context!,
+  //       widget.imagePath!,
+  //       widget.imagePath!
+  //           .map((filePath) => path.extension(filePath).replaceFirst('.', ''))
+  //           .toList(),
+  //       'txt',
+  //     );
+  //   } else if (conversionController.selectedIndex.value == 8) {
+  //     // ++toolValue;
+  //     // await SharedPref().setToolValue(toolValue);
+  //     await conversionController.imageToDocTool(
+  //         Get.context!, widget.imagePath!, 'doc');
+  //   } else if (conversionController.selectedIndex.value == 11) {
+  //     if (widget.imagePath!.first.contains('.BMP') ||
+  //         widget.imagePath!.first.contains('.bmp')) {
+  //       log("I am triggered");
+  //       List<String> tempList = [];
+  //       Directory? dir = await getTemporaryDirectory();
+  //       print("%%%%directory $dir");
 
-        var path =
-            '${dir.path}/Img_${DateTime.now().microsecondsSinceEpoch}.png';
-        // print("%%%%path  $path");
+  //       var path =
+  //           '${dir.path}/Img_${DateTime.now().microsecondsSinceEpoch}.png';
+  //       // print("%%%%path  $path");
 
-        im.Image? bmpImage =
-            im.decodeImage(await File(widget.imagePath!.first).readAsBytes());
+  //       im.Image? bmpImage =
+  //           im.decodeImage(await File(widget.imagePath!.first).readAsBytes());
 
-        File file = File(path);
-        file.writeAsBytesSync(
-          im.encodeJpg(
-            bmpImage!,
-          ),
-        );
-        tempList.add(file.path);
-        await conversionController.imageToExcelTool(
-            Get.context!, tempList, 'xlsx');
-      } else {
-        await conversionController.imageToExcelTool(
-            Get.context!, widget.imagePath!, 'xlsx');
-      }
-    } else if (conversionController.selectedIndex.value == 12 ||
-        conversionController.selectedIndex.value == 13 ||
-        conversionController.selectedIndex.value == 14 ||
-        conversionController.selectedIndex.value == 15 ||
-        conversionController.selectedIndex.value == 16 ||
-        conversionController.selectedIndex.value == 17 ||
-        conversionController.selectedIndex.value == 18) {
-      print("NEW TOOLS CONVERSIONS");
-      // ++toolValue;
-      // await SharedPref().setToolValue(toolValue);
-      // setToolsValue();
-      if (widget.imagePath!.first.contains('.png') ||
-          widget.imagePath!.first.contains('.jpg') ||
-          widget.imagePath!.first.contains('.jpeg')) {
-        print("CORRECT");
-        conversionController.selectedIndex.value == 12 ||
-                conversionController.selectedIndex.value == 13 ||
-                conversionController.selectedIndex.value == 14 ||
-                conversionController.selectedIndex.value == 15 ||
-                conversionController.selectedIndex.value == 16 ||
-                conversionController.selectedIndex.value == 17 ||
-                conversionController.selectedIndex.value == 18
-            ? conversionController.convertingIntoDiffFormatsMulti(
-                Get.context!,
-                widget.imagePath!,
-                widget.imagePath!
-                    .map((filePath) =>
-                        path.extension(filePath).replaceFirst('.', ''))
-                    .toList(),
-                conversionController.selectedIndex.value == 12
-                    ? 'tiff'
-                    : conversionController.selectedIndex.value == 13
-                        ? 'raw'
-                        : conversionController.selectedIndex.value == 14
-                            ? 'psd'
-                            : conversionController.selectedIndex.value == 15
-                                ? 'dds'
-                                : conversionController.selectedIndex.value == 16
-                                    ? 'heic'
-                                    : conversionController
-                                                .selectedIndex.value ==
-                                            17
-                                        ? 'ppm'
-                                        : conversionController
-                                                    .selectedIndex.value ==
-                                                18
-                                            ? 'tga'
-                                            : 'tiff',
-              )
-            : const SizedBox();
-      } else {
-        print("Wrong");
-      }
-    }
-  }
+  //       File file = File(path);
+  //       file.writeAsBytesSync(
+  //         im.encodeJpg(
+  //           bmpImage!,
+  //         ),
+  //       );
+  //       tempList.add(file.path);
+  //       await conversionController.imageToExcelTool(
+  //           Get.context!, tempList, 'xlsx');
+  //     } else {
+  //       await conversionController.imageToExcelTool(
+  //           Get.context!, widget.imagePath!, 'xlsx');
+  //     }
+  //   } else if (conversionController.selectedIndex.value == 12 ||
+  //       conversionController.selectedIndex.value == 13 ||
+  //       conversionController.selectedIndex.value == 14 ||
+  //       conversionController.selectedIndex.value == 15 ||
+  //       conversionController.selectedIndex.value == 16 ||
+  //       conversionController.selectedIndex.value == 17 ||
+  //       conversionController.selectedIndex.value == 18) {
+  //     print("NEW TOOLS CONVERSIONS");
+  //     // ++toolValue;
+  //     // await SharedPref().setToolValue(toolValue);
+  //     // setToolsValue();
+  //     if (widget.imagePath!.first.contains('.png') ||
+  //         widget.imagePath!.first.contains('.jpg') ||
+  //         widget.imagePath!.first.contains('.jpeg')) {
+  //       print("CORRECT");
+  //       conversionController.selectedIndex.value == 12 ||
+  //               conversionController.selectedIndex.value == 13 ||
+  //               conversionController.selectedIndex.value == 14 ||
+  //               conversionController.selectedIndex.value == 15 ||
+  //               conversionController.selectedIndex.value == 16 ||
+  //               conversionController.selectedIndex.value == 17 ||
+  //               conversionController.selectedIndex.value == 18
+  //           ? conversionController.convertingIntoDiffFormatsMulti(
+  //               Get.context!,
+  //               widget.imagePath!,
+  //               widget.imagePath!
+  //                   .map((filePath) =>
+  //                       path.extension(filePath).replaceFirst('.', ''))
+  //                   .toList(),
+  //               conversionController.selectedIndex.value == 12
+  //                   ? 'tiff'
+  //                   : conversionController.selectedIndex.value == 13
+  //                       ? 'raw'
+  //                       : conversionController.selectedIndex.value == 14
+  //                           ? 'psd'
+  //                           : conversionController.selectedIndex.value == 15
+  //                               ? 'dds'
+  //                               : conversionController.selectedIndex.value == 16
+  //                                   ? 'heic'
+  //                                   : conversionController
+  //                                               .selectedIndex.value ==
+  //                                           17
+  //                                       ? 'ppm'
+  //                                       : conversionController
+  //                                                   .selectedIndex.value ==
+  //                                               18
+  //                                           ? 'tga'
+  //                                           : 'tiff',
+  //             )
+  //           : const SizedBox();
+  //     } else {
+  //       print("Wrong");
+  //     }
+  //   }
+  // }
 }

@@ -57,6 +57,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
     return GestureDetector(
       onTap: () {
         removePopup();
+        toolIndex.value = 10;
       },
       child: Scaffold(
         backgroundColor: UiColors.backgroundColor,
@@ -112,19 +113,19 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                 "Image Compressor",
                                 2),
                           ),
-                          GestureDetector(
-                            key: imageEnhancerKey,
-                            onTap: () {
-                              toolIndex.value = 3;
-                              print("toolIndex${toolIndex.value}");
-                              showPopup(imageEnhancerKey, 3);
-                            },
-                            child: imagePickupOptions(
-                                "assets/image_enhancer.png",
-                                // AppLocalizations.of(context)!.imageResizer,
-                                "Image Enhancer",
-                                3),
-                          ),
+                          // GestureDetector(
+                          //   key: imageEnhancerKey,
+                          //   onTap: () {
+                          //     // toolIndex.value = 3;
+                          //     // print("toolIndex${toolIndex.value}");
+                          //     // showPopup(imageEnhancerKey, 3);
+                          //   },
+                          //   child: imagePickupOptions(
+                          //       "assets/image_enhancer.png",
+                          //       // AppLocalizations.of(context)!.imageResizer,
+                          //       "Image Enhancer",
+                          //       3),
+                          // ),
                         ],
                       )),
                 ],

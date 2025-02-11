@@ -153,7 +153,7 @@ class HomeScreenController extends GetxController {
   Future<void> handleDriveImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowMultiple: true,
+      allowMultiple: payWallController.isPro.value ? true : false,
       allowedExtensions: [
         'bmp',
         'tiff',
@@ -244,7 +244,7 @@ class HomeScreenController extends GetxController {
   Future<void> imageCompressorFunction() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowMultiple: true,
+      allowMultiple: false,
       allowedExtensions: [
         'bmp',
         'tiff',

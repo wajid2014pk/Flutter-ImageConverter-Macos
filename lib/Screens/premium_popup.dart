@@ -135,8 +135,21 @@ class PremiumPopUp {
                                 onTap: () {
                                   payWallController.selectPackage.value = 0;
                                 },
-                                child: premiumWidget("Weekly", "USD", "12",
-                                    "9.99", "Basic", 0, ''),
+                                child: premiumWidget(
+                                    "Monthly",
+                                    payWallController.offerings!.current!
+                                        .monthly!.storeProduct.currencyCode,
+                                    payWallController.getActualPrice(
+                                        payWallController.offerings!.current!
+                                            .monthly!.storeProduct.price,
+                                        30),
+                                    payWallController.formatPrice(
+                                      payWallController.offerings!.current!
+                                          .monthly!.storeProduct.price,
+                                    ),
+                                    "Basic",
+                                    0,
+                                    ''),
                               ),
                               SizedBox(
                                 height: 12,
@@ -145,8 +158,23 @@ class PremiumPopUp {
                                 onTap: () {
                                   payWallController.selectPackage.value = 1;
                                 },
-                                child: premiumWidget("Monthly", "USD", "12",
-                                    "9.99", "50 %", 1, 'OFF'),
+                                child: premiumWidget(
+                                    "Yearly",
+                                    //  "USD", "12",
+                                    //     "9.99", "50 %", 1, 'OFF'
+                                    //  "Monthly",
+                                    payWallController.offerings!.current!
+                                        .annual!.storeProduct.currencyCode,
+                                    payWallController.getActualPrice(
+                                        payWallController.offerings!.current!
+                                            .annual!.storeProduct.price,
+                                        66),
+                                    payWallController.formatPrice(
+                                        payWallController.offerings!.current!
+                                            .annual!.storeProduct.price),
+                                    "66 %",
+                                    1,
+                                    'OFF'),
                               ),
                               SizedBox(
                                 height: 12,
@@ -155,30 +183,51 @@ class PremiumPopUp {
                                 onTap: () {
                                   payWallController.selectPackage.value = 2;
                                 },
-                                child: premiumWidget("Yearly", "USD", "12",
-                                    "9.99", "50 %", 2, 'OFF'),
+                                child: premiumWidget(
+                                    "LifeTime",
+                                    payWallController.offerings!.current!
+                                        .lifetime!.storeProduct.currencyCode,
+                                    payWallController.getActualPrice(
+                                        payWallController.offerings!.current!
+                                            .lifetime!.storeProduct.price,
+                                        58),
+                                    payWallController.formatPrice(
+                                        payWallController.offerings!.current!
+                                            .lifetime!.storeProduct.price),
+                                    "58 %",
+                                    2,
+                                    'OFF'
+                                    //  "USD", "12",
+                                    //     "9.99", "50 %", 2, 'OFF'
+
+                                    ),
                               ),
                               SizedBox(
                                 height: 42,
                               ),
-                              Container(
-                                height: 42,
-                                width: 200,
-                                padding: EdgeInsets.symmetric(horizontal: 22),
-                                decoration: BoxDecoration(
-                                    gradient:
-                                        UiColors().linearGradientBlueColor,
-                                    // border: Border.all(color: Colors.green),
-                                    color: UiColors.blueColorNew,
-                                    borderRadius: BorderRadius.circular(32)),
-                                child: Center(
-                                  child: Text(
-                                    "Subscribe",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w800,
-                                        fontFamily: 'Manrope-Medium',
-                                        color: UiColors.whiteColor),
+                              GestureDetector(
+                                onTap: () {
+                                  payWallController.makePurchase();
+                                },
+                                child: Container(
+                                  height: 42,
+                                  width: 200,
+                                  padding: EdgeInsets.symmetric(horizontal: 22),
+                                  decoration: BoxDecoration(
+                                      gradient:
+                                          UiColors().linearGradientBlueColor,
+                                      // border: Border.all(color: Colors.green),
+                                      color: UiColors.blueColorNew,
+                                      borderRadius: BorderRadius.circular(32)),
+                                  child: Center(
+                                    child: Text(
+                                      "Subscribe",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          fontFamily: 'Manrope-Medium',
+                                          color: UiColors.whiteColor),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -204,12 +253,18 @@ class PremiumPopUp {
                                         color: UiColors.newGreyColor),
                                   ),
                                   sizedBoxWidth,
-                                  Text(
-                                    "Restore",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: UiColors.newGreyColor,
-                                      fontWeight: FontWeight.w400,
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await payWallController
+                                          .restorePurchase(Get.context!);
+                                    },
+                                    child: Text(
+                                      "Restore",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: UiColors.newGreyColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -284,12 +339,14 @@ class PremiumPopUp {
                       color: payWallController.selectPackage.value == index
                           ? UiColors.blueColorNew
                           : UiColors.blackColor,
-                      fontFamily: payWallController.selectPackage.value == index
-                          ? 'Manrope-Bold'
-                          : 'Manrope-Medium',
+                      fontFamily:
+                          // 'Manrope-Bold',
+                          payWallController.selectPackage.value == index
+                              ? 'Manrope-Bold'
+                              : 'Manrope-Medium',
                       fontWeight: payWallController.selectPackage.value == index
                           ? FontWeight.w800
-                          : FontWeight.w400,
+                          : FontWeight.w800,
                       fontSize: 16),
                 ),
                 sizedBoxWidth,
@@ -443,39 +500,47 @@ class CarouselWidgetState extends State<CarouselWidget> {
             carouselController: carouselController,
             itemCount: _images.length,
             itemBuilder: (context, index, realIndex) {
-              return Column(
-                children: [
-                  Image.asset(
-                    _images[index],
-                    // "assets/images/123.png",
-                    fit: BoxFit.cover,
-                    // color: Colors.red,
-                    height: 100,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    _texts[index],
-                    style: const TextStyle(
-                        // color: Colors.red,
-                        fontSize: 18,
-                        fontFamily: 'Manrope-Medium',
-                        fontWeight: FontWeight.w800),
-                  ),
-                  SizedBox(
-                    width: 300,
-                    child: Center(
-                      child: Text(
-                        subText[index],
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
+              return (index == 1 || index == 4 || index == 6)
+                  ? Image.asset(
+                      _images[index],
+                      // "assets/images/123.png",
+                      fit: BoxFit.contain,
+                      // color: Colors.red,
+                      // height: 100,
+                    )
+                  : Column(
+                      children: [
+                        Image.asset(
+                          _images[index],
+                          // "assets/images/123.png",
+                          fit: BoxFit.cover,
                           // color: Colors.red,
-                          fontSize: 14,
+                          height: 100,
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
+                        const SizedBox(height: 10),
+                        Text(
+                          _texts[index],
+                          style: const TextStyle(
+                              // color: Colors.red,
+                              fontSize: 18,
+                              fontFamily: 'Manrope-Medium',
+                              fontWeight: FontWeight.w800),
+                        ),
+                        SizedBox(
+                          width: 300,
+                          child: Center(
+                            child: Text(
+                              subText[index],
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                // color: Colors.red,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
             },
             options: CarouselOptions(
               height: 200,
