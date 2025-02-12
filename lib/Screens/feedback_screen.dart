@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_converter_macos/Constant/color.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class FeedBack extends StatefulWidget {
   const FeedBack({
@@ -41,10 +41,11 @@ class _FeedBackState extends State<FeedBack> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: UiColors.backgroundColor,
       body: Center(
         child: Text(
-         AppLocalizations.of(context)!.feedback,
-          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
+          AppLocalizations.of(context)!.feedback,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );

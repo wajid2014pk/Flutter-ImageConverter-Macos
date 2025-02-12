@@ -137,22 +137,34 @@ class PremiumPopUp {
                                 },
                                 child: premiumWidget(
                                     "Monthly",
-                                    payWallController.offerings!.current!
-                                        .monthly!.storeProduct.currencyCode,
+                                    payWallController
+                                        .offerings!
+                                        .current!
+                                        .availablePackages[4]
+                                        .storeProduct
+                                        .currencyCode,
                                     payWallController.getActualPrice(
-                                        payWallController.offerings!.current!
-                                            .monthly!.storeProduct.price,
+                                        payWallController
+                                            .offerings!
+                                            .current!
+                                            .availablePackages[4]
+                                            .storeProduct
+                                            .price,
                                         30),
                                     payWallController.formatPrice(
-                                      payWallController.offerings!.current!
-                                          .monthly!.storeProduct.price,
+                                      payWallController
+                                          .offerings!
+                                          .current!
+                                          .availablePackages[4]
+                                          .storeProduct
+                                          .price,
                                     ),
                                     "Basic",
                                     0,
                                     ''),
                               ),
                               SizedBox(
-                                height: 12,
+                                height: 16,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -163,21 +175,34 @@ class PremiumPopUp {
                                     //  "USD", "12",
                                     //     "9.99", "50 %", 1, 'OFF'
                                     //  "Monthly",
-                                    payWallController.offerings!.current!
-                                        .annual!.storeProduct.currencyCode,
+                                    payWallController
+                                        .offerings!
+                                        .current!
+                                        .availablePackages[3]
+                                        .storeProduct
+                                        .currencyCode,
                                     payWallController.getActualPrice(
-                                        payWallController.offerings!.current!
-                                            .annual!.storeProduct.price,
+                                        payWallController
+                                            .offerings!
+                                            .current!
+                                            .availablePackages[3]
+                                            .storeProduct
+                                            .price,
                                         66),
                                     payWallController.formatPrice(
-                                        payWallController.offerings!.current!
-                                            .annual!.storeProduct.price),
+                                      payWallController
+                                          .offerings!
+                                          .current!
+                                          .availablePackages[3]
+                                          .storeProduct
+                                          .price,
+                                    ),
                                     "66 %",
                                     1,
                                     'OFF'),
                               ),
                               SizedBox(
-                                height: 12,
+                                height: 16,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -185,15 +210,28 @@ class PremiumPopUp {
                                 },
                                 child: premiumWidget(
                                     "LifeTime",
-                                    payWallController.offerings!.current!
-                                        .lifetime!.storeProduct.currencyCode,
+                                    payWallController
+                                        .offerings!
+                                        .current!
+                                        .availablePackages[5]
+                                        .storeProduct
+                                        .currencyCode,
                                     payWallController.getActualPrice(
-                                        payWallController.offerings!.current!
-                                            .lifetime!.storeProduct.price,
+                                        payWallController
+                                            .offerings!
+                                            .current!
+                                            .availablePackages[5]
+                                            .storeProduct
+                                            .price,
                                         58),
                                     payWallController.formatPrice(
-                                        payWallController.offerings!.current!
-                                            .lifetime!.storeProduct.price),
+                                      payWallController
+                                          .offerings!
+                                          .current!
+                                          .availablePackages[5]
+                                          .storeProduct
+                                          .price,
+                                    ),
                                     "58 %",
                                     2,
                                     'OFF'
@@ -237,12 +275,22 @@ class PremiumPopUp {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "Privacy Policy",
-                                    style: TextStyle(
-                                      color: UiColors.newGreyColor,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
+                                  GestureDetector(
+                                    onTap: () {
+                                      Future.delayed(
+                                          const Duration(milliseconds: 100),
+                                          () {
+                                        launchURLFunction(
+                                            "www.eclixtech.com/privacy-policy");
+                                      });
+                                    },
+                                    child: Text(
+                                      "Privacy Policy",
+                                      style: TextStyle(
+                                        color: UiColors.newGreyColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                     ),
                                   ),
                                   sizedBoxWidth,
@@ -395,6 +443,14 @@ class PremiumPopUp {
     );
   }
 
+  launchURLFunction(String url) async {
+    final Uri params = Uri(
+      scheme: 'https',
+      path: url,
+    );
+    launchUrl(params);
+  }
+
   Shimmer shimmerContainer(BuildContext context, double height, double width) {
     return Shimmer.fromColors(
       baseColor: Colors.grey.withOpacity(0.4),
@@ -533,7 +589,7 @@ class CarouselWidgetState extends State<CarouselWidget> {
                               subText[index],
                               textAlign: TextAlign.center,
                               style: const TextStyle(
-                                // color: Colors.red,
+                                color: Color(0xFF757575),
                                 fontSize: 14,
                               ),
                             ),

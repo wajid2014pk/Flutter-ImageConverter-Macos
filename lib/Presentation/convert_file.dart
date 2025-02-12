@@ -39,10 +39,12 @@ class _ConvertFileState extends State<ConvertFile> {
         : null;
     conversionController.selectedIndex.value = 0;
     for (int i = 0; i < widget.imagePath.length; i++) {
+      print("widget.imagePath ${widget.imagePath[i]}");
       getFileNames.add(getName(widget.imagePath[i]));
     }
 
     for (int i = 0; i < widget.imagePath.length; i++) {
+      print("widget.imagePath${path.basename(widget.imagePath[i])}");
       getFileSize.add(getFileSizeInKB(File(widget.imagePath[i])));
     }
 
@@ -70,14 +72,9 @@ class _ConvertFileState extends State<ConvertFile> {
   }
 
   double getFileSizeInKB(File file) {
-    // List<double> fileSize = [];
-    // for(int i=0;i<file.length;i++)
-    // {
     final bytes = file.lengthSync();
+    print("file $file");
     double size = bytes / 1024;
-
-    // }
-
     return size;
   }
 
@@ -85,8 +82,8 @@ class _ConvertFileState extends State<ConvertFile> {
     String fileName = value.split('/').last;
     List<String> parts = fileName.split(' - ');
     String datePart = parts.last.split(' at ').first;
-    String extension = fileName.split('.').last;
-    String result = '$datePart.$extension';
+    // String extension = fileName.split('.').last;
+    String result = '$datePart';
     return result;
   }
 
@@ -273,7 +270,7 @@ class _ConvertFileState extends State<ConvertFile> {
     //                         conversionController.isDownloading.value == false
     //                     ? AppLocalizations.of(context)!.select_files
     //                     : AppLocalizations.of(context)!.converted,
-    //                 style: GoogleFonts.poppins(
+    //                 style: TextStyle(
     //                   color: UiColors.blueColor,
     //                   fontSize: 20.0,
     //                   fontWeight: FontWeight.w500,
@@ -345,7 +342,7 @@ class _ConvertFileState extends State<ConvertFile> {
     //                                     ),
     //                                     Text(
     //                                       shortenedFileName,
-    //                                       style: GoogleFonts.poppins(
+    //                                       style: TextStyle(
     //                                         fontSize: 16,
     //                                         // fontWeight: FontWeight.w500
     //                                       ),
@@ -426,7 +423,7 @@ class _ConvertFileState extends State<ConvertFile> {
     //                                     ),
     //                                     Text(
     //                                       "${AppLocalizations.of(context)!.convert_into} ${conversionController.selectedIndex.value == 1 ? "jpg" : conversionController.selectedIndex.value == 2 ? "pdf" : conversionController.selectedIndex.value == 3 ? "png" : conversionController.selectedIndex.value == 4 ? "webp" : conversionController.selectedIndex.value == 5 ? "gif" : conversionController.selectedIndex.value == 6 ? "jpeg" : conversionController.selectedIndex.value == 7 ? "bmp" : conversionController.selectedIndex.value == 8 ? "svg" : " "}",
-    //                                       style: GoogleFonts.poppins(
+    //                                       style: TextStyle(
     //                                         fontSize: 16,
     //                                         // fontWeight: FontWeight.w500
     //                                       ),
@@ -888,7 +885,7 @@ class _ConvertFileState extends State<ConvertFile> {
     //                                           maxLines: 1,
     //                                           overflow: TextOverflow.ellipsis,
     //                                           textAlign: TextAlign.center,
-    //                                           style: GoogleFonts.poppins(
+    //                                           style: TextStyle(
     //                                             fontSize: 16,
     //                                             fontWeight: FontWeight.w700,
     //                                             color: UiColors.whiteColor,
@@ -984,7 +981,7 @@ class _ConvertFileState extends State<ConvertFile> {
     //                         ? AppLocalizations.of(context)!
     //                             .your_file_is_converting
     //                         : AppLocalizations.of(context)!.converted,
-    //                     style: GoogleFonts.poppins(
+    //                     style: TextStyle(
     //                       fontSize: 22,
     //                       fontWeight: FontWeight.w500,
     //                     ),
@@ -998,7 +995,7 @@ class _ConvertFileState extends State<ConvertFile> {
     //                     child: RichText(
     //                       textAlign: TextAlign.center,
     //                       text: TextSpan(
-    //                         style: GoogleFonts.poppins(
+    //                         style: TextStyle(
     //                           fontSize: 14,
     //                           // fontWeight: FontWeight.w500,
     //                           color: Colors.black,
@@ -1011,7 +1008,7 @@ class _ConvertFileState extends State<ConvertFile> {
     //                           TextSpan(
     //                             text: AppLocalizations.of(context)!
     //                                 .privacy_policy,
-    //                             style: GoogleFonts.poppins(
+    //                             style: TextStyle(
     //                                 color: UiColors.lightblueColor),
     //                             recognizer: TapGestureRecognizer()
     //                               ..onTap = () {

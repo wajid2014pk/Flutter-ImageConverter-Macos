@@ -69,8 +69,9 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
                       AppLocalizations.of(context)!.converted,
                       style: TextStyle(
                         color: UiColors.blackColor,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                        fontFamily: 'Manrope-Bold',
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                     Text(

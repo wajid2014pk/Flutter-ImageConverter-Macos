@@ -132,7 +132,7 @@ Container customShareButton(String imagePath) {
   return Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 22),
       decoration: BoxDecoration(
-          color: Color(0xFFF0F0F0), borderRadius: BorderRadius.circular(12)),
+          color: Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(12)),
       child: Center(
         child: Image.asset(
           imagePath,
@@ -177,7 +177,7 @@ Container customBackButton() {
   return Container(
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
-        color: Color(0xFFF0F0F0), borderRadius: BorderRadius.circular(8)),
+        color: Color(0xFFF5F5F5), borderRadius: BorderRadius.circular(8)),
     child: Image.asset(
       'assets/back_arrow.png',
       height: 20,

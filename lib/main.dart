@@ -93,12 +93,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     Purchases.addCustomerInfoUpdateListener((_) => updateCustomerStatus());
-    updateCustomerStatus();
+    // Future.delayed(Duration(seconds: 1), () {
+    //   updateCustomerStatus();
+    // });
+
     super.initState();
   }
 
   Future updateCustomerStatus() async {
     final customerInfo = await Purchases.getCustomerInfo();
+    print("@@@@customerInfo: $customerInfo");
 
     final monthlyEntitalments =
         customerInfo.entitlements.active['monthlyPremium'];
@@ -106,14 +110,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         customerInfo.entitlements.active['yearlyPremium'];
     final lifeTimeEntitalments =
         customerInfo.entitlements.active['lifetime_purchase'];
-
+    print("monthlyEntitalments $monthlyEntitalments");
+    print("yearlyEntitalments $yearlyEntitalments");
+    print("lifeTimeEntitalments $lifeTimeEntitalments");
     if (monthlyEntitalments != null ||
         yearlyEntitalments != null ||
         lifeTimeEntitalments != null) {
       payWallController.isPro.value = true;
       print("####PRO VALUE ${payWallController.isPro.value}");
     } else {
-      payWallController.isPro.value = true;
+      payWallController.isPro.value = false;
       print("####PRO VALUE ${payWallController.isPro.value}");
     }
   }

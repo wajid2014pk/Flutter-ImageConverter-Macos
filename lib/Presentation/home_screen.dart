@@ -8,6 +8,7 @@ import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_
 import 'package:image_converter_macos/Presentation/history.dart';
 import 'package:image_converter_macos/Presentation/select_file_screen.dart';
 import 'package:image_converter_macos/Screens/feedback_screen.dart';
+import 'package:image_converter_macos/Screens/more_apps.dart';
 import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:image_converter_macos/Screens/privacy_policy.dart';
 import 'package:image_converter_macos/Screens/rate_us_screen.dart';
@@ -113,15 +114,9 @@ class _HomeScreenState extends State<HomeScreen>
                                       fontFamily: 'Manrope-Bold',
                                       fontSize: 18),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    PremiumPopUp()
-                                        .premiumScreenPopUp(Get.context!);
-                                  },
-                                  child: Text(
-                                    "Version $packageName",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
+                                Text(
+                                  "Version $packageName",
+                                  style: TextStyle(fontSize: 14),
                                 ),
                               ],
                             ),
@@ -169,27 +164,20 @@ class _HomeScreenState extends State<HomeScreen>
                           5,
                           context,
                         ),
-                        homeScreenController.sideBarItem(
-                          "assets/about_image_new_icon.png",
-                          // AppLocalizations.of(Get.context!)!.privacy_policy,
-                          // AppLocalizations.of(Get.context!)!.feedback,
-                          "About Image Converter",
-                          6,
-                          context,
-                        ),
+
                         homeScreenController.sideBarItem(
                           "assets/feedback_new_icon.png",
                           // AppLocalizations.of(Get.context!)!.privacy_policy,
                           // "More Apps",
                           AppLocalizations.of(Get.context!)!.feedback,
-                          7,
+                          6,
                           context,
                         ),
                         homeScreenController.sideBarItem(
                           "assets/more_apps_new_icon.png",
                           // AppLocalizations.of(Get.context!)!.privacy_policy,
                           "More Apps",
-                          8,
+                          7,
                           context,
                         ),
                         //   homeScreenController.sideBarItem(
@@ -245,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen>
                   //                         Text(
                   //                           AppLocalizations.of(Get.context!)!
                   //                               .imagee,
-                  //                           style: GoogleFonts.poppins(
+                  //                           style: TextStyle(
                   //                               color: UiColors.whiteColor,
                   //                               fontSize: 18,
                   //                               fontWeight: FontWeight.w600),
@@ -253,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen>
                   //                         Text(
                   //                           AppLocalizations.of(Get.context!)!
                   //                               .converterr,
-                  //                           style: GoogleFonts.poppins(
+                  //                           style: TextStyle(
                   //                               color: UiColors.whiteColor,
                   //                               fontSize: 18,
                   //                               fontWeight: FontWeight.w600),
@@ -276,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen>
                   //                                 AppLocalizations.of(
                   //                                         Get.context!)!
                   //                                     .proo,
-                  //                                 style: GoogleFonts.poppins(
+                  //                                 style: TextStyle(
                   //                                     color:
                   //                                         UiColors.yellowColor,
                   //                                     fontSize: 14,
@@ -311,7 +299,7 @@ class _HomeScreenState extends State<HomeScreen>
                   //                                   maxLines: 1,
                   //                                   overflow:
                   //                                       TextOverflow.ellipsis,
-                  //                                   style: GoogleFonts.poppins(
+                  //                                   style: TextStyle(
                   //                                       fontSize: 14,
                   //                                       color:
                   //                                           UiColors.whiteColor,
@@ -362,7 +350,16 @@ class _HomeScreenState extends State<HomeScreen>
                                             .sideBarSelectedIndex.value ==
                                         5
                                     ? const PrivacyPolicy()
-                                    : const SizedBox(),
+                                    : homeScreenController
+                                                .sideBarSelectedIndex.value ==
+                                            6
+                                        ? FeedBack()
+                                        : homeScreenController
+                                                    .sideBarSelectedIndex
+                                                    .value ==
+                                                7
+                                            ? MoreApp()
+                                            : const SizedBox(),
               ),
             ),
           ),

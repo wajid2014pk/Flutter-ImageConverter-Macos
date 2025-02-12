@@ -9,6 +9,7 @@ import 'package:image_converter_macos/Controller/HomeScreenController/home_scree
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_converter_macos/Controller/PremiumPopUpController/premium_controller.dart';
 import 'package:image_converter_macos/Presentation/convert_file.dart';
+import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:window_manager/window_manager.dart';
 
 class SelectFileScreen extends StatefulWidget {
@@ -23,17 +24,17 @@ class _SelectFileScreenState extends State<SelectFileScreen>
   GlobalKey? lastTappedKey; // Store the last tapped key
   final payWallController = Get.put(PayWallController());
   void initState() {
-    detectScreenSize(); // Initial screen size detection
+    // detectScreenSize(); // Initial screen size detection
 
     // Continuously listen for screen size changes
     windowManager.addListener(this);
     super.initState();
   }
 
-  @override
-  void onWindowResized() {
-    detectScreenSize();
-  }
+  // @override
+  // void onWindowResized() {
+  //   detectScreenSize();
+  // }
 
   @override
   void dispose() {
@@ -49,7 +50,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
   GlobalKey imageResizerKey = GlobalKey();
   GlobalKey imageCompressorKey = GlobalKey();
   GlobalKey imageEnhancerKey = GlobalKey();
-  RxInt popupPositionValue = 185.obs;
+  RxInt popupPositionValue = 170.obs;
   RxInt toolIndex = 10.obs;
 
   @override
@@ -135,21 +136,29 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                 () => payWallController.isPro.value == false
                     ? GestureDetector(
                         onTap: () {
-                          payWallController.offerings == null
-                              ? payWallController.getProductsPrice()
-                              : null;
-                          payWallController.selectPackage.value = 1;
-                          payWallController.offerings == null
-                              ? Get.snackbar(
-                                  backgroundColor: Colors.white,
-                                  "Failed",
-                                  "No Internet Connecion")
-                              : payWallController.makePurchase();
+                          PremiumPopUp().premiumScreenPopUp(Get.context!);
+                          // payWallController.offerings == null
+                          //     ? payWallController.getProductsPrice()
+                          //     : null;
+                          // payWallController.selectPackage.value = 1;
+                          // payWallController.offerings == null
+                          //     ? Get.snackbar(
+                          //         backgroundColor: Colors.white,
+                          //         "Failed",
+                          //         "No Internet Connecion")
+                          //     : payWallController.makePurchase();
                         },
                         child: Container(
-                            height: Get.width * 0.085,
+                            height: Get.width * 0.078,
                             width: Get.width / 2.5,
                             decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
                               borderRadius: BorderRadius.circular(22),
                               image: const DecorationImage(
                                   image: AssetImage(
@@ -176,15 +185,19 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Unlimited Conversion’s",
+                                            "Unlimited Conversions",
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700,
+                                                fontFamily: 'Manrope-Bold',
                                                 fontSize: 18),
+                                          ),
+                                          SizedBox(
+                                            height: 2,
                                           ),
                                           SizedBox(
                                             width: Get.width * 0.25,
                                             child: Text(
-                                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                                              "Convert images easily any format, anytime, no limits!",
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
@@ -217,6 +230,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                           "Upgrade Now",
                                           style: TextStyle(
                                               color: UiColors.whiteColor,
+                                              fontFamily: 'Manrope-Medium',
                                               fontSize: 13,
                                               fontWeight: FontWeight.w700),
                                         ),
@@ -230,7 +244,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                     : SizedBox(),
               ),
               const SizedBox(
-                height: 22,
+                height: 42,
               ),
             ],
           ),
@@ -242,8 +256,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
   Container customPopupButton(String icon, String descriptionText, int index) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.0),
-          color: UiColors.backgroundColor),
+          borderRadius: BorderRadius.circular(14.0), color: Color(0xFFF5F5F5)),
       height: 80,
       width: 100,
       child: Column(
@@ -263,13 +276,12 @@ class _SelectFileScreenState extends State<SelectFileScreen>
               Text(
                 descriptionText,
                 maxLines: 1,
-                style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                    fontSize: 10.0,
-                    color: Colors.black,
-                    overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w500,
-                  ),
+                style: TextStyle(
+                  fontSize: 10.0,
+                  color: Colors.black,
+                  fontFamily: 'Manrope-Medium',
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -314,8 +326,10 @@ class _SelectFileScreenState extends State<SelectFileScreen>
               const SizedBox(height: 15),
               Text(
                 optionName,
-                style: GoogleFonts.poppins(
-                    fontSize: 14, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Manrope-Medium',
+                    fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -335,127 +349,129 @@ class _SelectFileScreenState extends State<SelectFileScreen>
     final Size size = renderBox.size;
 
     overlayEntry = OverlayEntry(
-      builder: (context) => Obx(
-        () => Positioned(
-          left: offset.dx +
-              size.width / 2 -
-              popupPositionValue.value, // Centering
-          top: offset.dy + size.height + 10, // Below the button
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              children: [
-                Center(
-                  child: CustomPaint(
-                    size: const Size(30, 20), // Adjust size
-                    painter: TrianglePainter(),
-                  ),
+      builder: (context) =>
+          // Obx(
+          //   () =>
+          Positioned(
+        left: offset.dx + size.width / 2 - 170,
+        //     2 -
+        // popupPositionValue.value, // Centering
+        top: offset.dy + size.height + 10, // Below the button
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              Center(
+                child: CustomPaint(
+                  size: const Size(30, 20), // Adjust size
+                  painter: TrianglePainter(),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                if (index == 0) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController.handleDriveImage();
-                                } else if (index == 1) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController
-                                      .imageResizerFunction();
-                                } else if (index == 2) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController
-                                      .imageCompressorFunction();
-                                }
-                              },
-                              child: customPopupButton(
-                                  "assets/upload_image.png",
-                                  // AppLocalizations.of(context)!.file_from_url,
-                                  "Upload Image",
-                                  index),
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                if (index == 0) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController.handleDriveImage();
-                                } else if (index == 1) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController
-                                      .imageResizerFunction();
-                                } else if (index == 2) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController
-                                      .imageCompressorFunction();
-                                }
-                              },
-                              child: customPopupButton(
-                                  'assets/drive_image.png', "G-Drive", index
-                                  // AppLocalizations.of(context)!.choose_from_files,
-                                  ),
-                            ),
-                            const SizedBox(
-                              width: 10.0,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                if (index == 0) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController
-                                      .handleUrlImage(index);
-                                } else if (index == 1) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController
-                                      .handleUrlImage(index);
-                                } else if (index == 2) {
-                                  toolIndex.value = 10;
-                                  removePopup();
-                                  await homeScreenController
-                                      .handleUrlImage(index);
-                                }
-                              },
-                              child: customPopupButton(
-                                  'assets/link_image.png', "URL Link", index
-                                  // AppLocalizations.of(context)!.choose_from_files,
-                                  ),
-                            ),
-                          ],
-                        ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              if (index == 0) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController.handleDriveImage();
+                              } else if (index == 1) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController
+                                    .imageResizerFunction();
+                              } else if (index == 2) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController
+                                    .imageCompressorFunction();
+                              }
+                            },
+                            child: customPopupButton(
+                                "assets/upload_image.png",
+                                // AppLocalizations.of(context)!.file_from_url,
+                                "Upload Image",
+                                index),
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              if (index == 0) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController.handleDriveImage();
+                              } else if (index == 1) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController
+                                    .imageResizerFunction();
+                              } else if (index == 2) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController
+                                    .imageCompressorFunction();
+                              }
+                            },
+                            child: customPopupButton(
+                                'assets/drive_image.png', "G-Drive", index
+                                // AppLocalizations.of(context)!.choose_from_files,
+                                ),
+                          ),
+                          const SizedBox(
+                            width: 10.0,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              if (index == 0) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController
+                                    .handleUrlImage(index);
+                              } else if (index == 1) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController
+                                    .handleUrlImage(index);
+                              } else if (index == 2) {
+                                toolIndex.value = 10;
+                                removePopup();
+                                await homeScreenController
+                                    .handleUrlImage(index);
+                              }
+                            },
+                            child: customPopupButton(
+                                'assets/link_image.png', "URL Link", index
+                                // AppLocalizations.of(context)!.choose_from_files,
+                                ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
+      // ),
     );
 
     Overlay.of(context).insert(overlayEntry!);
@@ -466,21 +482,21 @@ class _SelectFileScreenState extends State<SelectFileScreen>
     overlayEntry = null;
   }
 
-  detectScreenSize() async {
-    double screenRect =
-        await windowManager.getSize().then((display) => display.aspectRatio);
-    screenSize.value = screenRect;
-    print("window size :: ${screenSize.value}");
-    if (screenSize.value < 1.8) {
-      popupPositionValue.value = 185;
-    } else if (screenSize.value >= 1.8) {
-      popupPositionValue.value = 185;
-    }
+  // detectScreenSize() async {
+  //   double screenRect =
+  //       await windowManager.getSize().then((display) => display.aspectRatio);
+  //   screenSize.value = screenRect;
+  //   print("window size :: ${screenSize.value}");
+  //   if (screenSize.value < 1.8) {
+  //     popupPositionValue.value = 170;
+  //   } else if (screenSize.value >= 1.8) {
+  //     popupPositionValue.value = 185;
+  //   }
 
-    // setState(() {
-    //   screenSize = Size(screenRect.width, screenRect.height);
-    // });
-  }
+  //   // setState(() {
+  //   //   screenSize = Size(screenRect.width, screenRect.height);
+  //   // });
+  // }
 }
 
 class TrianglePainter extends CustomPainter {

@@ -44,7 +44,7 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
   dio.Response? downloadRes;
   // AnimationController? controller;
   // Animation<double>? progressAnimation;
-  late AnimationController controller;
+  AnimationController? animationController;
   late Animation<double> progressAnimation;
   getx.RxDouble infiniteProgress = 0.0.obs;
   TextEditingController textfieldController = TextEditingController();
@@ -76,20 +76,20 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                     if (selectedQuality != null ||
                         selectedSize != null ||
                         customQualityController.text.isNotEmpty) {
-                      controller = AnimationController(
+                      animationController = AnimationController(
                         vsync: this,
                         duration: const Duration(
                             seconds:
                                 10), // Adjust the speed of progress animation
                       );
                       progressAnimation = Tween<double>(begin: 0.0, end: 1.0)
-                          .animate(controller)
+                          .animate(animationController!)
                         ..addListener(() {
                           infiniteProgress.value = progressAnimation.value;
                           setState(() {});
                         });
 
-                      controller.repeat(reverse: false);
+                      animationController!.repeat(reverse: false);
                       uploadFile(context);
                     } else {
                       getx.Get.snackbar(
@@ -784,8 +784,11 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
   }
 
   uploadFile(context) async {
+    File newFilePath = File("");
     String uploadurl = ApiString.apiUrl;
     loadingState.value = true;
+    newFilePath = await copyAndRenameImage(
+        widget.file!.path, DateTime.now().microsecondsSinceEpoch.toString());
     try {
       int? qualityInput;
       print("selectedOption $selectedOption");
@@ -810,10 +813,10 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
       }
 
       print("Calculated QUALITY: $qualityInput");
-      print("widget.file!.path ${widget.file!.path}");
+      print("widget.file!.path ${newFilePath.path}");
       dio.FormData formdata = dio.FormData.fromMap({
-        "file": await dio.MultipartFile.fromFile(widget.file!.path,
-            filename: widget.file!.path
+        "file": await dio.MultipartFile.fromFile(newFilePath.path,
+            filename: newFilePath.path
             //show only filename from path
             ),
         "from": "png",
@@ -869,8 +872,8 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
       );
       print("Response Download ${downloadRes!.data}");
       loadingState.value = false;
-      if (controller != null) {
-        controller.dispose();
+      if (animationController != null) {
+        animationController!.dispose();
       }
 
       if (response.statusCode == 200) {
@@ -887,6 +890,31 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
       // getx.Get.offAll(const BottomNavBar());
 
       getx.Get.snackbar("Error", "Error While Converting");
+    }
+  }
+
+  Future<File> copyAndRenameImage(String originalPath, String newName) async {
+    try {
+      File originalFile = File(originalPath);
+
+      if (!await originalFile.exists()) {
+        throw Exception("Original file does not exist");
+      }
+
+      // Get the application document directory
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+
+      // Create a new file path inside the app directory
+      String newPath =
+          '${appDocDir.path}/$newName.png'; // Change extension if needed
+
+      // Copy the file to the new location
+      File newFile = await originalFile.copy(newPath);
+
+      return newFile;
+    } catch (e) {
+      print("Error copying and renaming file: $e");
+      return Future.error(e);
     }
   }
 
@@ -917,8 +945,8 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
   @override
   void dispose() {
     // Dispose the AnimationController if it has been initialized
-    if (controller != null) {
-      controller.dispose();
+    if (animationController != null) {
+      animationController!.dispose();
     }
 
     // Dispose other controllers if necessary

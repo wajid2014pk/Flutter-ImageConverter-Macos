@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:image_converter_macos/Screens/premium_popup.dart';
 import 'package:image_converter_macos/main.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -92,7 +93,7 @@ class PayWallController extends GetxController {
   //                                 subscriptionDuration,
   //                                 maxLines: 1,
   //                                 overflow: TextOverflow.ellipsis,
-  //                                 style: GoogleFonts.poppins(
+  //                                 style: TextStyle(
   //                                   color: selectPackage.value == index
   //                                       ? UiColors.whiteColor
   //                                       : UiColors.blackColor,
@@ -121,7 +122,7 @@ class PayWallController extends GetxController {
   //                                   index == 0
   //                                       ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[4].storeProduct.price, 30)}"
   //                                       : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ${getActualPrice(offerings!.current!.availablePackages[3].storeProduct.price, 60)}",
-  //                                   style: GoogleFonts.poppins(
+  //                                   style: TextStyle(
   //                                       fontWeight: FontWeight.w400,
   //                                       fontSize: 18,
   //                                       color: Colors.black.withOpacity(0.5),
@@ -132,7 +133,7 @@ class PayWallController extends GetxController {
   //                                 ),
   //                                 Text(
   //                                   index == 0 ? "30% OFF" : "60% OFF",
-  //                                   style: GoogleFonts.poppins(
+  //                                   style: TextStyle(
   //                                     fontWeight: FontWeight.w500,
   //                                     fontSize: 16,
   //                                     color: Colors.red,
@@ -153,7 +154,7 @@ class PayWallController extends GetxController {
   //                                           ? "${offerings!.current!.availablePackages[4].storeProduct.currencyCode} "
   //                                           : "${offerings!.current!.availablePackages[3].storeProduct.currencyCode} ",
   //                                       textAlign: TextAlign.center,
-  //                                       style: GoogleFonts.poppins(
+  //                                       style: TextStyle(
   //                                         fontWeight: FontWeight.w600,
   //                                         fontSize: 16,
   //                                         color: selectPackage.value == index
@@ -176,7 +177,7 @@ class PayWallController extends GetxController {
   //                                               .price
   //                                               .toStringAsFixed(2),
   //                                       textAlign: TextAlign.center,
-  //                                       style: GoogleFonts.poppins(
+  //                                       style: TextStyle(
   //                                         fontWeight: FontWeight.w600,
   //                                         fontSize: 22,
   //                                         color: selectPackage.value == index
@@ -256,78 +257,159 @@ class PayWallController extends GetxController {
     );
   }
 
+  // makePurchase() async {
+  //   try {
+  //     // showLoading(Get.context!);
+  //     // CustomerInfo? purchaserInfo;
+
+  //     if (selectPackage.value == 0) {
+  //       print(
+  //           "CHECK monthly 4:  ${offerings!.current!.availablePackages[4].storeProduct.identifier}");
+  //     } else if (selectPackage.value == 1) {
+  //       print(
+  //           "CHECK Yearly 3: ${offerings!.current!.availablePackages[3].storeProduct.identifier}");
+  //     } else if (selectPackage.value == 2) {
+  //       print(
+  //           "CHECK Lifetime 5: ${offerings!.current!.availablePackages[5].storeProduct.identifier}");
+  //       // purchaserInfo = await Purchases.purchasePackage(
+  //       //     offerings!.current!.availablePackages[5]);
+  //     }
+  //   } on PlatformException catch (e) {
+  //     print("@@@ exception $e");
+  //     Get.back();
+
+  //     Navigator.pop(Get.context!);
+
+  //     ScaffoldMessenger.of(Get.context!).showSnackBar(const SnackBar(
+  //         content: Center(
+  //             child: Text(
+  //       "Purchased failed!",
+  //     ))));
+
+  //     var errorCode = PurchasesErrorHelper.getErrorCode(e);
+  //     if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+  //       debugPrint(e.message);
+  //     }
+  //   }
+  // }
+
   makePurchase() async {
     try {
       showLoading(Get.context!);
-      bool isPro = false;
-      Package? monthlyPackage = offerings!.current!.monthly!;
-      Package? yearlyPackage = offerings!.current!.annual!;
-      Package? lifetimePackage = offerings!.current!.lifetime!;
+      CustomerInfo? purchaserInfo;
+      // bool isPro = false;
+      // Package? monthlyPackage = offerings!.current!.monthly!;
+      // Package? yearlyPackage = offerings!.current!.annual!;
+      // Package? lifetimePackage = offerings!.current!.lifetime!;
 
       if (selectPackage.value == 0) {
-        CustomerInfo purchaserInfo =
-            await Purchases.purchasePackage(monthlyPackage);
-        isPro = purchaserInfo.entitlements.all["monthlyPremium"]!.isActive;
+        purchaserInfo = await Purchases.purchasePackage(
+            offerings!.current!.availablePackages[4]);
+        // isPro = offerings!.current!.availablePackages[4].storeProduct.
+        // purchaserInfo.entitlements.all["monthlyPremium"]!.isActive;
       } else if (selectPackage.value == 1) {
-        CustomerInfo purchaserInfo =
-            await Purchases.purchasePackage(yearlyPackage);
-        isPro = purchaserInfo.entitlements.all["yearlyPremium"]!.isActive;
+        purchaserInfo = await Purchases.purchasePackage(
+            offerings!.current!.availablePackages[3]);
+        // isPro = purchaserInfo.entitlements.all["yearlyPremium"]!.isActive;
       } else if (selectPackage.value == 2) {
-        CustomerInfo purchaserInfo =
-            await Purchases.purchasePackage(lifetimePackage);
-        isPro = purchaserInfo.entitlements.all["lifetime_purchase"]!.isActive;
+        purchaserInfo = await Purchases.purchasePackage(
+            offerings!.current!.availablePackages[5]);
+        // isPro = purchaserInfo.entitlements.all["lifetime_purchase"]!.isActive;
       }
-      if (isPro) {
-        await initRevenuePlatform();
-
+      if (purchaserInfo!.entitlements.active.isNotEmpty) {
+        // print("@@@isPremium222${isPremium.value}");
+        // isPremium.value = true;
+        payWallController.isPro.value = true;
+        // context.read<MainCubit>().setPro(true);
+        //snackMessage(context, AppLocalizations.of(context)!.subscribe_successfully);
         ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            content: Row(
-              children: [
-                Text(AppLocalizations.of(Get.context!)!
-                    .premium_purchased_successfully),
-                const Expanded(
-                  child: SizedBox(),
-                ),
-                const Icon(
-                  Icons.done_outline_rounded,
-                  color: Colors.green,
-                ),
-              ],
-            )));
+            content: Center(
+                child: Text(
+          AppLocalizations.of(Get.context!)!.premium_purchased_successfully,
+        ))));
 
-        Future.delayed(const Duration(milliseconds: 2500), () {
-          Get.offAll(() => const HomeScreen());
-        });
+        Get.offAll(() => const HomeScreen(
+                  index: 1,
+                )
+            // BottomTab()
+            );
       } else {
-        Get.back();
+        Navigator.pop(Get.context!);
       }
     } on PlatformException catch (e) {
-      // Get.back();
-      Get.offAll(() => const HomeScreen(index: -1));
+      print("@@@ exception $e");
+      Get.back();
+      // if (isTriggerPremium) {
+      // Get.to(const PremiumPage());
+      // PremiumPopUp().premiumScreenPopUp(Get.context!);
+      // }
+      // else {
+      Navigator.pop(Get.context!);
+      // }
+      //snackMessage(Get.context!, AppLocalizations.of(Get.context!)!.purchased_cancel);
       ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
-          duration: const Duration(seconds: 2),
-          behavior: SnackBarBehavior.floating,
-          content: Row(
-            children: [
-              Text(
-                '${AppLocalizations.of(Get.context!)!.premium_failed} ${AppLocalizations.of(Get.context!)!.please_try_again}',
-              ),
-              const Expanded(
-                child: SizedBox(),
-              ),
-              const Icon(
-                Icons.clear_outlined,
-                color: Colors.red,
-              ),
-            ],
-          )));
+          content: Center(
+              child: Text(
+        // AppLocalizations.of(Get.context!)!.purchased_failed,
+        "Purchased failed!",
+      ))));
+      // showToast(context, "Purchased Successfull");
       var errorCode = PurchasesErrorHelper.getErrorCode(e);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-        log(e.message.toString());
+        debugPrint(e.message);
       }
     }
+    //   if (isPro) {
+    //     await initRevenuePlatform();
+
+    //     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+    //         duration: const Duration(seconds: 2),
+    //         behavior: SnackBarBehavior.floating,
+    //         content: Row(
+    //           children: [
+    //             Text(AppLocalizations.of(Get.context!)!
+    //                 .premium_purchased_successfully),
+    //             const Expanded(
+    //               child: SizedBox(),
+    //             ),
+    //             const Icon(
+    //               Icons.done_outline_rounded,
+    //               color: Colors.green,
+    //             ),
+    //           ],
+    //         )));
+
+    //     Future.delayed(const Duration(milliseconds: 2500), () {
+    //       Get.offAll(() => const HomeScreen());
+    //     });
+    //   } else {
+    //     Get.back();
+    //   }
+    // } on PlatformException catch (e) {
+    //   // Get.back();
+    //   Get.offAll(() => const HomeScreen(index: -1));
+    //   ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+    //       duration: const Duration(seconds: 2),
+    //       behavior: SnackBarBehavior.floating,
+    //       content: Row(
+    //         children: [
+    //           Text(
+    //             '${AppLocalizations.of(Get.context!)!.premium_failed} ${AppLocalizations.of(Get.context!)!.please_try_again}',
+    //           ),
+    //           const Expanded(
+    //             child: SizedBox(),
+    //           ),
+    //           const Icon(
+    //             Icons.clear_outlined,
+    //             color: Colors.red,
+    //           ),
+    //         ],
+    //       )));
+    //   var errorCode = PurchasesErrorHelper.getErrorCode(e);
+    //   if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+    //     log(e.message.toString());
+    //   }
+    // }
   }
 
   restorePurchase(BuildContext context) async {
@@ -438,7 +520,7 @@ class PayWallController extends GetxController {
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: const TextStyle(
                   fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -468,7 +550,7 @@ class PayWallController extends GetxController {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
-          style: GoogleFonts.poppins(
+          style: TextStyle(
             fontSize: 12.0,
             color: UiColors.whiteColor,
           ),

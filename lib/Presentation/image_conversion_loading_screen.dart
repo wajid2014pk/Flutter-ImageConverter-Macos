@@ -292,7 +292,7 @@ class _ImageConversionLoadingScreenState
                             //   // AppLocalizations.of(context)!
                             //   //     .your_file_will_be_ready_shortly,
                             //   "Your File will be ready shortly",
-                            //   style: GoogleFonts.poppins(
+                            //   style: TextStyle(
                             //     fontSize: 16,
                             //     fontWeight: FontWeight.w500,
                             //   ),
@@ -410,7 +410,7 @@ class _ImageConversionLoadingScreenState
                             //   // AppLocalizations.of(context)!
                             //   //     .your_file_will_be_ready_shortly,
                             //   "Your File will be ready shortly",
-                            //   style: GoogleFonts.poppins(
+                            //   style: TextStyle(
                             //     fontSize: 16,
                             //     fontWeight: FontWeight.w500,
                             //   ),
@@ -434,7 +434,7 @@ class _ImageConversionLoadingScreenState
                             //                     .your_file_is_converting
                             //                 : AppLocalizations.of(context)!
                             //                     .your_file_is_converting,
-                            //             style: GoogleFonts.poppins(
+                            //             style: TextStyle(
                             //               fontSize: 18,
                             //               fontWeight: FontWeight.w500,
                             //             ),

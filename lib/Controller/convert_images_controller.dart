@@ -450,7 +450,7 @@ class ConvertImagesController extends GetxController {
         int dateTime = DateTime.now().microsecondsSinceEpoch;
         log("response of $i ${response}");
         Map valueMap = json.decode(response.data);
-        Directory? dir = await getApplicationDocumentsDirectory();
+        Directory? dir = await getApplicationCacheDirectory();
 
         if (valueMap['d_url'] != null) {
           imageFile.add(
@@ -1853,7 +1853,7 @@ class ConvertImagesController extends GetxController {
                               "Choose File Format",
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(
                                 fontSize: 17,
                                 // fontWeight: FontWeight.w500,
                                 color: UiColors.blackColor,
@@ -2157,151 +2157,6 @@ class ConvertImagesController extends GetxController {
     );
   }
 
-  // conversionOptions({
-  //   required String extensionImage,
-  //   required int index,
-  //   required List<String> imagePath,
-  // }) {
-  //   return GestureDetector(
-  //     onTap: () async {
-  //       await AIHandler.checkInternet();
-
-  //       selectedIndex.value = index;
-
-  //       await conversionMethod(imagePath);
-  //     },
-  //     child: Container(
-  //       width: 70,
-  //       height: 70,
-  //       padding: const EdgeInsets.only(top: 5, bottom: 5),
-  //       child: Row(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Stack(
-  //             children: [
-  //               Image.asset(
-  //                 // extensionImage,
-  //                 'assets/$extensionImage.png',
-  //                 height: 62,
-  //                 width: 62,
-  //               ),
-  //               //FOR IOS
-
-  //               // extensionImage == 'xlsx'
-  //               //     ? !(bottomNavBarController.currentScans.value <
-  //               //             scanLmit.value)
-  //               //         ? !isPremium.value
-  //               //             ? dimondWidget()
-  //               //             : const SizedBox()
-  //               //         : const SizedBox()
-  //               //     : const SizedBox(),
-
-  //               // FOR ANDROID
-  //               // if (extensionImage == 'svg_image' &&
-  //               //     Platform.isAndroid &&
-  //               //     svgLimit.value > 9 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'bmp' &&
-  //               //     Platform.isAndroid &&
-  //               //     bmpLimit.value > 9 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'webp' &&
-  //               //     Platform.isAndroid &&
-  //               //     webpLimit.value > 9 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'tiff' &&
-  //               //     Platform.isAndroid &&
-  //               //     tiffLimit.value >= 5 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'raw' &&
-  //               //     Platform.isAndroid &&
-  //               //     rawLimit.value >= 5 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'psd' &&
-  //               //     Platform.isAndroid &&
-  //               //     psdLimit.value >= 5 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'dds' &&
-  //               //     Platform.isAndroid &&
-  //               //     ddsLimit.value >= 5 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'heic' &&
-  //               //     Platform.isAndroid &&
-  //               //     heicLimit.value >= 5 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'ppm' &&
-  //               //     Platform.isAndroid &&
-  //               //     ppmLimit.value >= 5 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'tga' &&
-  //               //     Platform.isAndroid &&
-  //               //     tgaLimit.value >= 5 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'pdf_image' &&
-  //               //     Platform.isAndroid &&
-  //               //     simpleLimit >= 10 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'doc' &&
-  //               //     Platform.isAndroid &&
-  //               //     simpleLimit >= 10 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-  //               // if (extensionImage == 'text' &&
-  //               //     Platform.isAndroid &&
-  //               //     simpleLimit >= 10 &&
-  //               //     !isPremium.value)
-  //               //   dimondWidget(),
-
-  //               // --------------------------------------------------------
-
-  //               // extensionImage == 'svg_image' ||
-  //               //         extensionImage == 'bmp' ||
-  //               //         extensionImage == 'tiff' ||
-  //               //         extensionImage == 'raw' ||
-  //               //         extensionImage == 'psd' ||
-  //               //         extensionImage == 'dds' ||
-  //               //         extensionImage == 'heic' ||
-  //               //         extensionImage == 'ppm' ||
-  //               //         extensionImage == 'tga' ||
-  //               //         extensionImage == 'doc' ||
-  //               //         extensionImage == 'text' ||
-  //               //         extensionImage == 'pdf_image'
-  //               //     ? (Platform.isAndroid && usedConversion! > 9)
-  //               //         ? !isPremium.value
-  //               //             ? Positioned(
-  //               //                 top: 5,
-  //               //                 left: 5,
-  //               //                 child: Container(
-  //               //                   decoration: BoxDecoration(
-  //               //                       borderRadius: BorderRadius.circular(4),
-  //               //                       color: Colors.black.withOpacity(0.1)),
-  //               //                   child: Lottie.asset(
-  //               //                     'assets/anim_diamond.json',
-  //               //                     width: 20.0,
-  //               //                   ),
-  //               //                 ),
-  //               //               )
-  //               //             : const SizedBox()
-  //               //         : const SizedBox()
-  //               //     : const SizedBox(),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
   conversionOptions({
     required String extensionImage,
     required int index,
@@ -2766,62 +2621,6 @@ class ConvertImagesController extends GetxController {
     );
   }
 
-  // Future getAllLimitValues() async {
-  //   // switch (selectedIndex.value) {
-  //   //   case 5:
-  //   svgLimit.value = await SharedPref().getSVGValue();
-  //   log("svg ==========================================>${svgLimit.value}");
-
-  //   // break;
-  //   // case 6:
-  //   webpLimit.value = await SharedPref().getWEBPValue();
-  //   log("Webp =>${webpLimit.value}");
-  //   // break;
-  //   // case 7:
-  //   bmpLimit.value = await SharedPref().getBmpLimit();
-  //   log("bmp =>${bmpLimit.value}");
-
-  //   // break;
-  //   // case 12:
-  //   tiffLimit.value = await SharedPref().getTiffLimit();
-  //   log("getAllLimitValues tiff ===========================================>${tiffLimit.value}");
-
-  //   // break;
-  //   // case 13:
-  //   rawLimit.value = await SharedPref().getRawLimit();
-  //   log("raw =>${rawLimit.value}");
-
-  //   // break;
-  //   // case 14:
-  //   psdLimit.value = await SharedPref().getPsdLimit();
-  //   log("psd =>${psdLimit.value}");
-
-  //   // break;
-  //   // case 15:
-  //   ddsLimit.value = await SharedPref().getDdsLimit();
-  //   log("dsd =>${ddsLimit.value}");
-
-  //   // break;
-  //   // case 16:
-  //   heicLimit.value = await SharedPref().getHeicLimit();
-  //   log("heinc =>${heicLimit.value}");
-
-  //   // break;
-  //   // case 17:
-  //   ppmLimit.value = await SharedPref().getPpmLimit();
-  //   log("ppm =>${ppmLimit.value}");
-
-  //   // break;
-  //   // case 18:
-  //   tgaLimit.value = await SharedPref().getTgaLimit();
-  //   log("tga =>${tgaLimit.value}");
-
-  //   // break;
-  //   // default:
-  //   // log("Deafukt");
-  //   // }
-  // }
-
   Future<int> getFileSize(String filePath) async {
     try {
       File file = File(filePath);
@@ -3195,11 +2994,6 @@ class ConvertImagesController extends GetxController {
 
 //------------------image to excel-------------------
   conversionMethod(List<String> imagePath) async {
-    // int toolValue = await SharedPref().getToolValue();
-
-    // int webpValue = await SharedPref().getWEBPValue();
-    // int svgValue = await SharedPref().getSVGValue();
-    // CustomEvent.firebaseCustom('OUTPUT_FORMAT_SCREEN_CONVERT_FILES_BTN');
     print("RERETTTTT ${selectedIndex.value}");
     if (selectedIndex.value == 10) {
       // ++toolValue;

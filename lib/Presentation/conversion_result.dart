@@ -121,7 +121,7 @@ class _ConversionResultState extends State<ConversionResult> {
                           AppLocalizations.of(context)!.converted,
                           style: TextStyle(
                             color: UiColors.blackColor,
-                            fontSize: 24.0,
+                            fontSize: 20.0,
                             fontFamily: 'Manrope-Bold',
                             fontWeight: FontWeight.w800,
                           ),
@@ -600,7 +600,7 @@ class _ConversionResultState extends State<ConversionResult> {
                         imagePath: 'assets/download_icon.png',
                         index: widget.convertedFile.length,
                         buttonWidth:
-                            widget.convertedFile.length == 1 ? 280 : 160),
+                            widget.convertedFile.length == 1 ? 310 : 160),
                   ),
                 ],
               ),
@@ -695,7 +695,7 @@ class _ConversionResultState extends State<ConversionResult> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -766,7 +766,7 @@ class _ConversionResultState extends State<ConversionResult> {
         featureName,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: GoogleFonts.poppins(
+        style: TextStyle(
             fontSize: 16, color: UiColors.blackColor.withOpacity(0.5)),
       ),
     );

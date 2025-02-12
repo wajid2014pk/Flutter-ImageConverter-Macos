@@ -67,8 +67,7 @@ class DialogBoxRating {
                 Text(
                   AppLocalizations.of(context)!.do_you_like,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                      fontSize: 18, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   height: 5,
@@ -76,8 +75,7 @@ class DialogBoxRating {
                 Text(
                   "${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter} ?",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w500, fontSize: 20),
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                 ),
                 const SizedBox(
                   height: 10,
@@ -85,8 +83,7 @@ class DialogBoxRating {
                 Text(
                   AppLocalizations.of(context)!.we_are_working_hard,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                      fontSize: 16, fontWeight: FontWeight.w300),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
                 ),
                 const SizedBox(
                   height: 10,
@@ -94,8 +91,7 @@ class DialogBoxRating {
                 Text(
                   AppLocalizations.of(context)!.we_greatly_appreciate,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                      fontSize: 16, fontWeight: FontWeight.w300),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
                 ),
               ],
             ),
@@ -144,7 +140,7 @@ class DialogBoxRating {
                       AppLocalizations.of(context)!.the_best_we_can_get,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.poppins(fontSize: 16),
+                      style: TextStyle(fontSize: 16),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 25),

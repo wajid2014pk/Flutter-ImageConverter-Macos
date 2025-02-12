@@ -100,7 +100,7 @@ class _LoaderScreenState extends State<LoaderScreen>
                     radius: 120.0,
                     lineWidth: 8.0,
                     percent: resizedController.infiniteProgress.value,
-                    progressColor: UiColors.blueColor,
+                    progressColor: UiColors.blueColorNew,
                   ),
                   Positioned(
                     child: Stack(
@@ -113,7 +113,7 @@ class _LoaderScreenState extends State<LoaderScreen>
                             color: Colors.white,
                             boxShadow: [
                               BoxShadow(
-                                color: UiColors.blueColor.withOpacity(0.1),
+                                color: UiColors.blueColorNew.withOpacity(0.1),
                                 spreadRadius: 4,
                                 blurRadius: 7,
                                 offset: const Offset(
@@ -149,7 +149,7 @@ class _LoaderScreenState extends State<LoaderScreen>
                       resizedController.infiniteProgress.value <= 0.9
                   ? AppLocalizations.of(context)!.your_file_is_converting
                   : AppLocalizations.of(context)!.your_file_is_converting,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),

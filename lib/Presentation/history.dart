@@ -74,6 +74,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     super.initState();
     Future.delayed(Duration(milliseconds: 100), () async {
       await _loadFiles();
+      print("allfiles $allfiles");
       filteredListTextField.value = allfiles;
     });
   }
@@ -118,7 +119,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     //           },
     //           child: Text(
     //             AppLocalizations.of(Get.context!)!.no_data_found,
-    //             style: GoogleFonts.poppins(
+    //             style: TextStyle(
     //               fontSize: 14,
     //             ),
     //           ),
@@ -177,11 +178,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 children: [
                   Row(
                     children: [
-                      GestureDetector(
-                          onTap: () {
-                            print("aaaa ${filterDataList}");
-                          },
-                          child: const Text("Filter by:")),
+                      ((filterSelectedItems.isNotEmpty) &&
+                              (!filterSelectedItems.contains("All")))
+                          ? Text("Filter by:")
+                          : SizedBox(),
                       sizedBoxWidth,
                       Container(
                         height: 22,
@@ -267,7 +267,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       )
                     ],
                   ),
-                  sizedBoxWidth,
+                  SizedBox(
+                    width: 10,
+                  ),
                   GestureDetector(
                     key: filterKey,
                     onTap: () {
@@ -308,7 +310,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         },
                         child: Text(
                           AppLocalizations.of(Get.context!)!.no_data_found,
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(
                             fontSize: 14,
                           ),
                         ),
@@ -336,52 +338,49 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         String creationDate =
                             _getCreationDate(filteredListTextField[index]);
 
-                        return Container(
-                          decoration: BoxDecoration(
-                              // border: Border.all(),
-                              color: UiColors.whiteColor,
-                              borderRadius: BorderRadius.circular(12)),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0.0, vertical: 0.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              print(
-                                  "path.extension(allfiles[index].path ${path.extension(filteredListTextField[index].path)}");
-                              if ((path.extension(
-                                          filteredListTextField[index].path) ==
-                                      '.webp') ||
-                                  (path.extension(
-                                          filteredListTextField[index].path) ==
-                                      '.tiff') ||
-                                  (path.extension(
-                                          filteredListTextField[index].path) ==
-                                      '.raw') ||
-                                  (path.extension(
-                                          filteredListTextField[index].path) ==
-                                      '.psd') ||
-                                  (path.extension(
-                                          filteredListTextField[index].path) ==
-                                      '.heic') ||
-                                  (path.extension(
-                                          filteredListTextField[index].path) ==
-                                      '.ppm') ||
-                                  (path.extension(
-                                          filteredListTextField[index].path) ==
-                                      '.tga')) {
-                                Get.snackbar(
-                                  colorText: Colors.black,
-                                  backgroundColor: Colors.white,
-                                  duration: const Duration(seconds: 4),
-                                  "Note",
-                                  "Cannot preview this file!",
-                                );
-                              } else {
-                                _openFile(filteredListTextField[index]);
-                              }
-                            },
-                            onLongPress: () {
-                              _deleteFile(filteredListTextField[index]);
-                            },
+                        return GestureDetector(
+                          onTap: () {
+                            print(
+                                "path.extension(allfiles[index].path ${path.extension(filteredListTextField[index].path)}");
+                            if ((path.extension(
+                                        filteredListTextField[index].path) ==
+                                    '.webp') ||
+                                (path.extension(
+                                        filteredListTextField[index].path) ==
+                                    '.tiff') ||
+                                (path.extension(
+                                        filteredListTextField[index].path) ==
+                                    '.raw') ||
+                                (path.extension(
+                                        filteredListTextField[index].path) ==
+                                    '.psd') ||
+                                (path.extension(
+                                        filteredListTextField[index].path) ==
+                                    '.heic') ||
+                                (path.extension(
+                                        filteredListTextField[index].path) ==
+                                    '.ppm') ||
+                                (path.extension(
+                                        filteredListTextField[index].path) ==
+                                    '.tga')) {
+                              Get.snackbar(
+                                colorText: Colors.black,
+                                backgroundColor: Colors.white,
+                                duration: const Duration(seconds: 4),
+                                "Note",
+                                "Cannot preview this file!",
+                              );
+                            } else {
+                              _openFile(filteredListTextField[index]);
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                // border: Border.all(),
+                                color: UiColors.whiteColor,
+                                borderRadius: BorderRadius.circular(12)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 0.0, vertical: 0.0),
                             child: Container(
                               padding: const EdgeInsets.only(left: 12),
                               child: Column(
@@ -487,7 +486,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: textColor,
@@ -794,8 +793,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     _popupOverlay = OverlayEntry(
       builder: (context) => Positioned(
-        top: 80, // Adjust based on where you want to show the popup
-        right: 130,
+        top: 20, // Adjust based on where you want to show the popup
+        right: 170,
         child: Material(
           color: Colors.transparent,
           clipBehavior: Clip.none,
@@ -844,6 +843,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 6,
+                                        color: isSelected
+                                            ? UiColors.blackColor
+                                                .withOpacity(0.1)
+                                            : Colors.transparent),
+                                  ],
                                   color: isSelected
                                       ? Colors.white
                                       : Colors.grey.withOpacity(0.1),

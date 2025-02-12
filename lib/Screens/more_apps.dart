@@ -4,32 +4,34 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class PrivacyPolicy extends StatefulWidget {
-  const PrivacyPolicy({
+class MoreApp extends StatefulWidget {
+  const MoreApp({
     super.key,
   });
 
   @override
-  State<PrivacyPolicy> createState() => _PrivacyPolicyState();
+  State<MoreApp> createState() => _MoreAppState();
 }
 
-class _PrivacyPolicyState extends State<PrivacyPolicy> {
+class _MoreAppState extends State<MoreApp> {
   @override
   void initState() {
     Future.delayed(const Duration(milliseconds: 100), () {
-      launchURLFunction("www.eclixtech.com/privacy-policy");
+      // launchUrl(Uri.parse("https://apps.apple.com/us/app/1608350899"));
+      launchUrl(Uri.parse(
+          "https://apps.apple.com/us/developer/asad-ahsan/id1326954499"));
     });
 
     super.initState();
   }
 
-  launchURLFunction(String url) async {
-    final Uri params = Uri(
-      scheme: 'https',
-      path: url,
-    );
-    launchUrl(params);
-  }
+  // launchURLFunction(String url) async {
+  //   final Uri params = Uri(
+  //     scheme: 'https',
+  //     path: url,
+  //   );
+  //   launchUrl(params);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
       backgroundColor: UiColors.backgroundColor,
       body: Center(
         child: Text(
-          AppLocalizations.of(context)!.privacy_policy,
+          "More Apps",
+          // AppLocalizations.of(context)!.privacy_policy,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),

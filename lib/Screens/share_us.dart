@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_converter_macos/Constant/color.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +18,8 @@ class _ShareUsState extends State<ShareUs> {
   @override
   void initState() {
     Future.delayed(const Duration(milliseconds: 100), () async {
-      await Share.share('https://apps.apple.com/us/app/6673897269');
+      await Share.share(
+          '${"Hey, download the app now"}!= https://apps.apple.com/us/app/1608350899');
     });
 
     super.initState();
@@ -34,10 +36,11 @@ class _ShareUsState extends State<ShareUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: UiColors.backgroundColor,
       body: Center(
         child: Text(
           "Share Us",
-          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );

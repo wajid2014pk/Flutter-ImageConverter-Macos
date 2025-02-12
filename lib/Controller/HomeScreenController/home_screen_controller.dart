@@ -58,7 +58,7 @@ class HomeScreenController extends GetxController {
               ),
               Text(
                 '${AppLocalizations.of(context)!.image} ${AppLocalizations.of(context)!.converter}',
-                style: GoogleFonts.poppins(
+                style: TextStyle(
                   color: UiColors.blackColor,
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500,
@@ -79,7 +79,7 @@ class HomeScreenController extends GetxController {
               sideBarSelectedIndex.value == 2
                   ? Text(
                       AppLocalizations.of(context)!.history,
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(
                         color: UiColors.blackColor,
                         fontSize: 20.0,
                       ),

@@ -179,35 +179,12 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                           );
                         }
                       },
-                      child:
-                          downloadButton(imagePath: "assets/download_icon.png")
-                      // Container(
-                      //     padding:
-                      //         EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(12),
-                      //       gradient: UiColors().linearGradientBlueColor,
-                      //     ),
-                      //     child: Row(
-                      //       mainAxisAlignment: MainAxisAlignment.center,
-                      //       children: [
-                      //         Image.asset(
-                      //           'assets/download_icon.png',
-                      //           height: 22,
-                      //           width: 22,
-                      //         ),
-                      //         SizedBox(
-                      //           width: 12,
-                      //         ),
-                      //         Text(
-                      //           "Download",
-                      //           style:
-                      //               TextStyle(color: Colors.white, fontSize: 14),
-                      //         )
-                      //       ],
-                      //     )),
-                      ),
+                      child: downloadButton(
+                          imagePath: "assets/download_icon.png")),
                 ],
+              ),
+              SizedBox(
+                height: 22,
               ),
             ],
           ),

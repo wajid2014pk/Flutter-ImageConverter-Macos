@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Presentation/rating_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -35,10 +36,11 @@ class _RateUsState extends State<RateUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: UiColors.backgroundColor,
       body: Center(
         child: Text(
           AppLocalizations.of(context)!.rate_us,
-          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );
