@@ -20,7 +20,7 @@ class _FeedBackState extends State<FeedBack> {
       {
         final Uri params = Uri(
           scheme: 'mailto',
-          path: 'mailto:eclix.suport@gmail.com',
+          path: 'eclix.suport@gmail.com',
           query: 'subject=Image Converter Feedback',
         );
         launchUrl(params);

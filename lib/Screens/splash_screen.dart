@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -83,12 +84,29 @@ class _SplashScreenState extends State<SplashScreen>
             SizedBox(
               height: 22,
             ),
-            Text(
-              "Image Converter",
-              style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                  fontFamily: 'Manrope-Medium'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  AppLocalizations.of(Get.context!)!.image,
+                  // "Image Converter",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'Manrope-Medium'),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  AppLocalizations.of(Get.context!)!.converter,
+                  // "Image Converter",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'Manrope-Medium'),
+                ),
+              ],
             ),
           ],
         ),

@@ -116,7 +116,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     if (monthlyEntitalments != null ||
         yearlyEntitalments != null ||
         lifeTimeEntitalments != null) {
-      payWallController.isPro.value = true;
+      payWallController.isPro.value = false;
       print("####PRO VALUE ${payWallController.isPro.value}");
     } else {
       payWallController.isPro.value = false;

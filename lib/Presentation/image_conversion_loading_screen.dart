@@ -4,15 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 
 import 'package:image_converter_macos/Controller/convert_images_controller.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
-import 'package:image_converter_macos/Screens/premium_popup.dart';
-import 'package:image_converter_macos/main.dart';
-import 'package:image_converter_macos/utils/shared_pref.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,9 +41,6 @@ class _ImageConversionLoadingScreenState
   @override
   void initState() {
     super.initState();
-
-    print("778899 ${conversionController.selectedIndex.value}");
-
     controller = AnimationController(
       vsync: this,
       duration:
@@ -67,23 +61,7 @@ class _ImageConversionLoadingScreenState
     });
   }
 
-  // Future incrementValue() async {
-  //   withoutApiProgressValue.value = 0.0;
-  //   await Future.delayed(Duration(milliseconds: 100), () async {
-  //     for (int i = 0; i < 10; i++) {
-  //       if (conversionController.showLoader.value == false) {
-  //         print("Condition met, breaking the loop");
-  //         break;
-  //       }
-  //       await Future.delayed(Duration(milliseconds: 100), () {
-  //         withoutApiProgressValue.value = (withoutApiProgressValue.value + 0.1)
-  //             .clamp(0.0, 0.9); // Ensuring it doesn't exceed 0.9
 
-  //         print("value.value ${withoutApiProgressValue.value}");
-  //       });
-  //     }
-  //   });
-  // }
 
   openDropDownAutomatically() async {
     Future.delayed(const Duration(milliseconds: 1), () {
@@ -94,19 +72,10 @@ class _ImageConversionLoadingScreenState
 
   @override
   Widget build(BuildContext context) {
-    // String fileName = widget.imagePath != null
-    //     ? File(widget.imagePath![0]).uri.pathSegments.last
-    //     : "File Name";
-
-    // String shortenedFileName = fileName.length <= 15
-    //     ? fileName
-    //     : '${fileName.substring(0, 13)}...${fileName.substring(fileName.length - 10)}';
     for (int i = 0; i < widget.imagePath!.length; i++) {
       String fileNameMultiImage = widget.imagePath != null
           ? File(widget.imagePath![i]).uri.pathSegments.last
           : "File Name";
-      // AppLocalizations.of(Get.context!)!.file_name;
-
       shortenedFileNameMulti.add(fileNameMultiImage.length <= 15
           ? fileNameMultiImage
           : '${fileNameMultiImage.substring(0, 13)}...${fileNameMultiImage.substring(fileNameMultiImage.length - 10)}');
@@ -122,10 +91,8 @@ class _ImageConversionLoadingScreenState
           body: Obx(
             () => Column(
               children: [
-                // if (!isPremium.value) const SafeArea(child: ICBannerAd()),
-
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 22, vertical: 22),
+                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 22),
                   child: Column(
                     children: [
                       Row(
@@ -149,11 +116,15 @@ class _ImageConversionLoadingScreenState
                               Obx(
                                 () => Text(
                                   infiniteProgress.value >= 0.96
-                                      ? "Completed"
+                                      ? 
+                                      "Completed"
                                       // AppLocalizations.of(Get.context!)!
                                       //     .completed
-                                      : "In Progress",
-                                  style: TextStyle(
+                                      : 
+                                        // AppLocalizations.of(Get.context!)!
+                                        //   .,
+                                      "In Progress",
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontFamily: 'Manrope-Bold',
                                       fontSize: 26),
@@ -163,11 +134,9 @@ class _ImageConversionLoadingScreenState
                                 () => Text(
                                   infiniteProgress.value >= 0.96
                                       ?
-                                      // AppLocalizations.of(Get.context!)!
-                                      //     .your_file_is_converted
                                       "Your file is converted"
                                       : "Converting your file",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
                                 ),
@@ -267,36 +236,12 @@ class _ImageConversionLoadingScreenState
                               height: 30,
                             ),
                             Text(
-                              // AppLocalizations.of(context)!.converting,
-
-                              "File Converting",
-                              // (conversionController.selectedIndex.value ==
-                              //             9 ||
-                              //         conversionController
-                              //                 .selectedIndex.value ==
-                              //             8 ||
-                              //         conversionController
-                              //                 .selectedIndex.value ==
-                              //             11)
-                              //     ? ''
-                              //     : infiniteProgress.value >= 0.96
-                              //         ? AppLocalizations.of(Get.context!)!
-                              //             .your_file_is_converted
-                              //         : AppLocalizations.of(context)!
-                              //             .your_file_is_converting,
-                              style: TextStyle(
+                              AppLocalizations.of(context)!
+                                  .your_file_is_converting,
+                              style: const TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w400),
                             ),
-                            // const SizedBox(height: 8),
-                            // Text(
-                            //   // AppLocalizations.of(context)!
-                            //   //     .your_file_will_be_ready_shortly,
-                            //   "Your File will be ready shortly",
-                            //   style: TextStyle(
-                            //     fontSize: 16,
-                            //     fontWeight: FontWeight.w500,
-                            //   ),
-                            // ),
+                         
                             const Spacer(),
                             const SizedBox(
                               height: 20,
@@ -386,61 +331,14 @@ class _ImageConversionLoadingScreenState
                               height: 30,
                             ),
                             Text(
-                              // AppLocalizations.of(context)!.converting,
-                              "File Converting",
-                              // (conversionController.selectedIndex.value ==
-                              //             9 ||
-                              //         conversionController
-                              //                 .selectedIndex.value ==
-                              //             8 ||
-                              //         conversionController
-                              //                 .selectedIndex.value ==
-                              //             11)
-                              //     ? ''
-                              //     : infiniteProgress.value >= 0.96
-                              //         ? AppLocalizations.of(Get.context!)!
-                              //             .your_file_is_converted
-                              //         : AppLocalizations.of(context)!
-                              //             .your_file_is_converting,
-                              style: TextStyle(
+                             
+                              AppLocalizations.of(context)!
+                                  .your_file_is_converting,
+                             
+                              style: const TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w400),
                             ),
-                            // const SizedBox(height: 8),
-                            // Text(
-                            //   // AppLocalizations.of(context)!
-                            //   //     .your_file_will_be_ready_shortly,
-                            //   "Your File will be ready shortly",
-                            //   style: TextStyle(
-                            //     fontSize: 16,
-                            //     fontWeight: FontWeight.w500,
-                            //   ),
-                            // ),
-                            // Obx(
-                            //   () => (conversionController
-                            //                   .selectedIndex.value ==
-                            //               9 ||
-                            //           conversionController
-                            //                   .selectedIndex.value ==
-                            //               8 ||
-                            //           conversionController
-                            //                   .selectedIndex.value ==
-                            //               11)
-                            //       ? const SizedBox()
-                            //       : Obx(
-                            //           () => Text(
-                            //             infiniteProgress.value >= 0.88 &&
-                            //                     infiniteProgress.value <= 0.9
-                            //                 ? AppLocalizations.of(Get.context!)!
-                            //                     .your_file_is_converting
-                            //                 : AppLocalizations.of(context)!
-                            //                     .your_file_is_converting,
-                            //             style: TextStyle(
-                            //               fontSize: 18,
-                            //               fontWeight: FontWeight.w500,
-                            //             ),
-                            //           ),
-                            //         ),
-                            // ),
+                       
                             const Spacer(),
                             const SizedBox(
                               height: 20,

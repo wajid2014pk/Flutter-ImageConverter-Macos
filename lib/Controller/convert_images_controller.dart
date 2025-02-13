@@ -451,7 +451,8 @@ class ConvertImagesController extends GetxController {
         log("response of $i ${response}");
         Map valueMap = json.decode(response.data);
         Directory? dir = await getApplicationCacheDirectory();
-
+        print(
+            "path %%%% ${dir.path}/ImageConverter/${from[i]}to${to}_$dateTime.$to}");
         if (valueMap['d_url'] != null) {
           imageFile.add(
               "${dir.path}/ImageConverter/${from[i]}to${to}_$dateTime.$to");
@@ -1889,22 +1890,22 @@ class ConvertImagesController extends GetxController {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          conversionOptions(
-                              extensionImage: 'DOC_icon',
-                              index: 8,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'XLS_icon',
-                              index: 11,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'TXT_icon',
-                              index: 9,
-                              imagePath: dataList),
-                          conversionOptions(
-                              extensionImage: 'PDF_icon',
-                              index: 10,
-                              imagePath: dataList),
+                          // conversionOptions(
+                          //     extensionImage: 'DOC_icon',
+                          //     index: 8,
+                          //     imagePath: dataList),
+                          // conversionOptions(
+                          //     extensionImage: 'XLS_icon',
+                          //     index: 11,
+                          //     imagePath: dataList),
+                          // conversionOptions(
+                          //     extensionImage: 'TXT_icon',
+                          //     index: 9,
+                          //     imagePath: dataList),
+                          // conversionOptions(
+                          //     extensionImage: 'PDF_icon',
+                          //     index: 10,
+                          //     imagePath: dataList),
                           conversionOptions(
                               extensionImage: 'jpg_icon',
                               index: 1,
@@ -1913,14 +1914,6 @@ class ConvertImagesController extends GetxController {
                               extensionImage: 'gif_icon',
                               index: 2,
                               imagePath: dataList),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
                           conversionOptions(
                               extensionImage: 'jpeg_icon',
                               index: 3,
@@ -1937,6 +1930,14 @@ class ConvertImagesController extends GetxController {
                               extensionImage: 'webp_icon',
                               index: 6,
                               imagePath: dataList),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
                           conversionOptions(
                               extensionImage: 'bmp_icon',
                               index: 7,
@@ -1946,53 +1947,99 @@ class ConvertImagesController extends GetxController {
                                   extensionImage: 'tiff_icon',
                                   index: 12,
                                   imagePath: dataList)
-                              : const SizedBox(
-                                  width: 70,
-                                  height: 70,
-                                ),
+                              : conversionOptions(
+                                  extensionImage: 'DOC_icon',
+                                  index: 8,
+                                  imagePath: dataList),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'raw_icon',
+                                  index: 13,
+                                  imagePath: dataList)
+                              : conversionOptions(
+                                  extensionImage: 'TXT_icon',
+                                  index: 9,
+                                  imagePath: dataList),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'psd_icon',
+                                  index: 14,
+                                  imagePath: dataList)
+                              : conversionOptions(
+                                  extensionImage: 'PDF_icon',
+                                  index: 10,
+                                  imagePath: dataList),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'dds_icon',
+                                  index: 15,
+                                  imagePath: dataList)
+                              : conversionOptions(
+                                  extensionImage: 'XLS_icon',
+                                  index: 11,
+                                  imagePath: dataList),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'heic_icon',
+                                  index: 16,
+                                  imagePath: dataList)
+                              : const SizedBox(height: 52, width: 68)
                         ],
                       ),
                       const SizedBox(
                         height: 12,
                       ),
-                      showOtherConversions
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                conversionOptions(
-                                    extensionImage: 'raw_icon',
-                                    index: 13,
-                                    imagePath: dataList),
-                                conversionOptions(
-                                    extensionImage: 'psd_icon',
-                                    index: 14,
-                                    imagePath: dataList),
-                                conversionOptions(
-                                    extensionImage: 'dds_icon',
-                                    index: 15,
-                                    imagePath: dataList),
-                                conversionOptions(
-                                    extensionImage: 'heic_icon',
-                                    index: 16,
-                                    imagePath: dataList),
-                                conversionOptions(
-                                    extensionImage: 'ppm_icon',
-                                    index: 17,
-                                    imagePath: dataList),
-                                conversionOptions(
-                                    extensionImage: 'tga_icon',
-                                    index: 18,
-                                    imagePath: dataList),
+                      // showOtherConversions
+                      //     ?
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'ppm_icon',
+                                  index: 17,
+                                  imagePath: dataList)
+                              : SizedBox(),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'tga_icon',
+                                  index: 18,
+                                  imagePath: dataList)
+                              : SizedBox(),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'DOC_icon',
+                                  index: 8,
+                                  imagePath: dataList)
+                              : SizedBox(),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'XLS_icon',
+                                  index: 11,
+                                  imagePath: dataList)
+                              : SizedBox(),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'TXT_icon',
+                                  index: 9,
+                                  imagePath: dataList)
+                              : SizedBox(),
+                          showOtherConversions
+                              ? conversionOptions(
+                                  extensionImage: 'PDF_icon',
+                                  index: 10,
+                                  imagePath: dataList)
+                              : SizedBox(),
 
-                                // showOtherConversions
-                                //     ? const SizedBox(height: 52, width: 68)
-                                //     : conversionOptions(
-                                //         extensionImage: 'XLS_icon',
-                                //         index: 11,
-                                //         imagePath: dataList),
-                              ],
-                            )
-                          : const SizedBox(),
+                          // showOtherConversions
+                          //     ? const SizedBox(height: 52, width: 68)
+                          //     : conversionOptions(
+                          //         extensionImage: 'XLS_icon',
+                          //         index: 11,
+                          //         imagePath: dataList),
+                        ],
+                      )
+                      // : const SizedBox(),
 
                       // showOtherConversions
                       //     ?

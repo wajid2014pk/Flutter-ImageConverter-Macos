@@ -339,30 +339,34 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             _getCreationDate(filteredListTextField[index]);
 
                         return GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             print(
                                 "path.extension(allfiles[index].path ${path.extension(filteredListTextField[index].path)}");
-                            if ((path.extension(
-                                        filteredListTextField[index].path) ==
-                                    '.webp') ||
+                            if (
+                                // (path.extension(
+                                //           filteredListTextField[index].path) ==
+                                //       '.webp') ||
+                                //   (path.extension(
+                                //           filteredListTextField[index].path) ==
+                                //       '.tiff') ||
+                                //   (path.extension(
+                                //           filteredListTextField[index].path) ==
+                                //       '.raw') ||
+                                //   (path.extension(
+                                //           filteredListTextField[index].path) ==
+                                //       '.psd') ||
+                                //   (path.extension(
+                                //           filteredListTextField[index].path) ==
+                                //       '.heic') ||
+                                //   (path.extension(
+                                //           filteredListTextField[index].path) ==
+                                //       '.ppm') ||
+                                //   (path.extension(
+                                //           filteredListTextField[index].path) ==
+                                //       '.tga')
                                 (path.extension(
                                         filteredListTextField[index].path) ==
-                                    '.tiff') ||
-                                (path.extension(
-                                        filteredListTextField[index].path) ==
-                                    '.raw') ||
-                                (path.extension(
-                                        filteredListTextField[index].path) ==
-                                    '.psd') ||
-                                (path.extension(
-                                        filteredListTextField[index].path) ==
-                                    '.heic') ||
-                                (path.extension(
-                                        filteredListTextField[index].path) ==
-                                    '.ppm') ||
-                                (path.extension(
-                                        filteredListTextField[index].path) ==
-                                    '.tga')) {
+                                    '.svg')) {
                               Get.snackbar(
                                 colorText: Colors.black,
                                 backgroundColor: Colors.white,
@@ -371,7 +375,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 "Cannot preview this file!",
                               );
                             } else {
-                              _openFile(filteredListTextField[index]);
+                              await _openFile(filteredListTextField[index]);
                             }
                           },
                           child: Container(

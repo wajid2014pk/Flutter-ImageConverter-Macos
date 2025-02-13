@@ -183,10 +183,14 @@ class _ConversionResultState extends State<ConversionResult> {
                               onTap: () async {
                                 // showImageDialog(
                                 //     context, widget.convertedFile[index].path);
-                                if (path.extension(widget.convertedFile[index].path) == ".svg" ||
-                                    path.extension(widget.convertedFile[index].path) ==
+                                if (path.extension(
+                                            widget.convertedFile[index].path) ==
+                                        ".svg" ||
+                                    path.extension(
+                                            widget.convertedFile[index].path) ==
                                         ".doc" ||
-                                    path.extension(widget.convertedFile[index].path) ==
+                                    path.extension(
+                                            widget.convertedFile[index].path) ==
                                         ".docx") {
                                   Get.snackbar(
                                     colorText: Colors.black,
@@ -200,31 +204,36 @@ class _ConversionResultState extends State<ConversionResult> {
                                     '.pdf') {
                                   await _openFile(
                                       File(widget.convertedFile[index].path));
-                                } else if ((path.extension(
-                                            widget.convertedFile[index].path) ==
-                                        '.webp') ||
-                                    (path.extension(widget.convertedFile[index].path) ==
-                                        '.tiff') ||
-                                    (path.extension(widget.convertedFile[index].path) ==
-                                        '.raw') ||
-                                    (path.extension(widget.convertedFile[index].path) ==
-                                        '.psd') ||
-                                    (path.extension(widget.convertedFile[index].path) ==
-                                        '.dds') ||
-                                    (path.extension(widget.convertedFile[index].path) ==
-                                        '.heic') ||
-                                    (path.extension(widget.convertedFile[index].path) ==
-                                        '.ppm') ||
-                                    (path.extension(widget.convertedFile[index].path) ==
-                                        '.tga')) {
-                                  Get.snackbar(
-                                    colorText: Colors.black,
-                                    backgroundColor: Colors.white,
-                                    duration: const Duration(seconds: 4),
-                                    "Note",
-                                    "Cannot preview this file!",
-                                  );
-                                } else {
+                                }
+                                // else if (
+                                //   (path.extension(
+                                //             widget.convertedFile[index].path) ==
+                                //         '.webp')
+                                //     // ||
+                                //     // (path.extension(widget.convertedFile[index].path) ==
+                                //     //     '.tiff') ||
+                                //     // (path.extension(widget.convertedFile[index].path) ==
+                                //     //     '.raw') ||
+                                //     // (path.extension(widget.convertedFile[index].path) ==
+                                //     //     '.psd') ||
+                                //     // (path.extension(widget.convertedFile[index].path) ==
+                                //     //     '.dds') ||
+                                //     // (path.extension(widget.convertedFile[index].path) ==
+                                //     //     '.heic') ||
+                                //     // (path.extension(widget.convertedFile[index].path) ==
+                                //     //     '.ppm') ||
+                                //     // (path.extension(widget.convertedFile[index].path) ==
+                                //     //     '.tga')
+                                //     ) {
+                                //   Get.snackbar(
+                                //     colorText: Colors.black,
+                                //     backgroundColor: Colors.white,
+                                //     duration: const Duration(seconds: 4),
+                                //     "Note",
+                                //     "Cannot preview this file!",
+                                //   );
+                                // }
+                                else {
                                   showPreviewDialog(
                                       context,
                                       widget.convertedFile[index].path,
@@ -494,7 +503,7 @@ class _ConversionResultState extends State<ConversionResult> {
                               [XFile(widget.convertedFile[0].path)]);
                         }
                       } else {
-                        await createZip(true, widget.convertedFile);
+                        await shareZip(widget.convertedFile);
                       }
                     },
                     child: customShareButton('assets/share_icon.png'),
@@ -525,14 +534,18 @@ class _ConversionResultState extends State<ConversionResult> {
                             } else if (widget.imageFormat == '.pdf') {
                               await _openFile(
                                   File(widget.convertedFile[0].path));
-                            } else if (widget.imageFormat == '.svg' ||
-                                widget.imageFormat == '.webp' ||
-                                widget.imageFormat == '.tiff' ||
-                                widget.imageFormat == '.raw' ||
-                                widget.imageFormat == '.psd' ||
-                                widget.imageFormat == '.heic' ||
-                                widget.imageFormat == '.ppm' ||
-                                widget.imageFormat == '.tga') {
+                            } else if (widget.imageFormat == '.svg'
+                                // ||
+                                //         widget.imageFormat == '.webp'
+                                // ||
+                                // widget.imageFormat == '.tiff' ||
+                                // widget.imageFormat == '.raw' ||
+                                // widget.imageFormat == '.psd' ||
+                                // widget.imageFormat == '.dds' ||
+                                // widget.imageFormat == '.heic' ||
+                                // widget.imageFormat == '.ppm' ||
+                                // widget.imageFormat == '.tga'
+                                ) {
                               Get.snackbar(
                                 colorText: Colors.black,
                                 backgroundColor: Colors.grey.withOpacity(0.3),
@@ -593,7 +606,7 @@ class _ConversionResultState extends State<ConversionResult> {
                         Future.delayed(
                             const Duration(milliseconds: 100), () async {});
                       } else {
-                        await createZip(false, widget.convertedFile);
+                        await downloadZip(widget.convertedFile);
                       }
                     },
                     child: downloadButton(
@@ -772,7 +785,7 @@ class _ConversionResultState extends State<ConversionResult> {
     );
   }
 
-  Future<void> createZip(bool isShare, List<File> convertedFiles) async {
+  Future<void> downloadZip(List<File> convertedFiles) async {
     // Create an archive
     final archive = Archive();
     for (int i = 0; i < convertedFiles.length; i++) {
@@ -785,43 +798,88 @@ class _ConversionResultState extends State<ConversionResult> {
     // Convert the archive to ZIP format
     final zipBytes = ZipEncoder().encode(archive);
 
-    Directory? folder;
-    if (Platform.isMacOS) {
-      folder = Directory("${Platform.environment['HOME']}/Downloads");
-    } else {
-      Directory documentsDirectoryPath =
-          await getApplicationDocumentsDirectory();
-      folder = Directory('${documentsDirectoryPath.path}/Downloaded Files');
+    if (zipBytes == null) {
+      Get.snackbar(
+        "Error",
+        "Failed to create ZIP file",
+        colorText: Colors.black,
+        backgroundColor: Colors.red.withOpacity(0.3),
+        duration: const Duration(seconds: 4),
+      );
+      return;
     }
 
-    if (!await folder.exists()) {
-      await folder.create(recursive: true);
-    }
+    // Convert List<int> to Uint8List
+    Uint8List zipUint8List = Uint8List.fromList(zipBytes);
 
-    final zipFile =
-        File('${folder.path}/Zip_${DateTime.now().microsecondsSinceEpoch}.zip');
+    // Ask user where to save the file
+    final result = await FileSaver.instance.saveAs(
+      name: 'Zip_${DateTime.now().millisecondsSinceEpoch}',
+      bytes: zipUint8List,
+      ext: 'zip',
+      mimeType: MimeType.zip,
+    );
 
-    // Write the ZIP file
-    await zipFile.writeAsBytes(zipBytes!);
-
-    if (isShare) {
-      Share.shareXFiles([XFile(zipFile.path)]);
+    if (result != "") {
+      // if (isShare) {
+      //   // Share.shareXFiles([XFile(result!)]);
+      //   Share.shareXFiles([XFile(result!)]);
+      // } else {
+      Get.snackbar(
+        "File Saved Successfully",
+        "Zip file saved at: $result",
+        colorText: Colors.black,
+        backgroundColor: Colors.grey.withOpacity(0.3),
+        duration: const Duration(seconds: 4),
+      );
+      // }
     } else {
       Get.snackbar(
-        "Zip File created in downloads",
-        "Attention",
+        "Error",
+        "Error while saving the file",
         colorText: Colors.black,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.withOpacity(0.3),
         duration: const Duration(seconds: 4),
       );
     }
   }
 
+  Future<void> shareZip(List<File> convertedFiles) async {
+    // Create an archive
+    final archive = Archive();
+    for (int i = 0; i < convertedFiles.length; i++) {
+      final filename = convertedFiles[i].path.split('/').last;
+      final fileBytes = convertedFiles[i].readAsBytesSync();
+      final archiveFile = ArchiveFile(filename, fileBytes.length, fileBytes);
+      archive.addFile(archiveFile);
+    }
+
+    // Convert the archive to ZIP format
+    final zipBytes = ZipEncoder().encode(archive);
+    if (zipBytes == null) {
+      print("Error: Failed to create ZIP file.");
+      return;
+    }
+
+    // Convert List<int> to Uint8List
+    Uint8List zipUint8List = Uint8List.fromList(zipBytes);
+
+    // Get temporary directory to store ZIP file
+    final tempDir = await getTemporaryDirectory();
+    final zipFilePath =
+        '${tempDir.path}/Zip_${DateTime.now().millisecondsSinceEpoch}.zip';
+    final zipFile = File(zipFilePath);
+
+    // Write ZIP file to storage
+    await zipFile.writeAsBytes(zipUint8List);
+
+    // Share the ZIP file
+    Share.shareXFiles([XFile(zipFile.path)], text: "Here is your ZIP file.");
+  }
   // Future<void> createZip(bool isShare, List<File> convertedFiles) async {
   //   // Create an archive
   //   final archive = Archive();
   //   for (int i = 0; i < convertedFiles.length; i++) {
-
   //     final filename = convertedFiles[i].path.split('/').last;
   //     final fileBytes = convertedFiles[i].readAsBytesSync();
   //     final archiveFile = ArchiveFile(filename, fileBytes.length, fileBytes);
@@ -831,42 +889,38 @@ class _ConversionResultState extends State<ConversionResult> {
   //   // Convert the archive to ZIP format
   //   final zipBytes = ZipEncoder().encode(archive);
 
-  //   Directory documentsDirectoryPath =
-  //       await getApplicationDocumentsDirectory();
-  //   debugPrint("de=> ${documentsDirectoryPath.path}");
-  //   String? folderPath;
-
-  //   if (isShare) {
-  //     Directory dir = await getTemporaryDirectory();
-
-  //     folderPath = dir.path;
+  //   Directory? folder;
+  //   if (Platform.isMacOS) {
+  //     folder = Directory("${Platform.environment['HOME']}/Downloads");
   //   } else {
-  //     folderPath = '${documentsDirectoryPath.path}/Downloaded Files';
+  //     Directory documentsDirectoryPath =
+  //         await getApplicationDocumentsDirectory();
+  //     folder = Directory('${documentsDirectoryPath.path}/Downloaded Files');
   //   }
-  //   Directory folder = Directory(folderPath);
+
   //   if (!await folder.exists()) {
   //     await folder.create(recursive: true);
   //   }
 
-  //   debugPrint("folder path is =>>>> ${folder.path}");
   //   final zipFile =
-  //       File('$folderPath/Zip_${DateTime.now().microsecondsSinceEpoch}.zip');
+  //       File('${folder.path}/Zip_${DateTime.now().microsecondsSinceEpoch}.zip');
 
   //   // Write the ZIP file
   //   await zipFile.writeAsBytes(zipBytes!);
+
   //   if (isShare) {
   //     Share.shareXFiles([XFile(zipFile.path)]);
   //   } else {
   //     Get.snackbar(
+  //       "Zip File created in downloads",
+  //       "Attention",
   //       colorText: Colors.black,
   //       backgroundColor: Colors.white,
   //       duration: const Duration(seconds: 4),
-  //       "Zip File created in document",
-  //       AppLocalizations.of(Get.context!)!.attention,
   //     );
-
   //   }
   // }
+
   Future<void> downloadTextFile(String fileName, String fileContent) async {
     try {
       print("2323233 $fileContent ppp");
@@ -999,77 +1053,145 @@ class _ConversionResultState extends State<ConversionResult> {
       final filePath = file.uri.toFilePath();
       print("filePath: $filePath");
 
-      // Get the Downloads directory on macOS
-      Directory downloadsDirectory = await getDownloadsDirectory() ??
-          (await getApplicationDocumentsDirectory()); // Fallback to Documents
+      File fileData = File(file.path);
+      String fileExtension = path.extension(filePath).toLowerCase();
+      String fileName = "ExportedFile_${DateTime.now().millisecondsSinceEpoch}";
 
-      final Directory folder = Directory(downloadsDirectory.path);
-      if (!await folder.exists()) {
-        await folder.create(recursive: true);
+      // Read file bytes
+      Uint8List fileBytes = await fileData.readAsBytes();
+
+      // Determine the MIME type
+      MimeType mimeType;
+      switch (fileExtension) {
+        case '.pdf':
+          mimeType = MimeType.pdf;
+          break;
+        case '.txt':
+          mimeType = MimeType.text;
+          break;
+        case '.csv':
+          mimeType = MimeType.csv;
+          break;
+        case '.xlsx':
+          mimeType = MimeType.csv;
+          break;
+        default:
+          mimeType = MimeType.other; // For images or other unsupported types
       }
 
-      File fileData = File(file.path);
+      // Save the file using FileSaver
+      final result = await FileSaver.instance.saveAs(
+        name: fileName,
+        bytes: fileBytes,
+        ext: fileExtension.replaceFirst(
+            '.', ''), // Remove the dot from extension
+        mimeType: mimeType,
+      );
 
-      if (path.extension(filePath).toLowerCase() == '.pdf') {
-        // Save PDF file
-        File newFile =
-            File("${folder.path}/ImageToPdf${DateTime.now().microsecond}.pdf");
-        await fileData.copy(newFile.path);
-
+      if (result != null) {
         Get.snackbar(
+          "Success",
+          "File saved successfully",
           colorText: Colors.black,
           backgroundColor: Colors.white,
           duration: const Duration(seconds: 4),
-          "Note",
-          "PDF saved in Downloads",
-        );
-      } else if (path.extension(filePath).toLowerCase() == '.txt') {
-        // Save TXT file
-        File newFile =
-            File("${folder.path}/ImageToPdf${DateTime.now().microsecond}.txt");
-        await newFile.writeAsString(await fileData.readAsString());
-
-        Get.snackbar(
-          colorText: Colors.black,
-          backgroundColor: Colors.white,
-          duration: const Duration(seconds: 4),
-          "Note",
-          "Text file saved in Downloads",
-        );
-      } else if (['.bmp', '.webp', '.png', '.jpg', '.jpeg', '.heic', '.gif']
-          .contains(path.extension(filePath).toLowerCase())) {
-        // Save Images
-        File newFile = File(
-            "${folder.path}/downloaded_image${DateTime.now().millisecondsSinceEpoch}${path.extension(filePath)}");
-        await fileData.copy(newFile.path);
-
-        Get.snackbar(
-          colorText: Colors.black,
-          backgroundColor: Colors.white,
-          duration: const Duration(seconds: 4),
-          "Note",
-          "Image saved in Downloads",
         );
       } else {
         Get.snackbar(
+          "Error",
+          "File saving failed",
           colorText: Colors.black,
           backgroundColor: Colors.white,
           duration: const Duration(seconds: 4),
-          "Note",
-          "Unsupported file type",
         );
       }
     } catch (e) {
       Get.snackbar(
+        "Error",
+        "Failed to export file: $e",
         colorText: Colors.black,
         backgroundColor: Colors.white,
         duration: const Duration(seconds: 4),
-        "Error",
-        "Failed to export file: $e",
       );
       print('Error exporting file: $e');
     }
   }
+  // Future<void> _exportFile(FileSystemEntity file, bool isBack) async {
+  //   try {
+  //     final filePath = file.uri.toFilePath();
+  //     print("filePath: $filePath");
+
+  //     // Get the Downloads directory on macOS
+  //     Directory downloadsDirectory = await getDownloadsDirectory() ??
+  //         (await getApplicationDocumentsDirectory()); // Fallback to Documents
+
+  //     final Directory folder = Directory(downloadsDirectory.path);
+  //     if (!await folder.exists()) {
+  //       await folder.create(recursive: true);
+  //     }
+
+  //     File fileData = File(file.path);
+
+  //     if (path.extension(filePath).toLowerCase() == '.pdf') {
+  //       // Save PDF file
+  //       File newFile =
+  //           File("${folder.path}/ImageToPdf${DateTime.now().microsecond}.pdf");
+  //       await fileData.copy(newFile.path);
+
+  //       Get.snackbar(
+  //         colorText: Colors.black,
+  //         backgroundColor: Colors.white,
+  //         duration: const Duration(seconds: 4),
+  //         "Note",
+  //         "PDF saved in Downloads",
+  //       );
+  //     } else if (path.extension(filePath).toLowerCase() == '.txt') {
+  //       // Save TXT file
+  //       File newFile =
+  //           File("${folder.path}/ImageToPdf${DateTime.now().microsecond}.txt");
+  //       await newFile.writeAsString(await fileData.readAsString());
+
+  //       Get.snackbar(
+  //         colorText: Colors.black,
+  //         backgroundColor: Colors.white,
+  //         duration: const Duration(seconds: 4),
+  //         "Note",
+  //         "Text file saved in Downloads",
+  //       );
+  //     } else if (['.bmp', '.webp', '.png', '.jpg', '.jpeg', '.heic', '.gif']
+  //         .contains(path.extension(filePath).toLowerCase())) {
+  //       // Save Images
+  //       File newFile = File(
+  //           "${folder.path}/downloaded_image${DateTime.now().millisecondsSinceEpoch}${path.extension(filePath)}");
+  //       await fileData.copy(newFile.path);
+
+  //       Get.snackbar(
+  //         colorText: Colors.black,
+  //         backgroundColor: Colors.white,
+  //         duration: const Duration(seconds: 4),
+  //         "Note",
+  //         "Image saved in Downloads",
+  //       );
+  //     } else {
+  //       Get.snackbar(
+  //         colorText: Colors.black,
+  //         backgroundColor: Colors.white,
+  //         duration: const Duration(seconds: 4),
+  //         "Note",
+  //         "Unsupported file type",
+  //       );
+  //     }
+  //   } catch (e) {
+  //     Get.snackbar(
+  //       colorText: Colors.black,
+  //       backgroundColor: Colors.white,
+  //       duration: const Duration(seconds: 4),
+  //       "Error",
+  //       "Failed to export file: $e",
+  //     );
+  //     print('Error exporting file: $e');
+  //   }
+  // }
 
   Future<void> downloadExcelFileMacOS(File fileData) async {
     Uint8List bytes = await fileData.readAsBytes();
@@ -1359,16 +1481,11 @@ class _ConversionResultState extends State<ConversionResult> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // SvgPicture.asset(
-                            //   'assets/images/download.svg',
-                            //   height: 22,
-                            //   width: 22,
-                            // ),
                             const SizedBox(
                               width: 8,
                             ),
                             Text(
-                              // AppLocalizations.of(context)!.download,
+                              // AppLocalizations.of(context)!.d,
                               "Download",
                               style: const TextStyle(
                                   color: Colors.white,
@@ -1396,7 +1513,7 @@ class _ConversionResultState extends State<ConversionResult> {
     final bytes = await file.readAsBytes();
 
     final result = await FileSaver.instance.saveAs(
-      name: 'ImagetoDoc_${DateTime.now().millisecondsSinceEpoch}',
+      name: 'Imageto$extension _${DateTime.now().millisecondsSinceEpoch}',
       bytes: bytes,
       ext: extension,
       mimeType: MimeType.microsoftWord,

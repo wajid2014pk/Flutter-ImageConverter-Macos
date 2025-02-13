@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -166,32 +168,12 @@ class HomeScreenController extends GetxController {
     );
 
     print("Result : $result ");
-
+    print("bbbbbbbbaaaaa");
     if (result != null) {
       List<String> file = [];
       for (int i = 0; i < result.files.length; i++) {
         file.add(result.files[i].path!);
       }
-
-      // for(int i=0;i<result.files.length;i++)
-      // {
-
-      // }
-      // int fileSizeInBytes = File(file.path!).lengthSync();
-      // double fileSizeInMb = fileSizeInBytes / (1024 * 1024);
-      // print("Size in Mb $fileSizeInMb ");
-
-      // if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
-      //   Get.snackbar(
-      //     AppLocalizations.of(Get.context!)!.attention,
-      //     "File Size is greater then 3 MBs. Buy Premium to Convert",
-      //   );
-
-      //   Future.delayed(const Duration(seconds: 3), () {
-      //     PremiumPopUp().premiumScreenPopUp(Get.context!);
-      //   });
-      //   return;
-      // }
 
       Get.to(() => ConvertFile(imagePath: file));
     } else {
@@ -499,5 +481,34 @@ class HomeScreenController extends GetxController {
           ? PremiumPopUp().premiumScreenPopUp(Get.context!)
           : () {};
     });
+  }
+
+  Future<File?> pickAndShortenImage(File image) async {
+    // if (image == null) return null; // User canceled
+
+    File file = File(image.path);
+    // print("file.path.split('/').last ${file.path.split('/').last}");
+    String originalFileName =
+        'Pngtobmp_2024-08-0915/53/34.949084#File 2024-8-9 15/53/34.png';
+    // file.path.split('/').last;
+    // path.basename(file.path);
+
+    // Set a max length, e.g., 20 characters (excluding extension)
+    int maxFileNameLength = 20;
+
+    // Extract file extension
+    String extension = path.extension(originalFileName);
+
+    // Shorten the filename if it's too long
+    String newFileName = originalFileName;
+    if (originalFileName.length > maxFileNameLength) {
+      newFileName =
+          originalFileName.substring(0, maxFileNameLength) + extension;
+    }
+
+    print("Original: $originalFileName");
+    print("Shortened: $newFileName");
+
+    return file; // You can rename the file if needed
   }
 }

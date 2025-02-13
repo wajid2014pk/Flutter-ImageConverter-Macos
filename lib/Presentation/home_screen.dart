@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen>
                         // homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/recent_file_new_icon.png",
-                          // AppLocalizations.of(Get.context!)!.history,
+                          // AppLocalizations.of(Get.context!)!.rec,
                           "Recent Files",
                           2,
                           context,
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen>
                         // homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/share_us_new_icon.png",
-                          // AppLocalizations.of(Get.context!)!.rate_us,
+                          // AppLocalizations.of(Get.context!)!.share,
                           "Share Us",
                           3,
                           context,
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                         homeScreenController.sideBarItem(
                           "assets/more_apps_new_icon.png",
-                          // AppLocalizations.of(Get.context!)!.privacy_policy,
+                          // AppLocalizations.of(Get.context!)!.m,
                           "More Apps",
                           7,
                           context,

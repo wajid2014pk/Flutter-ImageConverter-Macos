@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Presentation/home_screen.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -155,7 +156,12 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                       child: customShareButton("assets/share_icon.png")),
                   sizedBoxWidth,
                   // Image.asset('assets/copy_icon.png'),
-
+                  GestureDetector(
+                      onTap: () async {
+                        await OpenFile.open(widget.convertedFile.path);
+                      },
+                      child: customShareButton("assets/ic_preview.png")),
+                  sizedBoxWidth,
                   GestureDetector(
                       onTap: () async {
                         final bytes = await widget.convertedFile.readAsBytes();

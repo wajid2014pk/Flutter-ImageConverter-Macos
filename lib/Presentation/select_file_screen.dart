@@ -389,6 +389,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                               if (index == 0) {
                                 toolIndex.value = 10;
                                 removePopup();
+                              
                                 await homeScreenController.handleDriveImage();
                               } else if (index == 1) {
                                 toolIndex.value = 10;
