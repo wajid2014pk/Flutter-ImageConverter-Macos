@@ -350,8 +350,8 @@ class PayWallController extends GetxController {
       ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
           content: Center(
               child: Text(
-        // AppLocalizations.of(Get.context!)!.purchased_failed,
-        "Purchased failed!",
+        AppLocalizations.of(Get.context!)!.purchased_failed,
+        // "Purchased failed!",
       ))));
       // showToast(context, "Purchased Successfull");
       var errorCode = PurchasesErrorHelper.getErrorCode(e);
@@ -486,8 +486,11 @@ class PayWallController extends GetxController {
         payWallController.offerings == null
             ? Get.snackbar(
                 backgroundColor: Colors.white,
-                "Failed",
-                "No Internet Connecion")
+                // "Failed",
+                AppLocalizations.of(Get.context!)!.failed,
+                // "No Internet Connecion"
+                AppLocalizations.of(Get.context!)!.no_internet_connecion,
+                )
             : payWallController.makePurchase();
       },
       child: Container(

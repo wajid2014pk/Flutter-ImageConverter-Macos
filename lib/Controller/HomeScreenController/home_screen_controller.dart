@@ -174,8 +174,14 @@ class HomeScreenController extends GetxController {
       for (int i = 0; i < result.files.length; i++) {
         file.add(result.files[i].path!);
       }
-
-      Get.to(() => ConvertFile(imagePath: file));
+      if (file.length <= 5) {
+        Get.to(() => ConvertFile(imagePath: file));
+      } else {
+        Get.snackbar(
+          AppLocalizations.of(Get.context!)!.attention,
+          "Please select max 5 images!",
+        );
+      }
     } else {
       print('User canceled file selection');
     }
@@ -207,9 +213,9 @@ class HomeScreenController extends GetxController {
 
       if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
         Get.snackbar(
-          AppLocalizations.of(Get.context!)!.attention,
-          "File Size is greater then 3 MBs. Buy Premium to Convert",
-        );
+            AppLocalizations.of(Get.context!)!.attention,
+            // "File Size is greater then 3 MBs. Buy Premium to Convert",
+            AppLocalizations.of(Get.context!)!.file_size_is_greater_than);
 
         Future.delayed(const Duration(seconds: 3), () {
           PremiumPopUp().premiumScreenPopUp(Get.context!);
@@ -251,7 +257,8 @@ class HomeScreenController extends GetxController {
       if (fileSizeInMb > 3 && payWallController.isPro.value == false) {
         Get.snackbar(
           AppLocalizations.of(Get.context!)!.attention,
-          "File Size is greater then 3 MBs. Buy Premium to Convert",
+          // "File Size is greater then 3 MBs. Buy Premium to Convert",
+          AppLocalizations.of(Get.context!)!.file_size_is_greater_than
         );
 
         Future.delayed(const Duration(seconds: 3), () {
@@ -401,7 +408,8 @@ class HomeScreenController extends GetxController {
                                   Get.snackbar(
                                     AppLocalizations.of(Get.context!)!
                                         .attention,
-                                    "File Size is greater then 3 MBs. Buy Premium to Convert",
+                                    // "File Size is greater then 3 MBs. Buy Premium to Convert",
+                                  AppLocalizations.of(Get.context!)!.file_size_is_greater_than,
                                   );
                                   Future.delayed(const Duration(seconds: 3),
                                       () {

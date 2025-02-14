@@ -109,18 +109,20 @@ class _ConvertFileState extends State<ConvertFile> {
                 ),
                 sizedBoxWidth,
                 sizedBoxWidth,
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Output Format",
+                    Text(
+                      // "Output Format",
+                      AppLocalizations.of(context)!.output_format,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 22,
                           fontFamily: 'Manrope-Bold'),
                     ),
                     Text(
-                      "Choose file output format",
+                      // "Choose file output format",
+                      AppLocalizations.of(context)!.choose_file_format,
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                     ),

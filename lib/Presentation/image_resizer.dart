@@ -7,6 +7,7 @@ import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/Constant/global.dart';
 import 'package:image_converter_macos/Controller/resize_image_controller/resize_image_controller.dart';
 import 'package:image_converter_macos/Presentation/loader_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ImageResizerScreen extends StatefulWidget {
   final File? file;
@@ -54,9 +55,10 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                     gradient: UiColors().linearGradientBlueColor,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      "Compress",
+                      "Resize",
+                      //  AppLocalizations.of(Get.context!)!.resi
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -85,8 +87,9 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                     ),
                     sizedBoxWidth,
                     sizedBoxWidth,
-                    const Text(
-                      "Image Resizer",
+                    Text(
+                      // "Image Resizer",
+                      AppLocalizations.of(Get.context!)!.image_resizer,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                     ),
@@ -107,7 +110,7 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                           borderRadius: BorderRadius.circular(16),
                         ),
                       )
-                    : const Center(
+                    : Center(
                         child: Text(
                           "No Image Selected",
                           style: TextStyle(color: Colors.white),
@@ -161,8 +164,10 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              "Dimensions",
-                                              // AppLocalizations.of(context)!.dimension,
+                                              // "Dimensions",
+
+                                              AppLocalizations.of(context)!
+                                                  .dimensions,
                                               style: TextStyle(
                                                 color: resizedController
                                                             .resizeOption
@@ -198,7 +203,9 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              "Percentage",
+                                              // "Percentage",
+                                              AppLocalizations.of(Get.context!)!
+                                                  .percentage,
                                               // AppLocalizations.of(context)!
                                               //     .percentage,
                                               style: TextStyle(
@@ -252,8 +259,10 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                     size: 18,
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text(
-                                    "Reduce Dimensions By",
+                                  Text(
+                                    // "Reduce Dimensions By",
+                                    AppLocalizations.of(Get.context!)!
+                                        .reduce_by_quality,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16,
@@ -478,9 +487,9 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                       size: 18,
                                     ),
                                     const SizedBox(width: 8),
-                                    const Text(
-                                      "Custom",
-                                      // AppLocalizations.of(context)!.custom,
+                                    Text(
+                                      // "Custom",
+                                      AppLocalizations.of(context)!.custom,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black,
@@ -523,10 +532,11 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                                   ?.unfocus();
                                             },
                                             decoration: InputDecoration(
-                                              hintText: "Width",
+                                              hintText:
+                                                  // "Width",
 
-                                              // AppLocalizations.of(context)!
-                                              //     .width,
+                                                  AppLocalizations.of(context)!
+                                                      .width,
                                               hintStyle: const TextStyle(
                                                   fontSize: 14,
                                                   color: Color(0xFFACACAC)),
@@ -593,9 +603,10 @@ class _ImageResizerScreenState extends State<ImageResizerScreen> {
                                             },
                                             cursorColor: UiColors.blueColorNew,
                                             decoration: InputDecoration(
-                                              hintText: "Height",
-                                              // AppLocalizations.of(context)!
-                                              //     .height,
+                                              hintText:
+                                                  // "Height",
+                                                  AppLocalizations.of(context)!
+                                                      .height,
                                               hintStyle: const TextStyle(
                                                   fontSize: 14,
                                                   color: Color(0xFFACACAC)),

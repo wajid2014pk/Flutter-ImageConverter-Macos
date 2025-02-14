@@ -81,9 +81,12 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
                   sizedBoxWidth,
                   Text(
                     widget.toolName == "ImageResizer"
-                        ? "Image Resizer"
+                        ? AppLocalizations.of(Get.context!)!.image_resizer
+                        // "Image Resizer"
                         : widget.toolName == "ImageCompressor"
-                            ? "Image Compressor"
+                            ? AppLocalizations.of(Get.context!)!
+                                .image_compressor
+                            // "Image Compressor"
                             : "",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                   ),
@@ -174,14 +177,21 @@ class _ConversionPageNewState extends State<ConversionPageNew> {
 
                         if (result != "") {
                           ScaffoldMessenger.of(Get.context!).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                                 content: Text(
-                                    'File saved successfully in Downloads Folder!')),
+                              // 'File saved successfully!'
+                              AppLocalizations.of(Get.context!)!
+                                  .file_saved_successfully,
+                            )),
                           );
                         } else {
                           ScaffoldMessenger.of(Get.context!).showSnackBar(
-                            const SnackBar(
-                                content: Text('Failed to save file.')),
+                            SnackBar(
+                                content: Text(
+                              // 'Failed to save file.'
+                              AppLocalizations.of(Get.context!)!
+                                  .failed_to_save_file,
+                            )),
                           );
                         }
                       },

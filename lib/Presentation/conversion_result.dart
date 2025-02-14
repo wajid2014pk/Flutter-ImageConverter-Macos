@@ -46,14 +46,7 @@ class _ConversionResultState extends State<ConversionResult> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      rateUs = prefs.getInt("rateUs");
-      rateUs == null
-          ? DialogBoxRating().dialogRating(Get.context!)
-          : const SizedBox();
-      print("88777 ${conversionController.selectedIndex.value}");
-    });
+
     print("convertedFile ${widget.convertedFile}");
     for (int i = 0; i < widget.convertedFile.length; i++) {
       fileSize.add(getFileSizeInKB(widget.convertedFile[i]));
@@ -127,7 +120,8 @@ class _ConversionResultState extends State<ConversionResult> {
                           ),
                         ),
                         Text(
-                          "You can download, Share and Preview converted files",
+                          // "You can download, Share and Preview converted files",
+                          AppLocalizations.of(context)!.you_can_download_share,
                           style: TextStyle(
                             color: UiColors.blackColor,
                             fontSize: 14.0,
@@ -193,12 +187,14 @@ class _ConversionResultState extends State<ConversionResult> {
                                             widget.convertedFile[index].path) ==
                                         ".docx") {
                                   Get.snackbar(
-                                    colorText: Colors.black,
-                                    backgroundColor: Colors.white,
-                                    duration: const Duration(seconds: 4),
-                                    "Note",
-                                    "Cannot preview this file!",
-                                  );
+                                      colorText: Colors.black,
+                                      backgroundColor: Colors.white,
+                                      duration: const Duration(seconds: 4),
+                                      "Note",
+                                      AppLocalizations.of(Get.context!)!
+                                          .cannot_preview_this_file
+                                      // "Cannot preview this file!",
+                                      );
                                 } else if (path.extension(
                                         widget.convertedFile[index].path) ==
                                     '.pdf') {
@@ -547,15 +543,17 @@ class _ConversionResultState extends State<ConversionResult> {
                                 // widget.imageFormat == '.tga'
                                 ) {
                               Get.snackbar(
-                                colorText: Colors.black,
-                                backgroundColor: Colors.grey.withOpacity(0.3),
-                                duration: const Duration(seconds: 4),
-                                // AppLocalizations.of(Get.context!)!.note,
-                                "Note",
-                                "This picture cannot be preview",
-                                // AppLocalizations.of(Get.context!)!
-                                //     .this_picture_cannot_be_downloaded
-                              );
+                                  colorText: Colors.black,
+                                  backgroundColor: Colors.grey.withOpacity(0.3),
+                                  duration: const Duration(seconds: 4),
+                                  // AppLocalizations.of(Get.context!)!.note,
+                                  "Note",
+                                  AppLocalizations.of(Get.context!)!
+                                      .cannot_preview_this_file
+                                  // "This picture cannot be preview",
+                                  // AppLocalizations.of(Get.context!)!
+                                  //     .this_picture_cannot_be_downloaded
+                                  );
                             } else {
                               showImageDialog(
                                   context, widget.convertedFile[0].path);
@@ -578,15 +576,17 @@ class _ConversionResultState extends State<ConversionResult> {
                           await downloadTextFileMacOS(textToolData.value);
                         } else if (widget.imageFormat == '.svg') {
                           Get.snackbar(
-                            colorText: Colors.black,
-                            backgroundColor: Colors.grey.withOpacity(0.3),
-                            duration: const Duration(seconds: 4),
-                            // AppLocalizations.of(Get.context!)!.note,
-                            "Note",
-                            "this Picture cannot be downloaded",
-                            // AppLocalizations.of(Get.context!)!
-                            //     .this_picture_cannot_be_downloaded
-                          );
+                              colorText: Colors.black,
+                              backgroundColor: Colors.grey.withOpacity(0.3),
+                              duration: const Duration(seconds: 4),
+                              // AppLocalizations.of(Get.context!)!.note,
+                              "Note",
+                              AppLocalizations.of(Get.context!)!
+                                  .cannot_preview_this_file
+                              // "This Picture cannot be downloaded",
+                              // AppLocalizations.of(Get.context!)!
+                              //     .this_picture_cannot_be_downloaded
+                              );
                         } else if ((widget.imageFormat == '.doc') ||
                             widget.imageFormat == '.docx') {
                           await exportMacMethod(widget.convertedFile[0].path,
@@ -608,6 +608,14 @@ class _ConversionResultState extends State<ConversionResult> {
                       } else {
                         await downloadZip(widget.convertedFile);
                       }
+                      WidgetsBinding.instance.addPostFrameCallback((_) async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        rateUs = prefs.getInt("rateUs");
+                        rateUs == null
+                            ? DialogBoxRating().dialogRating(Get.context!)
+                            : const SizedBox();
+                      });
                     },
                     child: downloadButton(
                         imagePath: 'assets/download_icon.png',
@@ -801,7 +809,8 @@ class _ConversionResultState extends State<ConversionResult> {
     if (zipBytes == null) {
       Get.snackbar(
         "Error",
-        "Failed to create ZIP file",
+        // "Failed to create ZIP file",
+        AppLocalizations.of(Get.context!)!.failed_to_create_zip_file,
         colorText: Colors.black,
         backgroundColor: Colors.red.withOpacity(0.3),
         duration: const Duration(seconds: 4),
@@ -826,7 +835,8 @@ class _ConversionResultState extends State<ConversionResult> {
       //   Share.shareXFiles([XFile(result!)]);
       // } else {
       Get.snackbar(
-        "File Saved Successfully",
+        // "File Saved Successfully",
+        AppLocalizations.of(Get.context!)!.file_saved_successfully,
         "Zip file saved at: $result",
         colorText: Colors.black,
         backgroundColor: Colors.grey.withOpacity(0.3),
@@ -837,6 +847,7 @@ class _ConversionResultState extends State<ConversionResult> {
       Get.snackbar(
         "Error",
         "Error while saving the file",
+        //  AppLocalizations.of(Get.context!)!.err
         colorText: Colors.black,
         backgroundColor: Colors.grey.withOpacity(0.3),
         duration: const Duration(seconds: 4),
@@ -947,7 +958,8 @@ class _ConversionResultState extends State<ConversionResult> {
           duration: const Duration(seconds: 4),
           // AppLocalizations.of(Get.context!)!.note,
           "Note",
-          "Text file save to download",
+          // "Text file save to download",
+          AppLocalizations.of(Get.context!)!.text_file_save_to_download,
           // AppLocalizations.of(Get.context!)!.text_file_save_to_download,
         );
       } else {
@@ -955,13 +967,13 @@ class _ConversionResultState extends State<ConversionResult> {
       }
     } catch (e) {
       Get.snackbar(
-        colorText: Colors.black,
-        backgroundColor: Colors.white,
-        duration: const Duration(seconds: 4),
-        // AppLocalizations.of(Get.context!)!.note,
-        "Note",
-        "Failed to download!",
-      );
+          colorText: Colors.black,
+          backgroundColor: Colors.white,
+          duration: const Duration(seconds: 4),
+          // AppLocalizations.of(Get.context!)!.note,
+          "Note",
+          // "Failed to download!",
+          AppLocalizations.of(Get.context!)!.failed_to_download);
       print('Error exporting file: $e');
     }
   }
@@ -996,14 +1008,15 @@ class _ConversionResultState extends State<ConversionResult> {
     } catch (e) {
       print('Error exporting file: $e');
       Get.snackbar(
-        colorText: Colors.black,
-        backgroundColor: Colors.grey.withOpacity(0.3),
-        duration: const Duration(seconds: 4),
-        "Note",
-        "Error while downloading",
-        // AppLocalizations.of(Get.context!)!.note,
-        // AppLocalizations.of(Get.context!)!.error_while_downloading_file
-      );
+          colorText: Colors.black,
+          backgroundColor: Colors.grey.withOpacity(0.3),
+          duration: const Duration(seconds: 4),
+          "Note",
+          // "Error while downloading",
+          AppLocalizations.of(Get.context!)!.error_while_downloading
+          // AppLocalizations.of(Get.context!)!.note,
+          // AppLocalizations.of(Get.context!)!.error_while_downloading_file
+          );
     }
   }
 
@@ -1042,9 +1055,8 @@ class _ConversionResultState extends State<ConversionResult> {
           duration: const Duration(seconds: 4),
           // AppLocalizations.of(Get.context!)!.note,
           "Note",
-          "Error while downloading file"
-          // AppLocalizations.of(Get.context!)!.error_while_downloading_file
-          );
+          // "Error while downloading file"
+          AppLocalizations.of(Get.context!)!.error_while_downloading_file);
     }
   }
 
@@ -1091,7 +1103,8 @@ class _ConversionResultState extends State<ConversionResult> {
       if (result != null) {
         Get.snackbar(
           "Success",
-          "File saved successfully",
+          // "File saved successfully",
+          AppLocalizations.of(Get.context!)!.file_saved_successfully,
           colorText: Colors.black,
           backgroundColor: Colors.white,
           duration: const Duration(seconds: 4),
@@ -1100,6 +1113,7 @@ class _ConversionResultState extends State<ConversionResult> {
         Get.snackbar(
           "Error",
           "File saving failed",
+          //  AppLocalizations.of(Get.context!)!.cannot_preview_this_file
           colorText: Colors.black,
           backgroundColor: Colors.white,
           duration: const Duration(seconds: 4),
@@ -1375,17 +1389,18 @@ class _ConversionResultState extends State<ConversionResult> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.only(left: 4, right: 4),
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(22)),
-                            child: Text(
-                              // AppLocalizations.of(context)!.preview,
-                              "Preview",
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                          ),
+                          SizedBox(),
+                          // Container(
+                          //   padding: const EdgeInsets.only(left: 4, right: 4),
+                          //   decoration: BoxDecoration(
+                          //       color: Colors.white.withOpacity(0.5),
+                          //       borderRadius: BorderRadius.circular(22)),
+                          //   child: Text(
+                          //     AppLocalizations.of(context)!.preview,
+                          //     // "Preview",
+                          //     style: const TextStyle(fontSize: 14),
+                          //   ),
+                          // ),
                           GestureDetector(
                             onTap: () {
                               Get.back();
@@ -1485,8 +1500,8 @@ class _ConversionResultState extends State<ConversionResult> {
                               width: 8,
                             ),
                             Text(
-                              // AppLocalizations.of(context)!.d,
-                              "Download",
+                              AppLocalizations.of(context)!.download,
+                              // "Download",
                               style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600),
@@ -1526,14 +1541,18 @@ class _ConversionResultState extends State<ConversionResult> {
           duration: const Duration(seconds: 4),
           // AppLocalizations.of(Get.context!)!.note,
           "Note",
-          "File Saved Successfully");
+           AppLocalizations.of(Get.context!)!.file_saved_successfully,
+          // "File Saved Successfully"
+          );
     } else {
       Get.snackbar(
           colorText: Colors.black,
           backgroundColor: Colors.grey.withOpacity(0.3),
           duration: const Duration(seconds: 4),
           "Note",
-          "Error while downloading file");
+           AppLocalizations.of(Get.context!)!.error_while_downloading_file
+          // "Error while downloading file"
+          );
     }
   }
 }

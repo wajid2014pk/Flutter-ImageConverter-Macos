@@ -81,7 +81,8 @@ class PremiumPopUp {
                                       child: SizedBox(
                                         width: 190,
                                         child: Text(
-                                          "Image Converter",
+                                          AppLocalizations.of(Get.context!)!
+                                              .image_converter,
                                           style: const TextStyle(
                                               overflow: TextOverflow.ellipsis,
                                               fontSize: 22,
@@ -106,12 +107,21 @@ class PremiumPopUp {
                                         children: [
                                           // SvgPicture.asset(AppAssets.diamond),
                                           Center(
-                                            child: Text(
-                                              "PRO",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600),
+                                            child: SizedBox(
+                                              width: 36,
+                                              child: Text(
+                                                // "PRO",
+                                                AppLocalizations.of(
+                                                        Get.context!)!
+                                                    .pro,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
                                             ),
                                           )
                                         ],
@@ -136,7 +146,8 @@ class PremiumPopUp {
                                   payWallController.selectPackage.value = 0;
                                 },
                                 child: premiumWidget(
-                                    "Monthly",
+                                    // "Monthly",
+                                    AppLocalizations.of(Get.context!)!.monthly,
                                     payWallController
                                         .offerings!
                                         .current!
@@ -159,9 +170,10 @@ class PremiumPopUp {
                                           .storeProduct
                                           .price,
                                     ),
-                                    "Basic",
+                                    "30 %",
                                     0,
-                                    ''),
+                                    // 'OFF'
+                                    AppLocalizations.of(Get.context!)!.off),
                               ),
                               SizedBox(
                                 height: 16,
@@ -171,10 +183,8 @@ class PremiumPopUp {
                                   payWallController.selectPackage.value = 1;
                                 },
                                 child: premiumWidget(
-                                    "Yearly",
-                                    //  "USD", "12",
-                                    //     "9.99", "50 %", 1, 'OFF'
-                                    //  "Monthly",
+                                    // "Yearly",
+                                    AppLocalizations.of(Get.context!)!.yearly,
                                     payWallController
                                         .offerings!
                                         .current!
@@ -199,7 +209,8 @@ class PremiumPopUp {
                                     ),
                                     "66 %",
                                     1,
-                                    'OFF'),
+                                    // 'OFF'
+                                    AppLocalizations.of(Get.context!)!.off),
                               ),
                               SizedBox(
                                 height: 16,
@@ -209,7 +220,8 @@ class PremiumPopUp {
                                   payWallController.selectPackage.value = 2;
                                 },
                                 child: premiumWidget(
-                                    "LifeTime",
+                                    // "LifeTime",
+                                    AppLocalizations.of(Get.context!)!.lifetime,
                                     payWallController
                                         .offerings!
                                         .current!
@@ -234,7 +246,8 @@ class PremiumPopUp {
                                     ),
                                     "58 %",
                                     2,
-                                    'OFF'
+                                    // 'OFF'
+                                    AppLocalizations.of(Get.context!)!.off
                                     //  "USD", "12",
                                     //     "9.99", "50 %", 2, 'OFF'
 
@@ -242,6 +255,21 @@ class PremiumPopUp {
                               ),
                               SizedBox(
                                 height: 42,
+                              ),
+                              Obx(
+                                () => payWallController.selectPackage.value == 2
+                                    ? SizedBox()
+                                    : Text(
+                                        // "No Commitment, Cancel Anytime",
+                                        AppLocalizations.of(Get.context!)!
+                                            .no_commitment_cancel_anytime,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                              ),
+                              SizedBox(
+                                height: 12,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -259,7 +287,9 @@ class PremiumPopUp {
                                       borderRadius: BorderRadius.circular(32)),
                                   child: Center(
                                     child: Text(
-                                      "Subscribe",
+                                      // "Subscribe",
+                                      AppLocalizations.of(Get.context!)!
+                                          .subscribe,
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w800,
@@ -285,7 +315,9 @@ class PremiumPopUp {
                                       });
                                     },
                                     child: Text(
-                                      "Privacy Policy",
+                                      // "Privacy Policy",
+                                      AppLocalizations.of(Get.context!)!
+                                          .privacy_policy,
                                       style: TextStyle(
                                         color: UiColors.newGreyColor,
                                         fontSize: 12,
@@ -307,7 +339,9 @@ class PremiumPopUp {
                                           .restorePurchase(Get.context!);
                                     },
                                     child: Text(
-                                      "Restore",
+                                      // "Restore",
+                                      AppLocalizations.of(Get.context!)!
+                                          .restore,
                                       style: TextStyle(
                                         fontSize: 12,
                                         color: UiColors.newGreyColor,
@@ -418,19 +452,16 @@ class PremiumPopUp {
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 16),
                         ),
-                        index != 0
-                            ? Text(
-                                off,
-                                // "Basic",
-                                style: TextStyle(
-                                    fontWeight:
-                                        payWallController.selectPackage.value ==
-                                                index
-                                            ? FontWeight.w400
-                                            : FontWeight.w500,
-                                    fontSize: 14),
-                              )
-                            : SizedBox(),
+                        Text(
+                          off,
+                          // "Basic",
+                          style: TextStyle(
+                              fontWeight:
+                                  payWallController.selectPackage.value == index
+                                      ? FontWeight.w400
+                                      : FontWeight.w500,
+                              fontSize: 14),
+                        )
                       ],
                     ),
                   ),
@@ -510,32 +541,35 @@ class CarouselWidgetState extends State<CarouselWidget> {
   ];
 
   final List<String> _texts = [
-    'Unlimited Conversions',
+    AppLocalizations.of(Get.context!)!.unlimited_conversions,
     '',
-    'Access to All Formats',
-    'Batch Conversion',
+    AppLocalizations.of(Get.context!)!.access_to_all_formats,
+    AppLocalizations.of(Get.context!)!.batch_conversion,
     '',
-    'Ad-Free Experience',
+    AppLocalizations.of(Get.context!)!.ad_free_experience,
     '',
-    'Priority Customer Support',
-    'Regular Updates',
-    // AppLocalizations.of(Get.context!)!.unlimited_questions,
-    // // 'Step-by-Step Solutions',
-    // AppLocalizations.of(Get.context!)!.step_by_step_solutions,
-    // AppLocalizations.of(Get.context!)!.fast_processing,
-    // AppLocalizations.of(Get.context!)!.unlock_advance_topics,
-    // AppLocalizations.of(Get.context!)!.priority_customer_support,
+    AppLocalizations.of(Get.context!)!.priority_customer_support,
+    AppLocalizations.of(Get.context!)!.regular_updates,
   ];
   final List<String> subText = [
-    'Convert images without any restrictions on the number of conversions you can perform.',
+    // 'Convert images without any restrictions on the number of conversions you can perform.',
+    AppLocalizations.of(Get.context!)!
+        .convert_images_without_any_restrictions_on,
     '',
-    'Convert to and from a wide variety of formats including PDF, DOC, EXCEL, WEBP, and more.',
-    'Convert multiple images at once to save time and increase productivity.',
+    // 'Convert to and from a wide variety of formats including PDF, DOC, EXCEL, WEBP, and more.',
+    AppLocalizations.of(Get.context!)!.convert_to_and_from_a_wide_variety_of,
+    // 'Convert multiple images at once to save time and increase productivity.',
+    AppLocalizations.of(Get.context!)!.convert_multiple_images_at_once_to,
     '',
-    'Enjoy a seamless and distraction-free experience without any advertisements.',
+    // 'Enjoy a seamless and distraction-free experience without any advertisements.',
+    AppLocalizations.of(Get.context!)!
+        .enjoy_a_seamless_and_distraction_free_experience,
     '',
-    'Receive top-priority support from our dedicated team to resolve any issues quickly.',
-    'Stay updated with the latest features, improvements, and new formats with regular updates.',
+    // 'Receive top-priority support from our dedicated team to resolve any issues quickly.',
+    AppLocalizations.of(Get.context!)!
+        .receive_top_priority_support_from_our_dedicated_team,
+    // 'Stay updated with the latest features, improvements, and new formats with regular updates.',
+    AppLocalizations.of(Get.context!)!.stay_updated_with_the_latest_features,
 
     // AppLocalizations.of(Get.context!)!.detailed_explanations_for_solving,
     // AppLocalizations.of(Get.context!)!.lightning_fast_solutions_for_multiple,
@@ -574,19 +608,28 @@ class CarouselWidgetState extends State<CarouselWidget> {
                           height: 100,
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          _texts[index],
-                          style: const TextStyle(
-                              // color: Colors.red,
-                              fontSize: 18,
-                              fontFamily: 'Manrope-Medium',
-                              fontWeight: FontWeight.w800),
+                        SizedBox(
+                          width: 230,
+                          child: Center(
+                            child: Text(
+                              _texts[index],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  // color: Colors.red,
+                                  fontSize: 18,
+                                  fontFamily: 'Manrope-Medium',
+                                  fontWeight: FontWeight.w800),
+                            ),
+                          ),
                         ),
                         SizedBox(
                           width: 300,
                           child: Center(
                             child: Text(
                               subText[index],
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Color(0xFF757575),

@@ -107,15 +107,22 @@ class _HomeScreenState extends State<HomeScreen>
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  "Image Converter",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontFamily: 'Manrope-Bold',
-                                      fontSize: 18),
+                                SizedBox(
+                                  width: 200,
+                                  child: Text(
+                                    AppLocalizations.of(Get.context!)!
+                                        .image_converter,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    // "Image Converter",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: 'Manrope-Bold',
+                                        fontSize: 18),
+                                  ),
                                 ),
                                 Text(
-                                  "Version $packageName",
+                                  "${AppLocalizations.of(Get.context!)!.version} $packageName",
                                   style: TextStyle(fontSize: 14),
                                 ),
                               ],
@@ -135,16 +142,16 @@ class _HomeScreenState extends State<HomeScreen>
                         // homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/recent_file_new_icon.png",
-                          // AppLocalizations.of(Get.context!)!.rec,
-                          "Recent Files",
+                          AppLocalizations.of(Get.context!)!.recent_files,
+                          // "Recent Files",
                           2,
                           context,
                         ),
                         // homeScreenController.divider(),
                         homeScreenController.sideBarItem(
                           "assets/share_us_new_icon.png",
-                          // AppLocalizations.of(Get.context!)!.share,
-                          "Share Us",
+                          AppLocalizations.of(Get.context!)!.share_us,
+                          // "Share Us",
                           3,
                           context,
                         ),
@@ -175,8 +182,8 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                         homeScreenController.sideBarItem(
                           "assets/more_apps_new_icon.png",
-                          // AppLocalizations.of(Get.context!)!.m,
-                          "More Apps",
+                          AppLocalizations.of(Get.context!)!.more_apps,
+                          // "More Apps",
                           7,
                           context,
                         ),

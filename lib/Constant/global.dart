@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_converter_macos/Constant/color.dart';
 import 'package:image_converter_macos/utils/shared_pref.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 RxInt originalSize = 0.obs;
 RxInt convertedSize = 0.obs;
@@ -165,9 +166,15 @@ Container downloadButton({
           const SizedBox(
             width: 12,
           ),
-          Text(
-            "Download",
-            style: TextStyle(color: Colors.white, fontSize: 14),
+          SizedBox(
+            width: 80,
+            child: Text(
+              // "Download",
+              AppLocalizations.of(Get.context!)!.download,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
           )
         ],
       ));

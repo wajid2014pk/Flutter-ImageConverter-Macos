@@ -84,29 +84,13 @@ class _SplashScreenState extends State<SplashScreen>
             SizedBox(
               height: 22,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(Get.context!)!.image,
-                  // "Image Converter",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'Manrope-Medium'),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  AppLocalizations.of(Get.context!)!.converter,
-                  // "Image Converter",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'Manrope-Medium'),
-                ),
-              ],
+            Text(
+              AppLocalizations.of(Get.context!)!.image_converter,
+              // "Image Converter",
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  fontFamily: 'Manrope-Medium'),
             ),
           ],
         ),

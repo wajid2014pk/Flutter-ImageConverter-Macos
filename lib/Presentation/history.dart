@@ -161,7 +161,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             updateSearchQueryCountry(value);
                           },
                           decoration: InputDecoration(
-                              hintText: "Search",
+                              hintText: AppLocalizations.of(Get.context!)!
+                                  .search_image,
+                              // "Search",
                               hintStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: UiColors.newGreyColor,
@@ -372,7 +374,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 backgroundColor: Colors.white,
                                 duration: const Duration(seconds: 4),
                                 "Note",
-                                "Cannot preview this file!",
+                                // "Cannot preview this file!",
+                                AppLocalizations.of(Get.context!)!.cannot_preview_this_file
                               );
                             } else {
                               await _openFile(filteredListTextField[index]);
@@ -386,7 +389,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 0.0, vertical: 0.0),
                             child: Container(
-                              padding: const EdgeInsets.only(left: 12),
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -816,8 +820,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
-                  "Filter By",
+                Text(
+                  // "Filter By",
+                  AppLocalizations.of(Get.context!)!.filter_by,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -899,9 +904,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            "Cancel",
+                            // "Cancel",
+                            AppLocalizations.of(Get.context!)!.cancel,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
@@ -929,9 +935,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           color: UiColors.blueColorNew,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            "Apply",
+                            // "Apply",
+                            AppLocalizations.of(Get.context!)!.apply,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),

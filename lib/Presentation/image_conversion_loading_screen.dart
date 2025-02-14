@@ -61,8 +61,6 @@ class _ImageConversionLoadingScreenState
     });
   }
 
-
-
   openDropDownAutomatically() async {
     Future.delayed(const Duration(milliseconds: 1), () {
       conversionController.conversionOptionList(
@@ -92,7 +90,8 @@ class _ImageConversionLoadingScreenState
             () => Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 22),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 22, vertical: 22),
                   child: Column(
                     children: [
                       Row(
@@ -116,14 +115,13 @@ class _ImageConversionLoadingScreenState
                               Obx(
                                 () => Text(
                                   infiniteProgress.value >= 0.96
-                                      ? 
-                                      "Completed"
-                                      // AppLocalizations.of(Get.context!)!
-                                      //     .completed
-                                      : 
-                                        // AppLocalizations.of(Get.context!)!
-                                        //   .,
-                                      "In Progress",
+                                      ?
+                                      // "Completed"
+                                      AppLocalizations.of(Get.context!)!
+                                          .completed
+                                      : AppLocalizations.of(Get.context!)!
+                                          .in_progress,
+                                  // "In Progress",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontFamily: 'Manrope-Bold',
@@ -133,9 +131,11 @@ class _ImageConversionLoadingScreenState
                               Obx(
                                 () => Text(
                                   infiniteProgress.value >= 0.96
-                                      ?
-                                      "Your file is converted"
-                                      : "Converting your file",
+                                      ? 
+                                      // "Your file is converted"
+                                      AppLocalizations.of(context)!.your_file_is_converted
+                                      : AppLocalizations.of(context)!.converting_your_file,
+                                      // "Converting your file",
                                   style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
@@ -148,7 +148,6 @@ class _ImageConversionLoadingScreenState
                     ],
                   ),
                 ),
-
                 const SizedBox(
                   height: 32,
                 ),
@@ -241,7 +240,6 @@ class _ImageConversionLoadingScreenState
                               style: const TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w400),
                             ),
-                         
                             const Spacer(),
                             const SizedBox(
                               height: 20,
@@ -331,14 +329,11 @@ class _ImageConversionLoadingScreenState
                               height: 30,
                             ),
                             Text(
-                             
                               AppLocalizations.of(context)!
                                   .your_file_is_converting,
-                             
                               style: const TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.w400),
                             ),
-                       
                             const Spacer(),
                             const SizedBox(
                               height: 20,

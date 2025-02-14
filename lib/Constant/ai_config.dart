@@ -74,13 +74,12 @@ class AIHandler {
       // if (e.message == null) {
       Get.offAll(() => HomeScreen(index: 1));
       Get.snackbar(
-          backgroundColor: UiColors.whiteColor,
-          duration: const Duration(seconds: 4),
-          AppLocalizations.of(Get.context!)!.attention,
-          "Please check your internet connection"
-          // AppLocalizations.of(Get.context!)!
-          //     .please_check_your_internet_connection,
-          );
+        backgroundColor: UiColors.whiteColor,
+        duration: const Duration(seconds: 4),
+        AppLocalizations.of(Get.context!)!.attention,
+        AppLocalizations.of(Get.context!)!
+            .please_check_your_internet_connection,
+      );
       // }
       log("Response data: ${e.response?.data}");
       log("Response status: ${e.response?.statusCode}");
@@ -122,19 +121,22 @@ class AIHandler {
         // Handle unsuccessful response
         // String IMAGE_TO_EXCEL_KEY = "NO_KEY";
         Get.offAll(() => HomeScreen(index: 1));
-        Get.showSnackbar(const GetSnackBar(
-          duration: Duration(seconds: 2),
-          message: "Server Error!!!!",
-        ));
+        Get.showSnackbar(GetSnackBar(
+            duration: Duration(seconds: 2),
+            message: AppLocalizations.of(Get.context!)!.server_error
+            // "Server Error!!!!",
+            ));
         print("Request failed with status: ${response.statusCode}");
       }
     } catch (e) {
       // Handle error
       if (e is dio.DioException) {
-        Get.showSnackbar(const GetSnackBar(
+        Get.showSnackbar(GetSnackBar(
           duration: Duration(seconds: 2),
-          title: "Error",
-          message: "PLease Try Again!",
+          title: AppLocalizations.of(Get.context!)!.error,
+          // "Error",
+          message: AppLocalizations.of(Get.context!)!.please_try_again,
+          // "PLease Try Again!",
         ));
         Get.offAll(() => HomeScreen(index: 1));
 

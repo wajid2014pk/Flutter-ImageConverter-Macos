@@ -89,7 +89,8 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                             },
                             child: imagePickupOptions(
                                 "assets/image_convertor.png",
-                                "Image Converter",
+                                // "Image Converter",
+                                AppLocalizations.of(context)!.image_converter,
                                 0),
                           ),
                           GestureDetector(
@@ -100,7 +101,10 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                               showPopup(imageResizerKey, 1);
                             },
                             child: imagePickupOptions(
-                                "assets/image_resizer.png", "Image Resizer", 1),
+                                "assets/image_resizer.png",
+                                // "Image Resizer",
+                                AppLocalizations.of(context)!.image_resizer,
+                                1),
                           ),
                           GestureDetector(
                             key: imageCompressorKey,
@@ -111,7 +115,8 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                             },
                             child: imagePickupOptions(
                                 "assets/image_compressor.png",
-                                "Image Compressor",
+                                // "Image Compressor",
+                                AppLocalizations.of(context)!.image_compressor,
                                 2),
                           ),
                           // GestureDetector(
@@ -136,6 +141,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                 () => payWallController.isPro.value == false
                     ? GestureDetector(
                         onTap: () {
+                          removePopup();
                           PremiumPopUp().premiumScreenPopUp(Get.context!);
                           // payWallController.offerings == null
                           //     ? payWallController.getProductsPrice()
@@ -184,12 +190,19 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Unlimited Conversions",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: 'Manrope-Bold',
-                                                fontSize: 18),
+                                          SizedBox(
+                                            width: 230,
+                                            child: Text(
+                                              // "Unlimited Conversions",
+                                              AppLocalizations.of(context)!
+                                                  .unlimited_conversions,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: 'Manrope-Bold',
+                                                  fontSize: 18),
+                                            ),
                                           ),
                                           SizedBox(
                                             height: 2,
@@ -197,7 +210,9 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                           SizedBox(
                                             width: Get.width * 0.25,
                                             child: Text(
-                                              "Convert images easily any format, anytime, no limits!",
+                                              // "Convert images easily any format, anytime, no limits!",
+                                              AppLocalizations.of(context)!
+                                                  .convert_images_easily_any_format,
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
@@ -226,13 +241,22 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                                             ),
                                           ],
                                         ),
-                                        child: Text(
-                                          "Upgrade Now",
-                                          style: TextStyle(
-                                              color: UiColors.whiteColor,
-                                              fontFamily: 'Manrope-Medium',
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w700),
+                                        child: SizedBox(
+                                          width: 88,
+                                          child: Center(
+                                            child: Text(
+                                              // "Upgrade Now",
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              AppLocalizations.of(context)!
+                                                  .upgrade_now,
+                                              style: TextStyle(
+                                                  color: UiColors.whiteColor,
+                                                  fontFamily: 'Manrope-Medium',
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -273,15 +297,21 @@ class _SelectFileScreenState extends State<SelectFileScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                descriptionText,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 10.0,
-                  color: Colors.black,
-                  fontFamily: 'Manrope-Medium',
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
+              SizedBox(
+                width: 100,
+                child: Center(
+                  child: Text(
+                    descriptionText,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 10.0,
+                      color: Colors.black,
+                      fontFamily: 'Manrope-Medium',
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -324,12 +354,18 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                 width: 45,
               ),
               const SizedBox(height: 15),
-              Text(
-                optionName,
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Manrope-Medium',
-                    fontWeight: FontWeight.w500),
+              SizedBox(
+                width: 130,
+                child: Center(
+                  child: Text(
+                    optionName,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Manrope-Medium',
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
               ),
             ],
           ),
@@ -389,7 +425,7 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                               if (index == 0) {
                                 toolIndex.value = 10;
                                 removePopup();
-                              
+
                                 await homeScreenController.handleDriveImage();
                               } else if (index == 1) {
                                 toolIndex.value = 10;
@@ -405,8 +441,8 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                             },
                             child: customPopupButton(
                                 "assets/upload_image.png",
-                                // AppLocalizations.of(context)!.file_from_url,
-                                "Upload Image",
+                                AppLocalizations.of(context)!.upload_image,
+                                // "Upload Image",
                                 index),
                           ),
                           const SizedBox(
@@ -431,7 +467,10 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                               }
                             },
                             child: customPopupButton(
-                                'assets/drive_image.png', "G-Drive", index
+                                'assets/drive_image.png',
+                                // "G-Drive",
+                                AppLocalizations.of(context)!.g_drive,
+                                index
                                 // AppLocalizations.of(context)!.choose_from_files,
                                 ),
                           ),
@@ -458,7 +497,10 @@ class _SelectFileScreenState extends State<SelectFileScreen>
                               }
                             },
                             child: customPopupButton(
-                                'assets/link_image.png', "URL Link", index
+                                'assets/link_image.png',
+                                // "URL Link",
+                                AppLocalizations.of(context)!.url_link,
+                                index
                                 // AppLocalizations.of(context)!.choose_from_files,
                                 ),
                           ),

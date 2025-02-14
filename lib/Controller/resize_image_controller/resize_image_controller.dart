@@ -64,10 +64,8 @@ class ResizeImageController extends GetxController {
     if (filePath != null) {
       print("filePath2 $filePath");
       // Decode the image from the file
-      // final originalImage = IMG.decodePng(filePath!.readAsBytesSync());
-      final originalImage = Platform.isMacOS
-          ? IMG.decodePng(filePath!.readAsBytesSync())
-          : IMG.decodePng(filePath!.readAsBytesSync());
+      final originalImage = IMG.decodeImage(filePath!.readAsBytesSync());
+
       print("%%%originalImage $originalImage");
       if (resizeOption.value == 'Quality') {
         print("%%%selectedResizeType.value ${selectedResizeType.value}");
@@ -102,6 +100,7 @@ class ResizeImageController extends GetxController {
             int? targetHeight = int.tryParse(dimensions.last);
             print("%%%targetHeight 1: $targetHeight");
             print("%%%targetWidth 2: $targetWidth");
+            print("%%% originalImage $originalImage");
             if (targetWidth != null &&
                 targetHeight != null &&
                 originalImage != null) {
@@ -172,9 +171,8 @@ class ResizeImageController extends GetxController {
       DateTime dateTime = DateTime.now();
       print("%%%%dateTime  $dateTime");
 
-      Directory? dir = Platform.isMacOS
-          ? await getApplicationCacheDirectory()
-          : await getExternalStorageDirectory();
+      Directory? dir = await getApplicationCacheDirectory();
+
       print("%%%%dir  $dir");
 
       var targetDirectoryPath = '${dir?.path}/ImageConverter/';
@@ -193,7 +191,9 @@ class ResizeImageController extends GetxController {
       // Write the image bytes to the file
       File file = File(path);
       if (Platform.isMacOS) {
+        print("aaaaa");
         await file.writeAsBytes(IMG.encodeJpg(resizedImage, quality: 85));
+        print("bbbbbbb");
       } else {
         await file.writeAsBytes(IMG.encodePng(resizedImage));
       }

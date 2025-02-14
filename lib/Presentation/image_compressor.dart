@@ -93,7 +93,11 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                       uploadFile(context);
                     } else {
                       getx.Get.snackbar(
-                          "Attension", "Please select any option");
+                        "Attension",
+                        AppLocalizations.of(Get.context!)!
+                            .please_select_an_option,
+                        // "Please select any option"
+                      );
                     }
                   },
                   child: Container(
@@ -103,7 +107,8 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                         color: UiColors.blueColorNew),
                     child: Center(
                       child: Text(
-                        "Compress",
+                        // "Compress",
+                        AppLocalizations.of(Get.context!)!.compress,
                         style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -175,7 +180,8 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                           sizedBoxWidth,
                           sizedBoxWidth,
                           Text(
-                            "Image Compressor",
+                            // "Image Compressor",
+                            AppLocalizations.of(Get.context!)!.image_compressor,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w800),
                           ),
@@ -235,8 +241,10 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                       size: 18,
                                     ),
                                     const SizedBox(width: 8),
-                                    const Text(
-                                      "Reduce by Quality",
+                                    Text(
+                                      // "Reduce by Quality",
+                                      AppLocalizations.of(Get.context!)!
+                                          .reduce_by_quality,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16,
@@ -368,8 +376,10 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                         size: 18,
                                       ),
                                       const SizedBox(width: 8),
-                                      const Text(
-                                        "Reduce by Size",
+                                      Text(
+                                        // "Reduce by Size",
+                                        AppLocalizations.of(Get.context!)!
+                                            .reduce_by_size,
                                         // AppLocalizations.of(context)!.custom,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600,
@@ -506,7 +516,10 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
                                                 ?.unfocus();
                                           },
                                           decoration: InputDecoration(
-                                            hintText: "Custom Size",
+                                            hintText: AppLocalizations.of(
+                                                    Get.context!)!
+                                                .custom_size,
+                                            // "Custom Size",
                                             // AppLocalizations.of(context)!
                                             //     .width,
                                             hintStyle: TextStyle(
@@ -808,7 +821,8 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
       print("qualityInput $qualityInput");
 
       if (qualityInput == null || qualityInput < 1 || qualityInput > 100) {
-        getx.Get.snackbar(context, "Please select validate option");
+        getx.Get.snackbar(context,
+            AppLocalizations.of(Get.context!)!.please_select_an_option);
         return;
       }
 
@@ -879,7 +893,10 @@ class _ImageCompressorScreenState extends State<ImageCompressorScreen>
       if (response.statusCode == 200) {
         print(response.toString());
       } else {
-        getx.Get.snackbar("Error", "Error while converting");
+        getx.Get.snackbar(
+            "Error",
+            // AppLocalizations.of(Get.context!)!.error_while_c
+            "Error while converting");
 
         print("%%%%%Error during connection to server.");
       }

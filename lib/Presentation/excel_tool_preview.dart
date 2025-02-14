@@ -68,7 +68,8 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
                           fontFamily: 'Manrope-Bold'),
                     ),
                     Text(
-                      "You can download, Share and Preview converted files",
+                      // "You can download, Share and Preview converted files",
+                      AppLocalizations.of(context)!.you_can_download_share,
                       style: TextStyle(
                         color: UiColors.blackColor,
                         fontSize: 16.0,
@@ -150,7 +151,6 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
                   },
                   child: downloadButton(
                       imagePath: 'assets/download_icon.png', index: 1),
-              
                 ),
               ],
             ),
@@ -282,7 +282,7 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
       if (result != "") {
         Get.snackbar(
           "Success",
-          "File Saved Successfully: $filePath",
+          "${AppLocalizations.of(Get.context!)!.file_saved_successfully}: $filePath",
           colorText: Colors.black,
           backgroundColor: Colors.grey.withOpacity(0.3),
           duration: const Duration(seconds: 4),
@@ -291,6 +291,7 @@ class _ExcelToolPreviewPageState extends State<ExcelToolPreviewPage> {
         Get.snackbar(
           "Error",
           "Error while saving the file",
+          // AppLocalizations.of(Get.context!)!.
           colorText: Colors.black,
           backgroundColor: Colors.grey.withOpacity(0.3),
           duration: const Duration(seconds: 4),

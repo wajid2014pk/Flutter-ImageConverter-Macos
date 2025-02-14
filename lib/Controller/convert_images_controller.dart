@@ -487,9 +487,9 @@ class ConvertImagesController extends GetxController {
             backgroundColor: UiColors.whiteColor,
             duration: const Duration(seconds: 4),
             AppLocalizations.of(Get.context!)!.attention,
-            // AppLocalizations.of(Get.context!)!
-            //     .please_try_again_after_some_time
-            "Please try again after some time");
+            AppLocalizations.of(Get.context!)!.please_try_again_after_some_time
+            // "Please try again after some time"
+            );
         isError.value = true;
         return;
       }
@@ -1851,7 +1851,8 @@ class ConvertImagesController extends GetxController {
                           width: MediaQuery.sizeOf(context).width * 0.38,
                           child: Center(
                             child: Text(
-                              "Choose File Format",
+                              // "Choose File Format",
+                              AppLocalizations.of(context)!.choose_file_format,
                               textAlign: TextAlign.start,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -2217,10 +2218,12 @@ class ConvertImagesController extends GetxController {
         if ((index == 8 || index == 11 || index == 9) &&
             (imagePath.length > 1)) {
           Get.snackbar(
-              backgroundColor: UiColors.whiteColor,
-              duration: const Duration(seconds: 4),
-              AppLocalizations.of(Get.context!)!.attention,
-              "Only 1 image should be selected");
+            backgroundColor: UiColors.whiteColor,
+            duration: const Duration(seconds: 4),
+            AppLocalizations.of(Get.context!)!.attention,
+            AppLocalizations.of(Get.context!)!.only_one_image_should,
+            // "Only 1 image should be selected"
+          );
           Get.offAll(() => HomeScreen(
                 index: 1,
               ));
@@ -2790,9 +2793,9 @@ class ConvertImagesController extends GetxController {
         backgroundColor: UiColors.whiteColor,
         duration: const Duration(seconds: 4),
         AppLocalizations.of(Get.context!)!.attention,
-        // AppLocalizations.of(Get.context!)!
-        //     .please_check_your_internet_connection,
-        "Please check your internet connection",
+        AppLocalizations.of(Get.context!)!
+            .please_check_your_internet_connection,
+        // "Please check your internet connection",
       );
       // Get.back();
       Get.offAll(const HomeScreen(index: 1));
@@ -2891,9 +2894,9 @@ class ConvertImagesController extends GetxController {
           backgroundColor: UiColors.whiteColor,
           duration: const Duration(seconds: 4),
           AppLocalizations.of(Get.context!)!.attention,
-          // AppLocalizations.of(Get.context!)!
-          //     .please_check_your_internet_connection,
-          "Please check your internet connection",
+          AppLocalizations.of(Get.context!)!
+              .please_check_your_internet_connection,
+          // "Please check your internet connection",
         );
         // Get.back();
         Get.offAll(const HomeScreen(index: 1));
@@ -3031,9 +3034,9 @@ class ConvertImagesController extends GetxController {
         backgroundColor: UiColors.whiteColor,
         duration: const Duration(seconds: 4),
         AppLocalizations.of(Get.context!)!.attention,
-        // AppLocalizations.of(Get.context!)!
-        //     .please_check_your_internet_connection,
-        "Please check your internet connection",
+        AppLocalizations.of(Get.context!)!
+            .please_check_your_internet_connection,
+        // "Please check your internet connection",
       );
       Get.back();
     }
@@ -3282,9 +3285,9 @@ class ConvertImagesController extends GetxController {
             backgroundColor: UiColors.whiteColor,
             duration: const Duration(seconds: 4),
             AppLocalizations.of(Get.context!)!.attention,
-            // AppLocalizations.of(Get.context!)!
-            //     .please_try_again_after_some_time
-            "Please try again after some time");
+            AppLocalizations.of(Get.context!)!.please_try_again_after_some_time
+            // "Please try again after some time"
+            );
       }
       // }
       // else {
@@ -3300,13 +3303,12 @@ class ConvertImagesController extends GetxController {
       try {
         if (selectedIndex.value == 0) {
           Get.snackbar(
-              backgroundColor: UiColors.whiteColor,
-              duration: const Duration(seconds: 4),
-              AppLocalizations.of(Get.context!)!.attention,
-              "Please select an option in which you want to convert"
-              // AppLocalizations.of(Get.context!)!
-              //     .please_select_an_option_in_which_you_want_to_convert,
-              );
+            backgroundColor: UiColors.whiteColor,
+            duration: const Duration(seconds: 4),
+            AppLocalizations.of(Get.context!)!.attention,
+            // "Please select an option in which you want to convert"
+            AppLocalizations.of(Get.context!)!.please_select_an_option,
+          );
           conversionOptionList(Get.context!, imagePath);
         }
 
@@ -3545,10 +3547,9 @@ class ConvertImagesController extends GetxController {
             backgroundColor: UiColors.whiteColor,
             duration: const Duration(seconds: 4),
             AppLocalizations.of(Get.context!)!.attention,
-            "Please try agin after some time"
-            // AppLocalizations.of(Get.context!)!
-            //     .please_try_again_after_some_time
-            );
+            // "Please try agin after some time"
+            AppLocalizations.of(Get.context!)!
+                .please_try_again_after_some_time);
       }
       // } else {
       //   Get.to(() => const PremiumPage());
@@ -3564,13 +3565,12 @@ class ConvertImagesController extends GetxController {
       try {
         if (selectedIndex.value == 0) {
           Get.snackbar(
-              backgroundColor: UiColors.whiteColor,
-              duration: const Duration(seconds: 4),
-              AppLocalizations.of(Get.context!)!.attention,
-              "Please select an option in which you want to convert"
-              // AppLocalizations.of(Get.context!)!
-              //     .please_select_an_option_in_which_you_want_to_convert,
-              );
+            backgroundColor: UiColors.whiteColor,
+            duration: const Duration(seconds: 4),
+            AppLocalizations.of(Get.context!)!.attention,
+            // "Please select an option in which you want to convert"
+            AppLocalizations.of(Get.context!)!.please_select_an_option,
+          );
           conversionOptionList(Get.context!, imagePath);
         }
 
@@ -3809,10 +3809,9 @@ class ConvertImagesController extends GetxController {
             backgroundColor: UiColors.whiteColor,
             duration: const Duration(seconds: 4),
             AppLocalizations.of(Get.context!)!.attention,
-            "Please try again after some time"
-            // AppLocalizations.of(Get.context!)!
-            //     .please_try_again_after_some_time
-            );
+            // "Please try again after some time"
+            AppLocalizations.of(Get.context!)!
+                .please_try_again_after_some_time);
       }
       // } else {
       //   Get.to(() => const PremiumPage());
@@ -3828,9 +3827,8 @@ class ConvertImagesController extends GetxController {
             backgroundColor: UiColors.whiteColor,
             duration: const Duration(seconds: 4),
             AppLocalizations.of(Get.context!)!.attention,
-            // AppLocalizations.of(Get.context!)!
-            //     .please_select_an_option_in_which_you_want_to_convert,
-            "Please select an option in which you want to convert",
+            AppLocalizations.of(Get.context!)!.please_select_an_option,
+            // "Please select an option in which you want to convert",
           );
           conversionOptionList(Get.context!, imagePath);
         }
@@ -4067,13 +4065,12 @@ class ConvertImagesController extends GetxController {
         }
       } catch (e) {
         Get.snackbar(
-          backgroundColor: UiColors.whiteColor,
-          duration: const Duration(seconds: 4),
-          AppLocalizations.of(Get.context!)!.attention,
-          // AppLocalizations.of(Get.context!)!
-          //     .please_try_again_after_some_time
-          "Please try again after some time",
-        );
+            backgroundColor: UiColors.whiteColor,
+            duration: const Duration(seconds: 4),
+            AppLocalizations.of(Get.context!)!.attention,
+            AppLocalizations.of(Get.context!)!.please_try_again_after_some_time
+            // "Please try again after some time",
+            );
         Get.back();
       }
     } else if (selectedIndex.value == 9) {
@@ -4182,7 +4179,8 @@ class ConvertImagesController extends GetxController {
         duration: const Duration(seconds: 4),
         AppLocalizations.of(Get.context!)!.error,
         // AppLocalizations.of(Get.context!)!.opening_file,
-        "Opening File",
+        // "Opening File",
+        AppLocalizations.of(Get.context!)!.opening_file,
       );
     }
   }

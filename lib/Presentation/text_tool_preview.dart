@@ -75,7 +75,8 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
                       ),
                     ),
                     Text(
-                      "You can download, Share and Preview converted files",
+                      // "You can download, Share and Preview converted files",
+                      AppLocalizations.of(context)!.you_can_download_share,
                       style: TextStyle(
                         color: UiColors.blackColor,
                         fontSize: 16.0,
@@ -252,7 +253,8 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
       if (result != "") {
         Get.snackbar(
           "Note",
-          "File Saved Successfully",
+          // "File Saved Successfully",
+          AppLocalizations.of(Get.context!)!.file_saved_successfully,
           colorText: Colors.black,
           backgroundColor: Colors.grey.withOpacity(0.3),
           duration: const Duration(seconds: 4),
@@ -260,7 +262,8 @@ class _TextToolPreviewPageState extends State<TextToolPreviewPage> {
       } else {
         Get.snackbar(
           "Note",
-          "Error while downloading file",
+          // "Error while downloading file",
+          AppLocalizations.of(Get.context!)!.error_while_downloading_file,
           colorText: Colors.black,
           backgroundColor: Colors.grey.withOpacity(0.3),
           duration: const Duration(seconds: 4),
